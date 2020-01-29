@@ -55,105 +55,115 @@
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
-	<nav class="fh5co-nav" role="navigation">
-		<div class="container-wrap">
-			<div class="top-menu">
-				<div class="row">
-					<div class="col-md-12 col-md-offset-0 text-center">
-						<ul>							
-							<li><a href="index">首页</a></li>
-							<li><a href="group1">募捐分类首页</a></li>
-							<li><a href="group11">武汉医院</a></li>
-							<li><a href="group12">其它告急医院</a></li>
-							<li><a href="group2">爱心团体</a></li>
-							<li><a href="about">关于我们</a></li>
-							<li><a href="contact">联系/提交募捐信息</a></li>
-						</ul>
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</nav>
-	<div class="container-wrap">
-		<div id="fh5co-events">
-			<div class="row animate-box">
-				<div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
-					<h2>募捐信息列表-所有城市</h2>
-				</div>
-        </div>
-		<div>
-		<div>
-		按城市分类（感染人数排列）（黑色为暂无信息）:
-		</br>
-		<a href="group1/1.html"><font size="5">武汉</font></a>
-		<a href="group1/2.html"><font size="4">黄冈</font></a>
-		<a href="group1/3.html"><font size="3">孝感</font></a>
-		<a href="group1/4.html"><font size="3">荆门</font></a>
-		<a href="group1/5.html"><font size="3">咸宁</font></a>
-		<a href="group1/6.html"><font size="3">随州</font></a>
-		<a href="group1/7.html"><font size="3">荆州</font></a>
-		<a href="group1/8.html"><font size="3">十堰</font></a>
-		<a href="group1/9.html"><font size="3">黄石</font></a>
-		<a href="group1/10.html"><font size="3">襄阳</font></a>
-		<a href="group1/11.html"><font size="3">宜昌</font></a>
-		<a href="group1/12.html"><font size="3">恩施州</font></a>
-		<a href="group1/13.html"><font size="3">鄂州</font></a>
-		<a href="group1/14.html"><font size="3">天门</font></a>
-		<a href="group1/15.html"><font size="3">仙桃</font></a>
-		<a href="group1/16.html"><font size="3">潜江</font></a>
-		<a href="group1/17.html"><font size="3">其它</font></a>
-		<a href="group1-1.html"><font color="darkgreen" size="3">所有城市</font></a>
-		
-		</div>
-		</div>
-			</div>
-			</div>
-			<div class="row">
-                <tr>
-                    {% for i in content %}            
-                    <div class="col-md-4 animate-box">
-                        <div class="events-entry">
-                                {% for j in i %}
-                                    <td>{{ j }}</td>
-                                {% endfor %}
+        <nav class="fh5co-nav" role="navigation">
+            <div class="container-wrap">
+                <div class="top-menu">
+                    <div class="row">
+                        <div class="col-md-12 col-md-offset-0 text-center">
+                            <ul>							
+                                <li><a href="/">首页</a></li>
+                                <li><a href="group1">募捐分类首页</a></li>
+                                <li><a href="group11">武汉医院</a></li>
+                                <li><a href="group12">周边城市</a></li>
+                                <li><a href="group2">全国各地</a></li>                                
+                                <li><a href="register">注册</a></li>
+                                <li><a href="contact">提交募捐信息</a></li>
+                                <li><a href="about">关于我们</a></li>
+                            </ul>
                         </div>
                     </div>
-                    
-                        </tr>
-                        </thead>
-                        <tbody>
 
+                </div>
+            </div>
+        </nav>
+        <div class="container-wrap">
+            <div id="fh5co-events">
+                <div class="row animate-box">
+                    <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
+                        <h2>募捐信息列表-所有城市</h2>
+                    </div>
+                </div>
+<!--                 <div>
+                    <div>                    
+                        按城市分类（感染人数排列）（黑色为暂无信息）:
+                        </br>
+                        <a href="group1/1.html"><font size="5">武汉</font></a>
+                        <a href="group1/2.html"><font size="4">黄冈</font></a>
+                        <a href="group1/3.html"><font size="3">孝感</font></a>
+                        <a href="group1/4.html"><font size="3">荆门</font></a>
+                        <a href="group1/5.html"><font size="3">咸宁</font></a>
+                        <a href="group1/6.html"><font size="3">随州</font></a>
+                        <a href="group1/7.html"><font size="3">荆州</font></a>
+                        <a href="group1/8.html"><font size="3">十堰</font></a>
+                        <a href="group1/9.html"><font size="3">黄石</font></a>
+                        <a href="group1/10.html"><font size="3">襄阳</font></a>
+                        <a href="group1/11.html"><font size="3">宜昌</font></a>
+                        <a href="group1/12.html"><font size="3">恩施州</font></a>
+                        <a href="group1/13.html"><font size="3">鄂州</font></a>
+                        <a href="group1/14.html"><font size="3">天门</font></a>
+                        <a href="group1/15.html"><font size="3">仙桃</font></a>
+                        <a href="group1/16.html"><font size="3">潜江</font></a>
+                        <a href="group1/17.html"><font size="3">其它</font></a>
+                        <a href="group1-1.html"><font color="darkgreen" size="3">所有城市</font></a>
+
+                    </div>
+                </div> -->
+            </div>
+            <div class="row", style="margin-left:5px;">
+                {% for one_content in content %}            
+                    <div class="col-md-4 animate-box" style="height: 600px; width:350px; border: #000000; border-width:1.5px;   margin-right：-1.5px;margin-bottom:-1.5px; border-style:solid">
+                        <div class="events-entry">
+                            <ul style="list-style: none; font-size:18px; color: black">
+                            {% for j in range(0, one_content|length) %}
+                                {% if 7>j %}
+                                    {% if  one_content[j]|string() == 'None' %}
+                                       <li>暂无{{ labels[j] }}信息</li>
+                                    {% else %}
+                                       <li>{{ labels[j] }}: {{ one_content[j] }}</li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                            <ul>
+                            {% for j in range(0, one_content|length) %}
+                                {% if 7>j %}
+                                
+                                {% elif one_content[j]|string() != 'None' %}
+                                    <li><font style="color: red;">{{ one_content[j] }}</font> {{ labels[j] }}</li>
+                                     
+                                {% endif %}
+                            {% endfor %}  
+                                </ul>
+                        </div>
+                    </div>
                 {% endfor %}
-                            
-			</div>
-		</div>
-	</div><!-- END container-wrap -->
 
-	<div class="container-wrap">
-		<footer id="fh5co-footer" role="contentinfo">
-			<div class="col-md-4 text-center">
-				<!-- <h2><a href="#">公益的力量</a></h2> -->
-			</div>
-			<div class="col-md-4 text-center">
-				<p>
-					<ul class="fh5co-social-icons">
-						<li><a href="#"><i class="icon-twitter2"></i></a></li>
-						<li><a href="#"><i class="icon-facebook2"></i></a></li>
-						<li><a href="#"><i class="icon-dribbble2"></i></a></li>
-					</ul>
-				</p>
-			</div>
-			<div class="row copyright">
-				<div class="col-md-12 text-center">
-					<p>
-						<small class="block">Copyright &copy; 2019.Company name All rights reserved.
-						<small class="block"></small>
-					</p>
-				</div>
-			</div>
-		</footer>
-	</div><!-- END container-wrap -->
+
+            </div>
+
+        </div>
+
+        <div class="container-wrap">
+            <footer id="fh5co-footer" role="contentinfo">
+                <div class="col-md-4 text-center">
+                    <p>
+                        <ul class="fh5co-social-icons">
+                            <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                            <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                            <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                        </ul>
+                    </p>
+                </div>
+                <div class="row copyright">
+                    <div class="col-md-12 text-center">
+                        <p>
+                            <small class="block">Copyright &copy; 2019.Company name All rights reserved.
+                            <small class="block"></small>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div><!-- END container-wrap -->
 	</div>
 
 	<div class="gototop js-top">
