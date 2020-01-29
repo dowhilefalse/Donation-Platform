@@ -1,0 +1,13 @@
+# conda
+watchdog
+tornado
+zope.interface
+pyOpenSSL
+twisted
+django==2.2
+sqlparse
+# pip
+# douban: pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com <package>
+djangorestframework
+django-cors-headers
+hendrix
