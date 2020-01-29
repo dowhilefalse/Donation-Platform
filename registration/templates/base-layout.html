@@ -1,27 +1,27 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+
+<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
+	<title>{% block page_title %}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-  	<!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:description" content="" />
 	<meta name="twitter:title" content="" />
 	<meta name="twitter:image" content="" />
 	<meta name="twitter:url" content="" />
 	<meta name="twitter:card" content="" />
 
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700" rel="stylesheet"
-	>
-	
+	<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700" rel="stylesheet">
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="../static/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -43,69 +43,50 @@
 	<link rel="stylesheet" href="../static/css/style.css">
 
 	<!-- Modernizr JS -->
-	<script src="../static/js/modernizr-2.6.2.min.js"></script>
+	<script src="../static/js/modernizr-2.6.2.min.js">
+	</script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
-	</head>
-	<body>
-		
-	<!-- <div class="fh5co-loader"></div> -->
-	
+</head>
+
+<body>
+	{% csrf_token %}
+
+	<div class="fh5co-loader"></div>
 	<div id="page">
-	<nav class="fh5co-nav" role="navigation">
-		<div class="container-wrap">
-			<div class="top-menu">
-				<div class="row">
-					<div class="col-md-12 col-md-offset-0 text-center">
-						<ul>							
-                                <li><a href="/">首页</a></li>
-                                <li><a href="group1">募捐分类首页</a></li>
-                                <li><a href="group11">武汉医院</a></li>
-                                <li><a href="group12">周边城市</a></li>
-                                <li><a href="group2">全国各地</a></li>                                
-                                <li><a href="register">注册</a></li>
-                                <li><a href="contact">提交募捐信息</a></li>
-                                <li><a href="about">关于我们</a></li>
-						</ul>
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</nav>
-	<div class="container-wrap">
-		<aside id="fh5co-hero">
-			<div class="flexslider">
-				<ul class="slides">
-					<li style="background-image: url(../static/images/img_bg_1.jpg);">
-						<div class="overlay"></div>
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-6 col-md-offset-3 text-center">
-									<div class="slider-text">
-										<div class="slider-text-inner">
-											<h1>募捐分类首页</h1>
-												<p><a class="btn btn-primary btn-demo" href="group11"> <i class="icon-play4"></i> 武汉医院！！！</a> <a class="btn btn-primary btn-learn", href="group12">武汉周边医院！！</a> <a class="btn btn-primary btn-learn", href="group2">全国各地医院！</a></p>
-										</div>
-									</div>
-								</div>
-							</div>
+		<nav class="fh5co-nav" role="navigation">
+			<div class="container-wrap">
+				<div class="top-menu">
+					<div class="row">
+						<div class="col-md-12 col-md-offset-0 text-center">
+							<ul>
+								<li><a href="/">首页</a></li>
+								<li><a href="/group1">募捐分类首页</a></li>
+								<li><a href="/group11">武汉医院</a></li>
+								<li><a href="/group12">周边城市</a></li>
+								<li><a href="/group2">全国各地</a></li>
+								<li><a href="/register">注册</a></li>
+								<li><a href="/contact">提交募捐信息</a></li>
+								<li><a href="/about">关于我们</a></li>
+							</ul>
 						</div>
-					</li>
-							   	
-			  	</ul>
-		  	</div>
-		</aside>
-	</div><!-- END container-wrap -->
+					</div>
+
+				</div>
+			</div>
+		</nav>
+		{% block page_main %}{% endblock %}
+	</div>
 
 	<div class="container-wrap">
 		<footer id="fh5co-footer" role="contentinfo">
-
 			<div class="col-md-4 text-center">
-				<!-- <h2><a href="#">公益</a></h2> -->
+				{% block public_benefit %}
+					<!-- <h2><a href="#">公益的力量</a></h2> -->
+				{% endblock %}
 			</div>
 			<div class="col-md-4 text-center">
 				<p>
@@ -120,13 +101,12 @@
 				<div class="col-md-12 text-center">
 					<p>
 						<small class="block">Copyright &copy; 2019.Company name All rights reserved.
-						<small class="block"></small>
+						</small>
 					</p>
 				</div>
 			</div>
 		</footer>
 	</div><!-- END container-wrap -->
-	</div>
 
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
@@ -154,4 +134,3 @@
 
 	</body>
 </html>
-
