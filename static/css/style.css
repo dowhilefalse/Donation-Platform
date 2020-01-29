@@ -24,9 +24,9 @@ body {
   overflow-x: hidden;
   width: 100%;
   height: 100%;
-  -webkit-transition: 0.1s;
-  -o-transition: 0.1s;
-  transition: 0.1s;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
 .offcanvas #page {
   overflow: hidden;
@@ -48,9 +48,9 @@ body {
 
 a {
   color: #658361;
-  -webkit-transition: 0.1s;
-  -o-transition: 0.1s;
-  transition: 0.1s;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
 a:hover, a:active, a:focus {
   color: #658361;
@@ -272,9 +272,9 @@ h1, h2, h3, h4, h5, h6, figure {
   display: inline-block;
   zoom: 1;
   *display: inline;
-  -webkit-transition: 0.1s;
-  -o-transition: 0.1s;
-  transition: 0.1s;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   -ms-border-radius: 100px;

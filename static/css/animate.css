@@ -8,14 +8,14 @@ Copyright (c) 2015 Daniel Eden
 */
 
 .animated {
-  -webkit-animation-duration: 0.01s;
-  animation-duration: 0.01s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
 .animated-fast {
-  -webkit-animation-duration: .01s;
-  animation-duration: .01s;
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -26,20 +26,20 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .animated.hinge {
-  -webkit-animation-duration: .01s;
-  animation-duration: .01s;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
 }
 
 .animated.bounceIn,
 .animated.bounceOut {
-  -webkit-animation-duration: .01s;
-  animation-duration: .01s;
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
 }
 
 .animated.flipOutX,
 .animated.flipOutY {
-  -webkit-animation-duration: .01s;
-  animation-duration: .01s;
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
 }
 
 @-webkit-keyframes bounce {

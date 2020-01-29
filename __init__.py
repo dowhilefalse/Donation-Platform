@@ -1,6 +1,6 @@
 from flask import Flask, request, url_for, redirect, render_template
 import os
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 import pymysql
 
@@ -13,6 +13,9 @@ conn = pymysql.connect(
     charset='utf8'
 )
 
+# @app.route('/js/<path:path>')
+# def send_js(path):
+#     return send_from_directory('js', path)
 
 @app.route('/')
 def index():
