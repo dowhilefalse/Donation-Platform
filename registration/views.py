@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from .models import User
+from api.views import OrganizationViewSet, TeamViewSet
 
 
 def view_index(request):
@@ -44,8 +45,19 @@ def view_group1(request):
     return render(request, 'pages/group1.html', context)
 
 def view_group11(request):
+    '''
+    武汉医院
+    '''
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
+    # 传递查询参数, 调用API方法
+     # django请求参数需要修改_mutable属性(方式一)后才能修改
+    request.GET._mutable = True #to make it editable
+    request.GET['scope'] = 'wuhan'
+    request.GET._mutable = False #make it False once edit done
+    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    print(obj.data)
+    # TODO: 将obj.data传递到模板中
     context = {
         'labels': [],
         'content': [],
@@ -53,8 +65,17 @@ def view_group11(request):
     return render(request, 'pages/group11.html', context)
 
 def view_group12(request):
+    '''
+    周边城市
+    '''
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
+    # 传递查询参数, 调用API方法
+    request.GET = request.GET.copy()
+    request.GET['scope'] = 'hubei'
+    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    print(obj.data)
+    # TODO: 将obj.data传递到模板中
     context = {
         'labels': [],
         'content': [],
@@ -63,15 +84,30 @@ def view_group12(request):
 
 # --------------------------------------------------------------
 def view_group2(request):
+    '''
+    全国各地
+    '''
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
+    # 传递查询参数, 调用API方法
+    request.GET = request.GET.copy() # django请求参数需要复制(方式二)后才能修改
+    request.GET['scope'] = 'china'
+    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    print(obj.data)
+    # TODO: 将obj.data传递到模板中
     context = {}
     return render(request, 'pages/group2.html', context)
 
 # --------------------------------------------------------------
 def view_group3(request):
+    '''
+    爱心团体
+    '''
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
+    obj = TeamViewSet.as_view({'get': 'list'})(request)
+    print(obj.data)
+    # TODO: 将obj.data传递到模板中
     context = {}
     return render(request, 'pages/group3.html', context)
 

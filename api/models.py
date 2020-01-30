@@ -42,8 +42,8 @@ class OrganizationDemand(models.Model):
     """docstring for OrganizationDemand"""
     organization = models.ForeignKey(Organization, verbose_name='所属机构', on_delete=models.CASCADE)
     name = models.CharField(verbose_name='物品名', max_length=128)
-    remark = models.CharField(verbose_name='备注', max_length=255)
-    amount = models.IntegerField(verbose_name='需求数量', default=-1, null=False)
+    remark = models.CharField(verbose_name='备注', max_length=255, default=None, blank=True, null=True)
+    amount = models.IntegerField(verbose_name='需求数量', default=-1, null=False) # -1 表示大量(没有具体数字)
     receive_amount = models.IntegerField(verbose_name='收到数量', default=0)
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now=True)
 
