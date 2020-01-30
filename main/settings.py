@@ -25,7 +25,21 @@ SECRET_KEY = '111@u-_n(!jex@@#)c%qsjfapznl9%x)3@%-mtc(dutz$3s94m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'coronacharity.info',
+]
+
+__hostname = None
+__hostname_name = None
+if DEBUG:
+    from socket import gethostname, gethostbyname
+    __hostname = gethostname()
+    __hostname_name = gethostbyname(__hostname)
+    ALLOWED_HOSTS.extend([
+        __hostname,
+        __hostname_name,
+    ])
 
 
 # Application definition
@@ -37,7 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'guardian',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'corsheaders',
     'registration.apps.RegistrationConfig',
     'api.apps.ApiConfig',
@@ -125,3 +142,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+AUTH_USER_MODEL = 'registration.User'
+
+# 短信配置
+SMS_accessKeyId = '<accessKeyId>'
+SMS_accessSecret = '<accessSecret>'
+SMS_TemplateCode = '<TemplateCode>'
+SMS_SignName = '<SignName>'
+
+# custom added
+AUTHENTICATION_BACKENDS = ( 
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+LOGOUT_ON_PASSWORD_CHANGE = False
+ACCOUNT_LOGOUT_ON_GET = True

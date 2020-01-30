@@ -10,4 +10,7 @@ sqlparse
 # douban: pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com <package>
 djangorestframework
 django-cors-headers
+django-guardian
+django-rest-auth
 hendrix
+aliyun-python-sdk-core
