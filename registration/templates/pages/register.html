@@ -1,83 +1,54 @@
 {% extends "base-layout.html" %}
-
+  
 {% load static %}
 
-{% block page_title %}注册{% endblock %}
+{% block page_title %}提交募捐信息{% endblock %}
 
 {% block page_main %}
-	<div class="container-wrap">
+        <div class="container-wrap">
+            <div id="fh5co-contact">
+                <div class="row animate-box">
+                    <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
+                        <h3>提交方式与联系方式</h3>
+                        <p>如果希望能够张贴募捐信息，请手机号登陆后提交信息，或者通过提供的联系方式联系我们</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-push-8 animate-box">
+                        <h3>我们的联系方式</h3>
+                        <ul class="contact-info">
+                            <li><i class="icon-phone3"></i>+ 1235 2355 98</li>
+                        <li><i class="icon-location3"></i><a href="#">info@yoursite.com</a></li>
+                        <li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-7 col-md-pull-2 animate-box">
+                    <h3>手机号登陆/注册（注册后便可发布信息）</h3>
+                        
+                    <form method="get">
+                    <div class="row">
+                        <div class="col-md-6">                           
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="手机号码">
+                                    <span class="input-group-btn">
+                                        <input type="button" id="forcode" onclick="settime(this)" value="免费获取验证码" class="btn btn-success">
+                                    </span>
+                            </div>
+                        </div>
 
-			<div id="fh5co-contact">
-
-				<div class="row">
-					<div class="col-md-3 col-md-push-8 animate-box">
-						<h3>我们的联系方式</h3>
-						<ul class="contact-info">
-							<li><i class="icon-phone3"></i>+ 1235 2355 98</li>
-						<li><i class="icon-location3"></i><a href="#">info@yoursite.com</a></li>
-						<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
-					</ul>
-				</div>
-				<div class="col-md-7 col-md-pull-2 animate-box">
-					<h3>注册</h3>
-                    <h4>注册成功后便可以发布信息</h4>
-
-					<form method="get", action='/registerform'>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="user" name = "user" type="text" class="form-control" placeholder="用户名" maxlength="20">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="password" name = "password" type="text" class="form-control" placeholder="密码" maxlength="20">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="email" name = "email" type="text" class="form-control" placeholder="邮箱" maxlength="15">
-							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="form-group">
-								<input type="submit" value="注册" class="btn btn-primary btn-modify">
-							</div>
-						</div>
-					</div>
-				
-				</form>
-			</div>
-		</div>
-		<!-- </di<!-- v id="fh5co-counter" class="fh5co-counters fh5co-light-grey"> -->
-			<!-- <div clas<!-- s="row"> -->
-				<!-- <div class="col-md-6 col-md-offset-3 text-center animate-box"> -->
-			<!-- 		<p>We have a fun facts far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-					</div>
-			</div>
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2">
-					<div class="row">
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="9452" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Members</span>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="214" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Ministries</span>
-						</div>
-						<div class="clearfix visible-sm-block visible-xs-block"></div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="433" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Classes</span>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="512" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Activities</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> --> 
-	</div><!-- END container-wrap -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="code" name = "code" type="text" class="form-control" placeholder="验证码" maxlength="6">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" value="注册/登陆" onclick="login()" class="btn btn-primary btn-modify">
+                            </div>
+                        </div>
+                </div>
+            </div>
+                
+            </div>
+        </div>
 {% endblock %}

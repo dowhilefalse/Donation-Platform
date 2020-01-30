@@ -12,4 +12,5 @@ urlpatterns = [
     path('group11', views.view_group11, name='page_group11'),
     path('group12', views.view_group12, name='page_group12'),
     path('group2', views.view_group2, name='page_group2'),
+    path('group3', views.view_group2, name='page_group3'),
 ]

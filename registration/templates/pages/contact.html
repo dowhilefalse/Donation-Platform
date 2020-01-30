@@ -6,32 +6,7 @@
 
 {% block page_main %}
 		<div class="container-wrap">
-			<aside id="fh5co-hero">
-				<div class="flexslider">
-					<ul class="slides">
-						<li style="background-image: url(../static/images/img_bg_2.jpg);">
-							<div class="overlay"></div>
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-md-6 col-md-offset-3 text-center slider-text">
-										<div class="slider-text-inner">
-											<h1>联系我们</h1>
-											<!-- <h2>Free html5 templates Made </h2> -->
-										</div>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</aside>
-			<div id="fh5co-contact">
-				<div class="row animate-box">
-					<div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
-						<h2>联系信息与方式</h2>
-						<p>如果希望能够张贴募捐信息，请通过提供的联系方式联系我们，或者直接通过递交表格</p>
-					</div>
-				</div>
+			<div id="fh5co-contact">				
 				<div class="row">
 					<div class="col-md-3 col-md-push-8 animate-box">
 						<h3>我们的联系方式</h3>
@@ -43,14 +18,36 @@
 				</div>
 				<div class="col-md-7 col-md-pull-2 animate-box">
 					<h3>递交表格</h3>
-					<h5>递交表格成功后，内容会直接发布</h5>
-                    <h5>建议在线下编辑好后，再复制上来</h5>
+					<h5>递交/修改表格成功后，内容会直接发布</h5>
+                    <h5>（建议在线下编辑好后，再复制上来）</h5>
 
-					<form method="post" action="sendform.php">
+					<form method="post", id="form1">
+						
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<input id="name" name = "name" type="text" class="form-control" placeholder="机构/个人名称" maxlength="20">
+								<select name="select_projects" id="select_projects">
+							        <option value="a">武汉医院</option>
+							        <option value="b">武汉周边/湖北医院</option>
+							        <option value="c">全国各地医院</option>
+							        <!-- <option value="c">其它团体受捐（慈善机构，学生组织等）</option> -->
+							        <optgroup label="其它团体受捐（慈善机构，学生组织等）">
+							            <option value="d">慈善机构/公益组织</option>
+							            <option value="e">公司/机构</option>
+							            <option value="f">学生组织</option>
+							            <option value="f">其它</option>
+							    </select>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<input id="name" name = "name" type="text" class="form-control" placeholder="机构/个人名称" maxlength="15">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input id="contact" name = "contact" type="text" class="form-control" placeholder="您的名字" maxlength="10">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -60,29 +57,26 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<input id="title" name = "title" type="text" class="form-control" placeholder="标题/简介" maxlength="15">
+								<input id="contact" name = "contact" type="text" class="form-control" placeholder="其它联系人以及联系方式（选填）" maxlength="20">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<input id="province" name = "province" type="text" class="form-control" placeholder="省份" maxlength="15">
+								<input id="province" name = "province" type="text" class="form-control" placeholder="省份（例如：湖北）" maxlength="3">
 							</div>
 						</div>
  						<div class="col-md-6">
 							<div class="form-group">
-								<input id="city" name = "city" type="text" class="form-control" placeholder="城市" maxlength="15">
+								<input id="city" name = "city" type="text" class="form-control" placeholder="城市" maxlength="3">
 							</div>
 						</div>                       
 						<div class="col-md-12">
-							<!-- <div class="form-group">
-								<textarea name="" class="form-control" id="" cols="30" rows="7" placeholder="正文" maxlength="10"></textarea> 
-							</div> -->
-							<textarea id="main" class="form-control" rows="7"  maxlength="2000" placeholder="正文"
+							<textarea id="main" class="form-control" rows="7"  maxlength="1000" placeholder="正文（简要叙述缺乏的物资，以及需求）"
 								onchange="sizecontrol()" onkeydown="sizecontrol()" onkeyup="sizecontrol()" 
 							></textarea> 
-							<span id="ts">已输入: 0/2000字</span></p>
+							<span id="ts">已输入: 0/1000字</span></p>
 							<script>
-							var maxl=2000//总长  
+							var maxl=1000//总长  
 							function sizecontrol(){  
 								var contents=document.getElementById("contents"),
 									ts=document.getElementById("ts"),
@@ -95,57 +89,7 @@
 							}  
 							</script>
 						
-						</div>
-<!-- 						<div class="col-md-12">
-							<div class="form-group">
-								<textarea id="password" class="form-control" cols="30" rows="1" placeholder="设置密码，以方便发布后能修改内容"></textarea>
-							</div>
-						</div> -->
-<!-- 						<div class="col-md-12">
-							<script language="javascript" type="text/javascript">
-							window.onload = function () {
-								var fileUpload = document.getElementById("fileupload");
-								fileUpload.onchange = function () {
-									if (typeof (FileReader) != "undefined") {
-										var dvPreview = document.getElementById("dvPreview");
-										dvPreview.innerHTML = "";
-										var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
-										for (var i = 0; i < fileUpload.files.length; i++) {
-											var file = fileUpload.files[i];
-											if (regex.test(file.name.toLowerCase())) {
-												var reader = new FileReader();
-												reader.onload = function (e) {
-													var img = document.createElement("IMG");
-													img.height = "100";
-													img.width = "100";
-													img.src = e.target.result;
-													dvPreview.appendChild(img);
-												}
-												reader.readAsDataURL(file);
-											} else {
-												alert(file.name + " is not a valid image file.");
-												dvPreview.innerHTML = "";
-												return false;
-											}
-										}
-									} else {
-										alert("This browser does not support HTML5 FileReader.");
-									}
-								}
-							};
-							</script>
-							上传图片(最大文件大小20MB)：
-							<form action="" method="post" enctype="multipart/form-data">
-							<input type="hidden" name="MAX_FILE_SIZE" value="20971520" /> 
-							<input id="fileupload" type="file" multiple="multiple" name="上传图片"/>
-							</form>
-							<hr />
-							<b>图片预览</b>
-							<br />
-							<br />
-							<div id="dvPreview">
-							</div> -->
-                            
+						</div>                            
 						<div class="col-md-6">
 							<div class="form-group">
 								
@@ -154,44 +98,34 @@
 						<br />
 						<div class="col-md-12">
 							<div class="form-group">
-								<input type="submit" value="提交申请" class="btn btn-primary btn-modify">
+								<input type="submit" value="提交" onclick="submit_form()" class="btn btn-primary btn-modify">
 							</div>
 						</div>
+						<script type="text/javascript">
+					        function submit_form() {
+					            $.ajax({
+					                type: "POST",
+					                dataType: "json",
+					                url: "/users/login" ,
+					                data: $('#form1').serialize(),
+					                success: function (result) {
+					                    console.log(result);
+					                    if (result.resultCode == 200) {
+					                        alert("SUCCESS");
+					                    }
+					                    ;
+					                },
+					                error : function() {
+					                    alert("异常！");
+					                }
+					            });
+					        }
+					    </script>
 					</div>
                     </form>
 				</div>
 				
 			</div>
 		</div>
-		<!-- <div id="fh5co-counter" class="fh5co-counters fh5co-light-grey"> -->
-			<!-- <div clas s="row"> -->
-				<!-- <div class="col-md-6 col-md-offset-3 text-center animate-box"> -->
-			<!-- 		<p>We have a fun facts far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-					</div>
-			</div>
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2">
-					<div class="row">
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="9452" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Members</span>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="214" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Ministries</span>
-						</div>
-						<div class="clearfix visible-sm-block visible-xs-block"></div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="433" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Classes</span>
-						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="512" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">Activities</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> --> 
 	</div><!-- END container-wrap -->
 {% endblock %}

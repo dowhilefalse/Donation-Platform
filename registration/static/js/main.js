@@ -1,3 +1,53 @@
+var countdown=30;
+function settime(obj) {
+    if (countdown == 0) {
+        obj.removeAttribute("disabled");
+        obj.value="免费获取验证码";
+        countdown = 30;
+        return;
+    } else {
+        obj.setAttribute("disabled", true);
+        obj.value="重新发送(" + countdown + ")";
+        countdown--;
+    }
+setTimeout(function() {
+    settime(obj) }
+    ,1000)
+}
+$('#forcode').click(function () {
+    $.ajax({
+        cache:false,
+        type:"POST",
+        url:"{% url 'users:forcode' %}",
+        data:{
+           csrfmiddlewaretoken:$('[name="csrfmiddlewaretoken"]').val(),
+           mobile:$("#mobile").val()
+        },
+        async:true,
+        success:function (data) {
+            alert(data)
+        }
+    })
+})
+function login() {
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/users/login" ,
+        data: $('#form1').serialize(),
+        success: function (result) {
+            console.log(result);
+            if (result.resultCode == 200) {
+                alert("SUCCESS");
+            }
+            ;
+        },
+        error : function() {
+            alert("异常！");
+        }
+    });
+}
+
 ;(function () {
 	
 	'use strict';

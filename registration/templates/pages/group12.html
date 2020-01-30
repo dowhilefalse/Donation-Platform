@@ -42,15 +42,19 @@
         </div>
         <div class="row" , style="margin-left:5px;">
             {% for one_content in content %}
-            <div class="col-md-4 animate-box" style="height: 600px; width:350px; border: #000000; border-width:1.5px;   margin-right：-1.5px;margin-bottom:-1.5px; border-style:solid">
+            <div class="col-md-4 animate-box" style="height: 600px; width:335px; border: #000000; border-width:1.5px; margin-right:10px; margin-bottom:10px; border-style:solid">
                 <div class="events-entry">
                     <ul style="list-style: none; font-size:18px; color: black">
                         {% for column_content in one_content %}
                             {% if 7 > forloop.counter0 %}
                                 {% if not column_content %}
-                                    <li>暂无{{ labels|get_by_index:forloop.counter0 }}信息</li>
+                                    <!-- <li>暂无{{ labels|get_by_index:forloop.counter0 }}信息</li> -->
                                 {% else %}
-                                    <li>{{ labels|get_by_index:forloop.counter0 }}: {{ column_content }}</li>
+                                    {% if forloop.counter0 == 0 %}
+                                        <li><font style="font-size: 25">{{ column_content }}</font></li>
+                                    {% else %}
+                                        <li>{{ labels|get_by_index:forloop.counter0 }}: {{ column_content }}</li>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
