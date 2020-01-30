@@ -11,3 +11,4 @@ sqlparse
 djangorestframework
 django-cors-headers
 hendrix
+aliyun-python-sdk-core

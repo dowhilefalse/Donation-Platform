@@ -4,49 +4,81 @@
 
 {% block page_title %}注册{% endblock %}
 
+{% block head_extra_style %}
+	<style type="text/css">
+		#btn-ajax-captcha {
+			padding: 13px 28px;
+		}
+		#btn-ajax-submit {
+			padding: 10px 35px;
+		}
+	</style>
+{% endblock %}
+
 {% block page_main %}
 	<div class="container-wrap">
-
-			<div id="fh5co-contact">
-
-				<div class="row">
-					<div class="col-md-3 col-md-push-8 animate-box">
-						<h3>我们的联系方式</h3>
-						<ul class="contact-info">
-							<li><i class="icon-phone3"></i>+ 1235 2355 98</li>
+		<div id="fh5co-contact">
+			<div class="row">
+				<div class="col-md-3 col-md-push-8 animate-box">
+					<h3>我们的联系方式</h3>
+					<ul class="contact-info">
+						<li><i class="icon-phone3"></i>+ 1235 2355 98</li>
 						<li><i class="icon-location3"></i><a href="#">info@yoursite.com</a></li>
 						<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
 					</ul>
 				</div>
 				<div class="col-md-7 col-md-pull-2 animate-box">
 					<h3>注册</h3>
-                    <h4>注册成功后便可以发布信息</h4>
+					<h4>注册成功后便可以发布信息</h4>
 
-					<form method="get", action='/registerform'>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="user" name = "user" type="text" class="form-control" placeholder="用户名" maxlength="20">
+					<div data-role="form">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input id="username" name="username" type="text" class="form-control" placeholder="用户名" maxlength="20">
+								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="password" name = "password" type="text" class="form-control" placeholder="密码" maxlength="20">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<input id="phone" name="phone" type="text" class="form-control" placeholder="手机号" maxlength="15">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="input-group">
+									<!-- 注: 调试阶段，暂时写死验证码 -->
+									<input value="123579" id="captcha" type="text" class="form-control" placeholder="手机验证码">
+									<span class="input-group-btn">
+										<input id="btn-ajax-captcha" class="btn btn-default" type="button" value="发送">
+									</span>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="email" name = "email" type="text" class="form-control" placeholder="邮箱" maxlength="15">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<input id="password1" name="password1" type="password" class="form-control" placeholder="密码" maxlength="20">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input id="password2" name="password2" type="password" class="form-control" placeholder="确认密码" maxlength="20">
+								</div>
 							</div>
 						</div>
-						<div class="col-md-12">
-							<div class="form-group">
-								<input type="submit" value="注册" class="btn btn-primary btn-modify">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group text-center">
+									<button type="button" class="btn btn-default">
+										<a href="{% url 'registration:page_login' %}">登录已有账号</a>
+									</button>
+									<input id="btn-ajax-submit" type="button" value="注 册" class="btn btn-primary btn-modify">
+								</div>
 							</div>
 						</div>
 					</div>
-				
-				</form>
+				</div>
 			</div>
 		</div>
 		<!-- </di<!-- v id="fh5co-counter" class="fh5co-counters fh5co-light-grey"> -->
@@ -80,4 +112,163 @@
 			</div>
 		</div> --> 
 	</div><!-- END container-wrap -->
+{% endblock %}
+
+{% block page_footer %}
+	<script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
+	<script type="text/javascript">
+		// 模板变量
+		GLOGAL.URL_REGISTERFORM = "{% url 'registration:ajax_registerform' %}";
+		GLOGAL.URL_PHONE_CAPTCHA = "{% url 'registration:ajax_phone_captcha' %}";
+	</script>
+	<script type="text/javascript">
+		/**
+		 * 注册提交
+		 */
+		function register_submit() {
+			// 取值
+			var username = $('#username').val(),
+				phone = $('#phone').val(),
+				captcha = $('#captcha').val(),
+				password1 = $('#password1').val(),
+				password2 = $('#password2').val();
+			// 验证(TODO: 更加严格的验证)
+			var isOk = false,
+				message = '',
+				field = '';
+			if (!username) {
+				field = 'username';
+				message = '请输入用户名';
+			}
+			else
+			{
+				if (!phone) {
+					field = 'phone';
+					message = '请输入手机号';
+				}
+				else {
+					if (!captcha) {
+						field = 'captcha';
+						message = '请输入验证码';
+					}
+					else {
+						if (!password1) {
+							field = 'password1';
+							message = '请输入密码';
+						}
+						else {
+							if (!password2) {
+								field = 'password2';
+								message = '请确认密码';
+							}
+							else {
+								if (password1 != password2) {
+									field = 'password2';
+									message = '两次密码输入不一致';
+								}
+								else {
+									isOk = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (!isOk) {
+				bootbox.alert({
+					size: "small",
+					title: "提示",
+					message: message,
+					callback: function(){
+						setTimeout(function() {
+							$('#' + field).trigger('focus');
+						}, 500);
+					}
+				});
+				return;
+			}
+			// 请求
+			$.ajax({
+				url: GLOGAL.URL_REGISTERFORM,
+				type: 'POST',
+				data: {
+					username: username.trim(),
+					phone: phone.trim(),
+					captcha: captcha.trim(),
+					password1: password1.trim(),
+					password2: password2.trim(),
+				},
+				dataType: 'json'
+			}).done(function(resp) {
+				console.log(resp);
+			}).fail(function(err) {
+				console.error(err);
+			});
+		}
+
+		/**
+		 * 发送手机验证码
+		 */
+		function send_phone_captcha() {
+			var phone = $('#phone').val();
+			if (!phone) {
+				bootbox.alert({
+					size: "small",
+					title: "提示",
+					message: "请输入手机号",
+					callback: function(){
+						setTimeout(function() {
+							$('#phone').trigger('focus');
+						}, 500);
+					}
+				});
+				return;
+			}
+			$.ajax({
+				url: GLOGAL.URL_PHONE_CAPTCHA,
+				type: 'POST',
+				data: {
+					phone: phone
+				},
+				dataType: 'json'
+			}).done(function(resp) {
+				var $btn = $('#btn-ajax-captcha');
+				$btn.attr('disabled', true);
+				var max = 60;
+				$btn.val('' + max + '秒');
+				var countdown = function() {
+					setTimeout(function() {
+						if (max < 1) {
+							$btn.removeAttr('disabled');
+							$btn.val('发送');
+							return;
+						}
+						$btn.val('' + max + '秒');
+						max -= 1;
+						countdown();
+					}, 1000);
+				};
+				countdown();
+				console.log(resp);
+			}).fail(function(err) {
+				console.error(err);
+			});
+		}
+
+		$(document).ready(function() {
+			bootbox.addLocale('zh_CN', {
+				OK : '确定',
+				CANCEL : '取消',
+				CONFIRM : '确认'
+			});
+			bootbox.setLocale('zh_CN');
+			// 阻止表单默认提交
+			$('form[data-action]').on('submit', function(event) {
+				event.preventDefault();
+				return false;
+			});
+			$('#btn-ajax-submit').on('click', register_submit);
+			$('#btn-ajax-captcha').on('click', send_phone_captcha);
+		});
+	</script>
 {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base-layout.html" %}
+
+{% load static %}
+
+{% load custom_filters %}
+
+{% block page_title %}爱心团体{% endblock %}
+
+{% block page_main %}
+            <div id="fh5co-events">
+            <div class="row animate-box">
+                <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
+                    <h2>募捐信息列表-爱心团体</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row" , style="margin-left:5px;">
+            {% for one_content in content %}
+            <div class="col-md-4 animate-box" style="height: 600px; width:350px; border: #000000; border-width:1.5px;   margin-right：-1.5px;margin-bottom:-1.5px; border-style:solid">
+                <div class="events-entry">
+                    <ul style="list-style: none; font-size:18px; color: black">
+                        {% for column_content in one_content %}
+                            {% if 7 > forloop.counter0 %}
+                                {% if not column_content %}
+                                    <li>暂无{{ labels|get_by_index:forloop.counter0 }}信息</li>
+                                {% else %}
+                                    <li>{{ labels|get_by_index:forloop.counter0 }}: {{ column_content }}</li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <ul>
+                        {% for column_content in one_content %}
+                            {% if 7 > forloop.counter0 %}
+                            {% elif column_content %}
+                                <li>
+                                    <font style="color: red;">{{ column_content }}</font> {{ labels|get_by_index:forloop.counter0 }}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+{% endblock %}
