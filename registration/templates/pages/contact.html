@@ -123,6 +123,40 @@
 
 {% block page_footer %}
 <script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+	function demo_call_api_post() {
+		var data = {
+			"organization": "http://127.0.0.1:8989/api/organizations/1/",
+			"name": "医用酒精",
+			"remark": null,
+			"amount": -1,
+			"receive_amount": 0
+		};
+		data=JSON.stringify(data);
+		$.ajax({ 
+			type: "POST",
+			url: "/api/organization-demands/",
+			data: data,
+			processData: false,
+			contentType:"application/json; charset=utf-8",
+			dataType: "json",
+			success: function(resp){
+				console.log(resp);
+				if (resp.id) { 
+					console.log(resp);
+				}
+				else {
+					console.log("出现错误：" + resp.msg);
+				}
+			},
+			error: function(jqXHR){
+				alert("发生错误：" + jqXHR.status);
+			},
+		});
+	}
+</script>
+
 <script type="text/javascript">
 	var list1 = new Array;
     var list2 = new Array;
