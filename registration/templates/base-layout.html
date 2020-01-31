@@ -71,21 +71,22 @@
 					<div class="row">
 						<div class="col-md-12 col-md-offset-0 text-center">
 							<ul>
-								<li><a href="/">首页</a></li>
-								<li><a href="/group11">武汉医院</a></li>
-								<li><a href="/group12">周边城市</a></li>
-								<li><a href="/group2">全国各地</a></li>
-								<li><a href="/group3">爱心团体</a></li>
+								<li><a href="{% url 'registration:page_index' %}">首页</a></li>
+								<li><a href="{% url 'registration:page_group11' %}">武汉医院</a></li>
+								<li><a href="{% url 'registration:page_group12' %}">周边城市</a></li>
+								<li><a href="{% url 'registration:page_group2' %}">全国各地</a></li>
+								<li><a href="{% url 'registration:page_group3' %}">爱心团体</a></li>
 								{% if user.is_authenticated  %}
-									<li><a href="/contact"><font style="color:#458B00">提交募捐信息</font></a></li>
-									<li><a href="/contact2"><font style="color:#458B00">提交团体信息</font></a></li>								
+									<li><a href="{% url 'registration:page_contact' %}"><font style="color:#458B00">提交募捐信息</font></a></li>
+									<li><a href="{% url 'registration:page_contact2' %}"><font style="color:#458B00">提交团体信息</font></a></li>								
 								{% else %}
-									<li><a href="/register"><font style="color:#009688">注册/登陆</font></a></li>
+									{# <li><a href="{% url 'registration:page_register' %}"><font style="color:#009688">注册/登陆</font></a></li> #}
+									<li><a href="{% url 'registration:page_quick_register_login' %}"><font style="color:#009688">注册/登陆</font></a></li>
 								{% endif %}	
 								
-								<li><a href="/about"><font style="color:grey">关于我们</font></a></li>
+								<li><a href="{% url 'registration:page_about' %}"><font style="color:grey">关于我们</font></a></li>
 								{% if user.is_authenticated  %}
-									<li><a href="/logout"><font style="color: red">注销</font></a></li>
+									<li><a href="{% url 'registration:page_logout' %}"><font style="color: red">注销</font></a></li>
 								{% endif %}
 							</ul>
 						</div>

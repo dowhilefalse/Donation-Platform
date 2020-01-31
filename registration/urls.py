@@ -17,5 +17,6 @@ urlpatterns = [
     path('registerform', views.view_registerform, name='ajax_registerform'),
     path('phone-captcha', views.view_phone_captcha, name='ajax_phone_captcha'),
     path('login', views.view_login, name='page_login'),
+    path('quick-register-login', views.view_quick_register_login, name='page_quick_register_login'),
     path('logout', views.view_logout, name='page_logout'),
 ]
