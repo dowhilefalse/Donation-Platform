@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 import re
 import traceback
+import random 
 
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, reverse
@@ -14,6 +15,29 @@ from django.contrib import messages
 from .models import User
 from api.views import OrganizationViewSet, TeamViewSet
 
+# 读取数据
+def get_context(obj):
+    result = list(obj.data.items())[-1][-1]
+    context = []
+    if result:
+        keys = list(result[0].keys())
+        for i in range(len(keys)):
+            context.append([])
+            for j in range(len(result)):
+                if result[j][keys[i]]:
+                    if i != len(keys)-1:
+                        context[i].append(result[j][keys[i]])
+                    else:
+                        context[i].append(str(result[j][keys[i]])[:10])
+                else:
+                    context[i].append('')
+        context = zip(*context)
+        context = {'data': context} 
+    else:
+        context = {}
+    # print(keys)
+    return context
+
 
 def view_index(request):
     context = {}
@@ -24,6 +48,12 @@ def view_contact(request):
         return redirect(reverse('registration:page_index'))
     context = {}
     return render(request, 'pages/contact.html', context)
+
+def view_contact2(request):
+    if request.method == 'POST':
+        return redirect(reverse('registration:page_index'))
+    context = {}
+    return render(request, 'pages/contact2.html', context)
 
 def view_register(request):
     if request.method == 'POST':
@@ -55,13 +85,11 @@ def view_group11(request):
     request.GET._mutable = True #to make it editable
     request.GET['scope'] = 'wuhan'
     request.GET._mutable = False #make it False once edit done
+
     obj = OrganizationViewSet.as_view({'get': 'list'})(request)
-    print(obj.data)
-    # TODO: 将obj.data传递到模板中
-    context = {
-        'labels': [],
-        'content': [],
-    }
+
+    context = get_context(obj)
+    # TODO: 将obj.data传递到模板中 OK
     return render(request, 'pages/group11.html', context)
 
 def view_group12(request):
@@ -74,12 +102,7 @@ def view_group12(request):
     request.GET = request.GET.copy()
     request.GET['scope'] = 'hubei'
     obj = OrganizationViewSet.as_view({'get': 'list'})(request)
-    print(obj.data)
-    # TODO: 将obj.data传递到模板中
-    context = {
-        'labels': [],
-        'content': [],
-    }
+    context = get_context(obj)
     return render(request, 'pages/group12.html', context)
 
 # --------------------------------------------------------------
@@ -93,9 +116,7 @@ def view_group2(request):
     request.GET = request.GET.copy() # django请求参数需要复制(方式二)后才能修改
     request.GET['scope'] = 'china'
     obj = OrganizationViewSet.as_view({'get': 'list'})(request)
-    print(obj.data)
-    # TODO: 将obj.data传递到模板中
-    context = {}
+    context = get_context(obj)
     return render(request, 'pages/group2.html', context)
 
 # --------------------------------------------------------------
@@ -106,9 +127,7 @@ def view_group3(request):
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
     obj = TeamViewSet.as_view({'get': 'list'})(request)
-    print(obj.data)
-    # TODO: 将obj.data传递到模板中
-    context = {}
+    context = get_context(obj)
     return render(request, 'pages/group3.html', context)
 
 # --------------------------------------------------------------
@@ -176,18 +195,22 @@ def view_registerform(request):
     })
 
 def view_phone_captcha(request):
+    def ReTel(tn):  #正则验证电话号码的格式
+        reg = "1[3|4|5|7|8][0-9]{9}" 
+        return len(re.findall(reg, tn))==1
     req_dict = getattr(request, request.method.upper(), request.POST)
     phone = req_dict.get('phone', None)
     # 验证
     error = 1
     desc = '请求错误'
-    # TODO: 验证手机号有效性
-    phone_ok = bool(phone)
+    # TODO: 验证手机号有效性 OK
+    phone_ok = ReTel(phone)
     if phone_ok:
         # TODO: 请求频率限制
         rate_ok = True
         if rate_ok:
-            # TODO: 生成验证码
+           # code = str(random.randint(100000, 999999))
+            # TODO: 生成验证码 OK
             code = '123579'
             try:
                 # TODO: 发送验证码

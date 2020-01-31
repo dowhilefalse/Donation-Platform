@@ -6,6 +6,7 @@ app_name = 'registration'
 urlpatterns = [
     path('', views.view_index, name='page_index'),
     path('contact', views.view_contact, name='page_contact'),
+    path('contact2', views.view_contact2, name='page_contact2'),
     path('register', views.view_register, name='page_register'),
     path('about', views.view_about, name='page_about'),
     path('group1', views.view_group1, name='page_group1'),

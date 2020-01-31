@@ -7,68 +7,34 @@
 {% block page_title %}全国各地{% endblock %}
 
 {% block page_main %}
-            <div id="fh5co-events">
+    <div class="container-wrap">
+        <div id="fh5co-events">
             <div class="row animate-box">
                 <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
                     <h2>募捐信息列表-所有城市</h2>
                 </div>
             </div>
-            <!--                 <div>
-                <div>                    
-                    按城市分类（感染人数排列）（黑色为暂无信息）:
-                    </br>
-                    <a href="group1/1.html"><font size="5">武汉</font></a>
-                    <a href="group1/2.html"><font size="4">黄冈</font></a>
-                    <a href="group1/3.html"><font size="3">孝感</font></a>
-                    <a href="group1/4.html"><font size="3">荆门</font></a>
-                    <a href="group1/5.html"><font size="3">咸宁</font></a>
-                    <a href="group1/6.html"><font size="3">随州</font></a>
-                    <a href="group1/7.html"><font size="3">荆州</font></a>
-                    <a href="group1/8.html"><font size="3">十堰</font></a>
-                    <a href="group1/9.html"><font size="3">黄石</font></a>
-                    <a href="group1/10.html"><font size="3">襄阳</font></a>
-                    <a href="group1/11.html"><font size="3">宜昌</font></a>
-                    <a href="group1/12.html"><font size="3">恩施州</font></a>
-                    <a href="group1/13.html"><font size="3">鄂州</font></a>
-                    <a href="group1/14.html"><font size="3">天门</font></a>
-                    <a href="group1/15.html"><font size="3">仙桃</font></a>
-                    <a href="group1/16.html"><font size="3">潜江</font></a>
-                    <a href="group1/17.html"><font size="3">其它</font></a>
-                    <a href="group1-1.html"><font color="darkgreen" size="3">所有城市</font></a>
 
-                </div>
-            </div> -->
         </div>
-        <div class="row" , style="margin-left:5px;">
-            {% for one_content in content %}
-            <div class="col-md-4 animate-box" style="height: 600px; width:350px; border: #000000; border-width:1.5px;   margin-right：-1.5px;margin-bottom:-1.5px; border-style:solid">
+        <div class="row" , style="margin-left:18px;">
+            {% for items in data %}
+            <div class="col-md-4 animate-box" style="height: 600px; width:335px; border: #000000; border-width:1.5px; margin-right:10px; margin-bottom:10px; border-style:solid">
                 <div class="events-entry">
                     <ul style="list-style: none; font-size:18px; color: black">
-                        {% for column_content in one_content %}
-                            {% if 7 > forloop.counter0 %}
-                                {% if not column_content %}
-                                    <li>暂无{{ labels|get_by_index:forloop.counter0 }}信息</li>
-                                {% else %}
-                                    <li>{{ labels|get_by_index:forloop.counter0 }}: {{ column_content }}</li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <ul>
-                        {% for column_content in one_content %}
-                            {% if 7 > forloop.counter0 %}
-                            {% elif column_content %}
-                                <li>
-                                    <font style="color: red;">{{ column_content }}</font> {{ labels|get_by_index:forloop.counter0 }}
-                                </li>
-                            {% endif %}
-                        {% endfor %}
+                        <li><font style="font-size: 25">{{ items.6 }}</font></li>
+                        <li><font style="font-size: 25">地址：</font>{{ items.7 }}</li>
+                        <li><font style="font-size: 25">联系人：</font>{{ items.2 }}</li>
+                        <li><font style="font-size: 25">省份：</font>{{ items.4 }}</li>
+                        <li><font style="font-size: 25">城市：</font>{{ items.5 }}</li>
+                        <li><font style="font-size: 25">需求：</font>{{ items.3 }}</li>
+                        <li><font style="font-size: 25">发布日期：</font>{{ items.10 }}</li>
+                        {% if items.9%}
+                        <li><font style="font-size: 25 color: green">已核实</font></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
             {% endfor %}
-
-
         </div>
 
     </div>
