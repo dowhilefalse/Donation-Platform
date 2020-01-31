@@ -1,5 +1,7 @@
 # wuhan2020 Donation Platform
 
+---
+
 # precondition
 * Python 3
 	- Windows用户，推荐安装名为 Miniconda 的Python发行版
@@ -46,3 +48,16 @@ python manage.py runserver 0.0.0.0:8989
 * 国内用户使用pip安装包慢时，可以使用豆瓣源加速
 	- 单个包-示例: `pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com <package>`
 	- 清单文件-示例: `pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com -r requirements.txt`
+
+## technology stack
+* FrontEnd
+	- BootStrap 3
+	- jQuery 2
+* BackEnd
+	- Python 3
+	- Django 2.2
+	- Django REST framework
+	- DataBase:
+		+ develop: SQLite
+		+ deploy: MySQL 5.6+
+* VCS: git/GitHub

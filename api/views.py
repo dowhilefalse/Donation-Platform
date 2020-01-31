@@ -4,14 +4,23 @@ from django.shortcuts import render
 from django.db.models import Q
 from rest_framework import viewsets
 
+from registration.models import User
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from .serializers import (
+    UserSerializer,
     OrganizationContactSerializer,
     OrganizationDemandSerializer,
     OrganizationSerializer,
     TeamContactSerializer,
     TeamSerializer
 )
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows User to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('phone')
+    serializer_class = UserSerializer
 
 class OrganizationContactViewSet(viewsets.ModelViewSet):
     """
@@ -55,8 +64,8 @@ class OrganizationViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(Q(province='湖北省') & ~Q(city='武汉市'))
             else:
                 queryset = queryset.filter(~Q(province='湖北省'))
-        # 按时间倒序
-        return queryset.order_by('-add_time')
+        # 按紧急程度正序, 时间倒序
+        return queryset.order_by('emergency', '-add_time')
 
     serializer_class = OrganizationSerializer
 

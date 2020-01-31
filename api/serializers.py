@@ -1,7 +1,13 @@
 from rest_framework import serializers
 
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
+from registration.models import User
 
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'phone', 'id']
 
 class OrganizationContactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -19,7 +25,7 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Organization
-        fields = ['url', 'id', 'contacts', 'demands', 'province', 'city', 'name', 'address', 'source', 'verified', 'add_time',]
+        fields = ['url', 'id', 'contacts', 'demands', 'province', 'city', 'name', 'address', 'source', 'verified', 'add_time', 'is_manual', 'inspector', 'emergency']
 
 # -----------------------------------------------------------------------------------------------------
 
