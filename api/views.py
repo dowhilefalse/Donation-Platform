@@ -4,14 +4,23 @@ from django.shortcuts import render
 from django.db.models import Q
 from rest_framework import viewsets
 
+from registration.models import User
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from .serializers import (
+    UserSerializer,
     OrganizationContactSerializer,
     OrganizationDemandSerializer,
     OrganizationSerializer,
     TeamContactSerializer,
     TeamSerializer
 )
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows User to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('phone')
+    serializer_class = UserSerializer
 
 class OrganizationContactViewSet(viewsets.ModelViewSet):
     """

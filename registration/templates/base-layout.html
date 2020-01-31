@@ -1,4 +1,7 @@
 {% load static %}
+
+{% load custom_tags %}
+
 <!DOCTYPE HTML>
 <html>
 
@@ -153,16 +156,10 @@
 		if(!window.GLOGAL) {
 			window.GLOGAL = {};
 		}
-		// 当前登录了的用户ID
-		{% if user.is_authenticated  %}
-			GLOGAL.LOGINED_USER = {
-				id: {{ user.pk }},
-				username: '{{ user.username }}',
-				phone: '{{ user.phone }}',
-			};
-		{% else %}
-			GLOGAL.LOGINED_USER = null;
-		{% endif %}
+		// 当前用户信息
+		GLOGAL.CURRENT_USER = {% current_user_json %};
+		GLOGAL.CURRENT_LOGINED = {% if user.is_authenticated  %}true{% else %}false{% endif %};
+		GLOGAL.CURRENT_USER_PATH = "{% url 'api:user-detail' pk=user.pk %}";
 		// 当前页面路由名称
 		GLOGAL.PAGE_VIEW_NAME = '{{ request.resolver_match.view_name }}';
 
