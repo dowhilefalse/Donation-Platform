@@ -7,35 +7,85 @@
 {% block page_title %}全国各地{% endblock %}
 
 {% block page_main %}
-    <div class="container-wrap">
-        <div id="fh5co-events">
-            <div class="row animate-box">
-                <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
-                    <h2>募捐信息列表-所有城市</h2>
-                </div>
+<div class="container-wrap">
+    <div id="fh5co-events">
+        <div class="row animate-box">
+            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
+                <h2>募捐信息列表-所有城市</h2>
             </div>
-
-        </div>
-        <div class="row" , style="margin-left:18px;">
-            {% for items in data %}
-            <div class="col-md-4 animate-box" style="height: 600px; width:335px; border: #000000; border-width:1.5px; margin-right:10px; margin-bottom:10px; border-style:solid">
-                <div class="events-entry">
-                    <ul style="list-style: none; font-size:18px; color: black">
-                        <li><font style="font-size: 25">{{ items.6 }}</font></li>
-                        <li><font style="font-size: 25">地址：</font>{{ items.7 }}</li>
-                        <li><font style="font-size: 25">联系人：</font>{{ items.2 }}</li>
-                        <li><font style="font-size: 25">省份：</font>{{ items.4 }}</li>
-                        <li><font style="font-size: 25">城市：</font>{{ items.5 }}</li>
-                        <li><font style="font-size: 25">需求：</font>{{ items.3 }}</li>
-                        <li><font style="font-size: 25">发布日期：</font>{{ items.10 }}</li>
-                        {% if items.9%}
-                        <li><font style="font-size: 25 color: green">已核实</font></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-            {% endfor %}
         </div>
 
     </div>
+    <div class="unit-box" >
+        <!-- 测试1
+        <div class="unit">
+            <ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+                <li>
+                    <p>仁和医院</p>
+                </li>
+                <li>
+                    <p>地址：北京市</p>
+                </li>
+                <li>
+                    <p>省份：北京</p>
+                </li>
+                <li>
+                    <p>城市：北京</p>
+                </li>
+
+
+                <li>
+                    <p style="color: red;">需求：口罩(3000)</p>
+                    <p>备注：急需</p>
+                </li>
+
+                <li>
+                    <p>联系人：王医生</p>
+                    <p>联系电话：18727616721672</p>
+                </li>
+                <li>
+                    <p>发布日期：2020-01-31</p>
+                </li>
+                <li>
+                    <p style="color: green;">已核实</p>
+                </li>
+            </ul>
+        </div>
+        测试2
+        <div class="unit">
+            <ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+                <li>
+                    <p>仁和医院</p>
+                </li>
+                <li>
+                    <p>地址：北京市</p>
+                </li>
+                <li>
+                    <p>省份：北京</p>
+                </li>
+                <li>
+                    <p>城市：北京</p>
+                </li>
+
+
+                <li>
+                    <p style="color: red;">需求：口罩(3000)</p>
+                    <p>备注：急需</p>
+                </li>
+
+                <li>
+                    <p>联系人：王医生</p>
+                    <p>联系电话：18727616721672</p>
+                </li>
+                <li>
+                    <p>发布日期：2020-01-31</p>
+                </li>
+                <li>
+                    <p style="color: red">未核实</p>
+                </li>
+            </ul>
+        </div> -->
+    </div>
+
+</div>
 {% endblock %}

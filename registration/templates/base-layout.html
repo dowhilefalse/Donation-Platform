@@ -47,7 +47,7 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 	{% block head_extra_style %}
-		<!-- 头部额外style(link-css等) -->
+	<!-- 头部额外style(link-css等) -->
 	{% endblock %}
 
 	<!-- Modernizr JS -->
@@ -58,7 +58,7 @@
 	<![endif]-->
 
 	{% block head_extra_script %}
-		<!-- 头部额外script(js等) -->
+	<!-- 头部额外script(js等) -->
 	{% endblock %}
 
 </head>
@@ -80,16 +80,26 @@
 								<li><a href="{% url 'registration:page_group2' %}">全国各地</a></li>
 								<li><a href="{% url 'registration:page_group3' %}">爱心团体</a></li>
 								{% if user.is_authenticated  %}
-									<li><a href="{% url 'registration:page_contact' %}"><font style="color:#458B00">提交募捐信息</font></a></li>
-									<li><a href="{% url 'registration:page_contact2' %}"><font style="color:#458B00">提交团体信息</font></a></li>								
+								<li><a href="{% url 'registration:page_contact' %}">
+										<font style="color:#458B00">提交募捐信息</font>
+									</a></li>
+								<li><a href="{% url 'registration:page_contact2' %}">
+										<font style="color:#458B00">提交团体信息</font>
+									</a></li>
 								{% else %}
-									{# <li><a href="{% url 'registration:page_register' %}"><font style="color:#009688">注册/登陆</font></a></li> #}
-									<li><a href="{% url 'registration:page_quick_register_login' %}"><font style="color:#009688">注册/登陆</font></a></li>
-								{% endif %}	
-								
-								<li><a href="{% url 'registration:page_about' %}"><font style="color:grey">关于我们</font></a></li>
+								{# <li><a href="{% url 'registration:page_register' %}"><font style="color:#009688">注册/登陆</font></a></li> #}
+								<li><a href="{% url 'registration:page_quick_register_login' %}">
+										<font style="color:#009688">注册/登陆</font>
+									</a></li>
+								{% endif %}
+
+								<li><a href="{% url 'registration:page_about' %}">
+										<font style="color:grey">关于我们</font>
+									</a></li>
 								{% if user.is_authenticated  %}
-									<li><a href="{% url 'registration:page_logout' %}"><font style="color: red">注销</font></a></li>
+								<li><a href="{% url 'registration:page_logout' %}">
+										<font style="color: red">注销</font>
+									</a></li>
 								{% endif %}
 							</ul>
 						</div>
@@ -105,7 +115,7 @@
 		<footer id="fh5co-footer" role="contentinfo">
 			<div class="col-md-4 text-center">
 				{% block public_benefit %}
-					<!-- <h2><a href="#">公益的力量</a></h2> -->
+				<!-- <h2><a href="#">公益的力量</a></h2> -->
 				{% endblock %}
 			</div>
 			<div class="col-md-4 text-center">
@@ -131,7 +141,7 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
 	</div>
-	
+
 	<!-- jQuery -->
 	<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
 	<!-- jQuery Easing -->
@@ -167,9 +177,9 @@
 			// these HTTP methods do not require CSRF protection
 			return ((/^(GET|HEAD|OPTIONS|TRACE)$/).test(method));
 		}
-		$(document).ready(function() {
+		$(document).ready(function () {
 			$.ajaxSetup({
-				beforeSend: function(xhr, settings) {
+				beforeSend: function (xhr, settings) {
 					if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
 						xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
 					}
@@ -178,5 +188,5 @@
 		});
 	</script>
 	{% block page_footer %}{% endblock %}
-	</body>
+</body>
 </html>
