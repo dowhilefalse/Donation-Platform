@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from registration.models import User
 
 
 class Organization(models.Model):
@@ -12,6 +13,9 @@ class Organization(models.Model):
     source = models.TextField(verbose_name='数据来源', default=None, blank=True, null=True)
     verified = models.BooleanField(verbose_name='已验证', default=False)
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now=True)
+    # is_manual, false 即为自动导入, 手动添加的数据优先级更高, 会覆盖同 province，city，name 的数据
+    is_manual = models.BooleanField(verbose_name='是否是手动添加', default=False)
+    inspector = models.ForeignKey(User, verbose_name='添加人', on_delete=models.CASCADE)
 
     def __str__(self):
         """A string representation of the model."""
@@ -64,6 +68,7 @@ class Team(models.Model):
     address = models.TextField(verbose_name='所在地', default=None, blank=True, null=True)
     verified = models.BooleanField(verbose_name='已验证', default=False)
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now=True)
+    inspector = models.ForeignKey(User, verbose_name='添加人', on_delete=models.CASCADE)
 
     def __str__(self):
         """A string representation of the model."""
