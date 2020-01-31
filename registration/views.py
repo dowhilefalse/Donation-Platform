@@ -198,7 +198,6 @@ def view_phone_captcha(request):
     def ReTel(tn):  #正则验证电话号码的格式
         reg = "1[3|4|5|7|8][0-9]{9}" 
         return len(re.findall(reg, tn))==1
-
     req_dict = getattr(request, request.method.upper(), request.POST)
     phone = req_dict.get('phone', None)
     # 验证
