@@ -55,8 +55,8 @@ class OrganizationViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(Q(province='湖北省') & ~Q(city='武汉市'))
             else:
                 queryset = queryset.filter(~Q(province='湖北省'))
-        # 按时间倒序
-        return queryset.order_by('-add_time')
+        # 按紧急程度正序, 时间倒序
+        return queryset.order_by('emergency', '-add_time')
 
     serializer_class = OrganizationSerializer
 

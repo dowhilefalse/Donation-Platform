@@ -16,6 +16,7 @@ class Organization(models.Model):
     # is_manual, false 即为自动导入, 手动添加的数据优先级更高, 会覆盖同 province，city，name 的数据
     is_manual = models.BooleanField(verbose_name='是否是手动添加', default=False)
     inspector = models.ForeignKey(User, verbose_name='添加人', on_delete=models.CASCADE)
+    emergency = models.IntegerField(verbose_name='紧急程度', default=0, null=False)
 
     def __str__(self):
         """A string representation of the model."""
