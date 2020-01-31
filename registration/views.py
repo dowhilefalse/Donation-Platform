@@ -4,6 +4,7 @@ from django.shortcuts import render
 import re
 import traceback
 import random 
+import uuid
 
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, reverse
@@ -86,7 +87,7 @@ def view_group11(request):
     request.GET['scope'] = 'wuhan'
     request.GET._mutable = False #make it False once edit done
 
-    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
 
     context = get_context(obj)
     # TODO: 将obj.data传递到模板中 OK
@@ -101,7 +102,7 @@ def view_group12(request):
     # 传递查询参数, 调用API方法
     request.GET = request.GET.copy()
     request.GET['scope'] = 'hubei'
-    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
     context = get_context(obj)
     return render(request, 'pages/group12.html', context)
 
@@ -115,7 +116,7 @@ def view_group2(request):
     # 传递查询参数, 调用API方法
     request.GET = request.GET.copy() # django请求参数需要复制(方式二)后才能修改
     request.GET['scope'] = 'china'
-    obj = OrganizationViewSet.as_view({'get': 'list'})(request)
+    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
     context = get_context(obj)
     return render(request, 'pages/group2.html', context)
 
@@ -126,12 +127,15 @@ def view_group3(request):
     '''
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
-    obj = TeamViewSet.as_view({'get': 'list'})(request)
+    obj = TeamViewSet.as_view({'get': 'list'}, app_name='api')(request)
     context = get_context(obj)
     return render(request, 'pages/group3.html', context)
 
 # --------------------------------------------------------------
 def view_registerform(request):
+    '''
+    常规注册
+    '''
     req_dict = getattr(request, request.method.upper(), request.POST)
     username = req_dict.get('username', None)
     phone = req_dict.get('phone', None)
@@ -239,6 +243,9 @@ def view_phone_captcha(request):
     })
 
 def view_login(request):
+    '''
+    常规登录
+    '''
     if request.method == 'POST':
         account = request.POST.get('account', None)
         password = request.POST.get('password', None)
@@ -265,7 +272,76 @@ def view_login(request):
         if bool(error_message):
             messages.add_message(request, messages.ERROR, error_message)
     context = {}
-    return render(request, 'pages/login.html', context)
+    return render(request, 'login.html', context)
+
+def view_quick_register_login(request):
+    '''
+    快速注册/登录
+    '''
+    if request.method == 'POST':
+        phone = request.POST.get('phone', None)
+        captcha_code = request.POST.get('captcha', None)
+        # 取session
+        session_key = 'captcha-{0}'.format(phone)
+        session_code = request.session.get(session_key, None)
+        # 验证
+        error = 1
+        desc = '请求错误'
+        code_ok = bool(captcha_code)
+        if bool(session_code):
+            phone_ok = bool(phone) and bool(session_code) # session存在，说明手机号有效
+            code_ok = code_ok and captcha_code == session_code
+            if phone_ok and code_ok:
+                backend = 'django.contrib.auth.backends.ModelBackend'
+                qs = User.objects.filter(phone=phone)
+                if qs.exists():
+                    # 已注册用户-登录
+                    user = qs.first()
+                    login(request, user=user, backend=backend)
+                    # 删除session中的验证码
+                    del request.session[session_key]
+                    error = 0
+                    desc = '登录成功'
+                else:
+                    # 未注册用户-注册
+                    try:
+                        user = User()
+                        user.username = phone
+                        user.phone = phone
+                        # 生成随机密码
+                        random_password = str(uuid.uuid4())
+                        user.set_password(random_password)
+                        user.save()
+                        if user.pk is not None:
+                            # 新注册用户-登录
+                            login(request, user=user, backend=backend)
+                            # 删除session中的验证码
+                            del request.session[session_key]
+                            error = 0
+                            desc = '注册并登录成功'
+                        else:
+                            error = 2
+                            desc = '注册失败'
+                    except Exception as e:
+                        traceback.print_exc()
+                        error = 3
+                        desc = '注册失败'
+            else:
+                error = 4
+                desc = '参数错误'
+        else:
+            if code_ok:
+                error = 5
+                desc = '验证码已过期'
+            else:
+                error = 6
+                desc = '缺少参数(手机号、验证码)'
+        return JsonResponse({
+            'error': error,
+            'desc': desc,
+        })
+    context = {}
+    return render(request, 'pages/quick-register-login.html', context)
 
 def view_logout(request):
     logout(request) # 清除session

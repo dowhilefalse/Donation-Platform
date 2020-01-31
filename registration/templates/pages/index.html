@@ -5,28 +5,31 @@
 {% block page_title %}首页{% endblock %}
 
 {% block page_main %}
-	<div class="container-wrap">
-		<aside id="fh5co-hero">
-			<div class="flexslider">
-				<ul class="slides">
-					<li style="background-image: url(../static/images/img_bg_1.jpg);">
-						<div class="overlay"></div>
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-6 col-md-offset-3 text-center">
-									<div class="slider-text">
-										<div class="slider-text-inner">
-											<h1>援助 &amp; 共患难</h1>
-											<!-- <h2>Free html5 templates Made </h2> -->
-											<p><a class="btn btn-primary btn-demo" href="group1"> <i class="icon-play4"></i> 我要捐赠！</a> <a class="btn btn-primary btn-learn" href="contact">我要发布！ <i class="icon-arrow-right3"></i></a></p>					   				</div>
-			   				</div>
-			   			</div>
-			   		</div>
-		   		</div>
-		   	</li>
-		   	
-		  	</ul>
-	  	</div>
-		</aside>
-	</div>
+<div class="container-wrap">
+	<aside id="fh5co-hero">
+		<div class="flexslider">
+			<ul class="slides">
+				<li style="background-image: url({% static 'images/img_bg_1.jpg' %});">
+					<div class="overlay"></div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3 text-center">
+								<div class="slider-text">
+									<div class="slider-text-inner">
+										<h1>援助 &amp; 共患难</h1>
+										<!-- <h2>Free html5 templates Made </h2> -->
+										<p><a class="btn btn-primary btn-demo" href="group1"> <i class="icon-play4"></i>
+												我要捐赠！</a> <a class="btn btn-primary btn-learn" href="contact">我要发布！ <i
+													class="icon-arrow-right3"></i></a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+	</aside>
+</div>
 {% endblock %}

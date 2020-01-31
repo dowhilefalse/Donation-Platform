@@ -1,0 +1,8 @@
+watchdog
+tornado
+zope.interface
+pyOpenSSL
+twisted
+django==2.2
+sqlparse
+# PyMySQL

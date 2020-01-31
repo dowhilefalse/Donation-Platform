@@ -2,10 +2,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.db.models import Q
+from django.utils.decorators import classonlymethod
 from rest_framework import viewsets
+from rest_framework.reverse import reverse
 
+from registration.models import User
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from .serializers import (
+    UserSerializer,
     OrganizationContactSerializer,
     OrganizationDemandSerializer,
     OrganizationSerializer,
@@ -13,7 +17,31 @@ from .serializers import (
     TeamSerializer
 )
 
-class OrganizationContactViewSet(viewsets.ModelViewSet):
+
+class PatchedViewSet(viewsets.ModelViewSet):
+    rewrite_app_name = None
+
+    @classonlymethod
+    def as_view(cls, actions=None, **initkwargs):
+        if 'app_name' in initkwargs:
+            cls.rewrite_app_name = initkwargs['app_name']
+            initkwargs.pop('app_name')
+        return super(PatchedViewSet, cls).as_view(actions=actions, **initkwargs)
+
+    def initialize_request(self, request, *args, **kwargs):
+        if self.rewrite_app_name is not None:
+            request.resolver_match.app_name = self.rewrite_app_name
+            request.resolver_match.namespace = self.rewrite_app_name
+        return super(PatchedViewSet, self).initialize_request(request, *args, **kwargs)
+
+class UserViewSet(PatchedViewSet):
+    """
+    API endpoint that allows User to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('phone')
+    serializer_class = UserSerializer
+
+class OrganizationContactViewSet(PatchedViewSet):
     """
     API endpoint that allows OrganizationContact to be viewed or edited.
     """
@@ -21,7 +49,7 @@ class OrganizationContactViewSet(viewsets.ModelViewSet):
     queryset = OrganizationContact.objects.all().order_by('-add_time')
     serializer_class = OrganizationContactSerializer
 
-class OrganizationDemandViewSet(viewsets.ModelViewSet):
+class OrganizationDemandViewSet(PatchedViewSet):
     """
     API endpoint that allows OrganizationDemand to be viewed or edited.
     """
@@ -29,7 +57,7 @@ class OrganizationDemandViewSet(viewsets.ModelViewSet):
     queryset = OrganizationDemand.objects.all().order_by('-add_time')
     serializer_class = OrganizationDemandSerializer
 
-class OrganizationViewSet(viewsets.ModelViewSet):
+class OrganizationViewSet(PatchedViewSet):
     """
     API endpoint that allows Organization to be viewed or edited.
     """
@@ -55,14 +83,14 @@ class OrganizationViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(Q(province='湖北省') & ~Q(city='武汉市'))
             else:
                 queryset = queryset.filter(~Q(province='湖北省'))
-        # 按时间倒序
-        return queryset.order_by('-add_time')
+        # 按紧急程度正序, 时间倒序
+        return queryset.order_by('emergency', '-add_time')
 
     serializer_class = OrganizationSerializer
 
 # ----------------------------------------------------------------
 
-class TeamContactViewSet(viewsets.ModelViewSet):
+class TeamContactViewSet(PatchedViewSet):
     """
     API endpoint that allows TeamContact to be viewed or edited.
     """
@@ -70,7 +98,7 @@ class TeamContactViewSet(viewsets.ModelViewSet):
     queryset = TeamContact.objects.all().order_by('-add_time')
     serializer_class = TeamContactSerializer
 
-class TeamViewSet(viewsets.ModelViewSet):
+class TeamViewSet(PatchedViewSet):
     """
     API endpoint that allows Team to be viewed or edited.
     """

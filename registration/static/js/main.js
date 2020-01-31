@@ -1,49 +1,49 @@
-;(function () {
-	
+(function () {
+
 	'use strict';
 
 	var isMobile = {
-		Android: function() {
+		Android: function () {
 			return navigator.userAgent.match(/Android/i);
 		},
-			BlackBerry: function() {
+		BlackBerry: function () {
 			return navigator.userAgent.match(/BlackBerry/i);
 		},
-			iOS: function() {
+		iOS: function () {
 			return navigator.userAgent.match(/iPhone|iPad|iPod/i);
 		},
-			Opera: function() {
+		Opera: function () {
 			return navigator.userAgent.match(/Opera Mini/i);
 		},
-			Windows: function() {
+		Windows: function () {
 			return navigator.userAgent.match(/IEMobile/i);
 		},
-			any: function() {
+		any: function () {
 			return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 		}
 	};
 
-	var mobileMenuOutsideClick = function() {
+	var mobileMenuOutsideClick = function () {
 
 		$(document).click(function (e) {
-	    var container = $("#fh5co-offcanvas, .js-fh5co-nav-toggle");
-	    if (!container.is(e.target) && container.has(e.target).length === 0) {
+			var container = $("#fh5co-offcanvas, .js-fh5co-nav-toggle");
+			if (!container.is(e.target) && container.has(e.target).length === 0) {
 
-	    	if ( $('body').hasClass('offcanvas') ) {
+				if ($('body').hasClass('offcanvas')) {
 
-    			$('body').removeClass('offcanvas');
-    			$('.js-fh5co-nav-toggle').removeClass('active');
-				
-	    	}
-	    
-	    	
-	    }
+					$('body').removeClass('offcanvas');
+					$('.js-fh5co-nav-toggle').removeClass('active');
+
+				}
+
+
+			}
 		});
 
 	};
 
 
-	var offcanvasMenu = function() {
+	var offcanvasMenu = function () {
 
 		$('#page').prepend('<div id="fh5co-offcanvas" />');
 		$('#page').prepend('<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle fh5co-nav-white"><i></i></a>');
@@ -58,42 +58,42 @@
 			.removeClass('has-dropdown');
 
 		// Hover dropdown menu on mobile
-		$('.offcanvas-has-dropdown').mouseenter(function(){
+		$('.offcanvas-has-dropdown').mouseenter(function () {
 			var $this = $(this);
 
 			$this
 				.addClass('active')
 				.find('ul')
-				.slideDown(500, 'easeOutExpo');				
-		}).mouseleave(function(){
+				.slideDown(500, 'easeOutExpo');
+		}).mouseleave(function () {
 
 			var $this = $(this);
 			$this
 				.removeClass('active')
 				.find('ul')
-				.slideUp(500, 'easeOutExpo');				
+				.slideUp(500, 'easeOutExpo');
 		});
 
 
-		$(window).resize(function(){
+		$(window).resize(function () {
 
-			if ( $('body').hasClass('offcanvas') ) {
+			if ($('body').hasClass('offcanvas')) {
 
-    			$('body').removeClass('offcanvas');
-    			$('.js-fh5co-nav-toggle').removeClass('active');
-				
-	    	}
+				$('body').removeClass('offcanvas');
+				$('.js-fh5co-nav-toggle').removeClass('active');
+
+			}
 		});
 	};
 
 
-	var burgerMenu = function() {
+	var burgerMenu = function () {
 
-		$('body').on('click', '.js-fh5co-nav-toggle', function(event){
+		$('body').on('click', '.js-fh5co-nav-toggle', function (event) {
 			var $this = $(this);
 
 
-			if ( $('body').hasClass('overflow offcanvas') ) {
+			if ($('body').hasClass('overflow offcanvas')) {
 				$('body').removeClass('overflow offcanvas');
 			} else {
 				$('body').addClass('overflow offcanvas');
@@ -103,48 +103,48 @@
 
 		});
 	};
-	
 
-	var contentWayPoint = function() {
+
+	var contentWayPoint = function () {
 		var i = 0;
-		$('.animate-box').waypoint( function( direction ) {
+		$('.animate-box').waypoint(function (direction) {
 
-			if( direction === 'down' && !$(this.element).hasClass('animated-fast') ) {
-				
+			if (direction === 'down' && !$(this.element).hasClass('animated-fast')) {
+
 				i++;
 
 				$(this.element).addClass('item-animate');
-				setTimeout(function(){
+				setTimeout(function () {
 
-					$('body .animate-box.item-animate').each(function(k){
+					$('body .animate-box.item-animate').each(function (k) {
 						var el = $(this);
-						setTimeout( function () {
+						setTimeout(function () {
 							var effect = el.data('animate-effect');
-							if ( effect === 'fadeIn') {
+							if (effect === 'fadeIn') {
 								el.addClass('fadeIn animated-fast');
-							} else if ( effect === 'fadeInLeft') {
+							} else if (effect === 'fadeInLeft') {
 								el.addClass('fadeInLeft animated-fast');
-							} else if ( effect === 'fadeInRight') {
+							} else if (effect === 'fadeInRight') {
 								el.addClass('fadeInRight animated-fast');
 							} else {
 								el.addClass('fadeInUp animated-fast');
 							}
 
 							el.removeClass('item-animate');
-						},  k * 200, 'easeInOutExpo' );
+						}, k * 200, 'easeInOutExpo');
 					});
-					
+
 				}, 100);
-				
+
 			}
 
-		} , { offset: '85%' } );
+		}, { offset: '85%' });
 	};
 
 
-	var dropdown = function() {
+	var dropdown = function () {
 
-		$('.has-dropdown').mouseenter(function(){
+		$('.has-dropdown').mouseenter(function () {
 
 			var $this = $(this);
 			$this
@@ -152,7 +152,7 @@
 				.css('display', 'block')
 				.addClass('animated-fast fadeInUpMenu');
 
-		}).mouseleave(function(){
+		}).mouseleave(function () {
 			var $this = $(this);
 
 			$this
@@ -164,20 +164,20 @@
 	};
 
 
-	var goToTop = function() {
+	var goToTop = function () {
 
-		$('.js-gotop').on('click', function(event){
-			
+		$('.js-gotop').on('click', function (event) {
+
 			event.preventDefault();
 
 			$('html, body').animate({
 				scrollTop: $('html').offset().top
 			}, 500, 'easeInOutExpo');
-			
+
 			return false;
 		});
 
-		$(window).scroll(function(){
+		$(window).scroll(function () {
 
 			var $win = $(window);
 			if ($win.scrollTop() > 200) {
@@ -187,65 +187,65 @@
 			}
 
 		});
-	
+
 	};
 
 
 	// Loading page
-	var loaderPage = function() {
+	var loaderPage = function () {
 		$(".fh5co-loader").fadeOut("slow");
 	};
 
-	var counter = function() {
+	var counter = function () {
 		$('.js-counter').countTo({
-			 formatter: function (value, options) {
-	      return value.toFixed(options.decimals);
-	    },
+			formatter: function (value, options) {
+				return value.toFixed(options.decimals);
+			},
 		});
 	};
 
 
-	var counterWayPoint = function() {
-		if ($('#fh5co-counter').length > 0 ) {
-			$('#fh5co-counter').waypoint( function( direction ) {
-										
-				if( direction === 'down' && !$(this.element).hasClass('animated') ) {
-					setTimeout( counter , 400);					
+	var counterWayPoint = function () {
+		if ($('#fh5co-counter').length > 0) {
+			$('#fh5co-counter').waypoint(function (direction) {
+
+				if (direction === 'down' && !$(this.element).hasClass('animated')) {
+					setTimeout(counter, 400);
 					$(this.element).addClass('animated');
 				}
-			} , { offset: '90%' } );
+			}, { offset: '90%' });
 		}
 	};
 
-	var sliderMain = function() {
-		
-	  	$('#fh5co-hero .flexslider').flexslider({
+	var sliderMain = function () {
+
+		$('#fh5co-hero .flexslider').flexslider({
 			animation: "fade",
 			slideshowSpeed: 5000,
 			directionNav: true,
-			start: function(){
-				setTimeout(function(){
+			start: function () {
+				setTimeout(function () {
 					$('.slider-text').removeClass('animated fadeInUp');
 					$('.flex-active-slide').find('.slider-text').addClass('animated fadeInUp');
 				}, 500);
 			},
-			before: function(){
-				setTimeout(function(){
+			before: function () {
+				setTimeout(function () {
 					$('.slider-text').removeClass('animated fadeInUp');
 					$('.flex-active-slide').find('.slider-text').addClass('animated fadeInUp');
 				}, 500);
 			}
 
-	  	});
+		});
 
 	};
 
-	var bibleVerseCarousel = function(){
-		
+	var bibleVerseCarousel = function () {
+
 		var owl = $('.owl-carousel-fullwidth');
 		owl.owlCarousel({
 			animateOut: 'fadeOut',
-			autoplay:true,
+			autoplay: true,
 			items: 1,
 			loop: true,
 			margin: 0,
@@ -257,8 +257,70 @@
 
 	};
 
-	
-	$(function(){
+	function get_organizations() {
+		var unit_box = $(".unit-box")
+		var html = ""
+
+		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
+			if (status === 'success') {
+				for (var i of data.results) {
+					console.log(i)
+					html += `<div class="unit">
+					<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+						<li>
+							<p>${i.name}</p>
+						</li>
+
+						<li>
+							<p>省份：${i.province}</p>
+						</li>
+						<li>
+							<p>城市：${i.city}</p>
+						</li>
+						<li>
+						<p>地址：${i.address}</p>
+						</li>`
+					if (i.demands.length) {
+						for (var demand of i.demands) {
+							html += `<li>
+							<p style="color: red;">需求：${demand.name}
+							<span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
+							<p>备注：${demand.remark?demand.remark:'无'}</p>
+						</li>`
+						}
+					}
+
+					for (var contact of i.contacts) {
+						html += `<li>
+							<p>联系人：${contact.name}</p>
+							<p>联系电话：${contact.phone}</p>
+						</li>`
+					}
+
+					html += `<li>
+                    <p>发布日期：2020-01-31</p>
+                </li>
+				<li>
+					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
+				</li>
+				</ul>
+        		</div>
+				`
+				}
+
+
+				unit_box.append(html)
+
+
+
+			} else {
+				alert('获取数据失败！')
+			}
+		});
+		console.log($(".unit-box"))
+	}
+
+	$(function () {
 		mobileMenuOutsideClick();
 		offcanvasMenu();
 		burgerMenu();
@@ -269,6 +331,7 @@
 		loaderPage();
 		counterWayPoint();
 		bibleVerseCarousel();
+		get_organizations()
 	});
 
 
