@@ -257,13 +257,11 @@
 
 	};
 
-	var BaseApi = "http://127.0.0.1:8989/api/"
-
 	function get_organizations() {
 		var unit_box = $(".unit-box")
 		var html = ""
 
-		$.get(BaseApi + "organizations", function (data, status) {
+		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
 			if (status === 'success') {
 				for (var i of data.results) {
 					console.log(i)

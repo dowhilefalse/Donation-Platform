@@ -9,7 +9,7 @@ register = template.Library()
 class CurrentUser2Json(template.Node):
     def render(self, context):
         user = context.request.user
-        url = reverse('api:user-list', request=context.request)
+        url = reverse('api:user-detail', kwargs={'pk': user.id}, request=context.request)
         return json.dumps({
             'id': user.id,
             'username': user.username,
