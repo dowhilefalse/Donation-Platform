@@ -257,69 +257,12 @@
 
 	};
 
-	function get_organizations() {
-		var unit_box = $(".unit-box")
-		var html = ""
 
-		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
-			if (status === 'success') {
-				for (var i of data.results) {
-					console.log(i)
-					html += `<div class="unit">
-					<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
-						<li>
-							<p>${i.name}</p>
-						</li>
-
-						<li>
-							<p>省份：${i.province}</p>
-						</li>
-						<li>
-							<p>城市：${i.city}</p>
-						</li>
-						<li>
-						<p>地址：${i.address}</p>
-						</li>`
-					if (i.demands.length) {
-						for (var demand of i.demands) {
-							html += `<li>
-							<p style="color: red;">需求：${demand.name}
-							<span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
-							<p>备注：${demand.remark?demand.remark:'无'}</p>
-						</li>`
-						}
-					}
-
-					for (var contact of i.contacts) {
-						html += `<li>
-							<p>联系人：${contact.name}</p>
-							<p>联系电话：${contact.phone}</p>
-						</li>`
-					}
-
-					html += `<li>
-                    <p>发布日期：2020-01-31</p>
-                </li>
-				<li>
-					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
-				</li>
-				</ul>
-        		</div>
-				`
-				}
-
-
-				unit_box.append(html)
+	
 
 
 
-			} else {
-				alert('获取数据失败！')
-			}
-		});
-		console.log($(".unit-box"))
-	}
-
+	
 	$(function () {
 		mobileMenuOutsideClick();
 		offcanvasMenu();
@@ -331,7 +274,6 @@
 		loaderPage();
 		counterWayPoint();
 		bibleVerseCarousel();
-		get_organizations()
 	});
 
 

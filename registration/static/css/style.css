@@ -1378,6 +1378,7 @@ input[type="text"] {
   border-radius: 8px;
   margin-bottom: 40px;
   background-color: rgba(174, 236, 247, 0.6);
+  box-shadow: 8px 8px 8px rgb(192, 192, 192);
 }
 .unit:hover{
   opacity: 1;
@@ -1390,3 +1391,4 @@ input[type="text"] {
   font-size: 30px;
   padding: 0px;
 }
+
