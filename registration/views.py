@@ -91,7 +91,7 @@ def view_group11(request):
 
     context = get_context(obj)
     # TODO: 将obj.data传递到模板中 OK
-    return render(request, 'pages/group11.html', context)
+    return render(request, 'pages/group2.html', context)
 
 def view_group12(request):
     '''
@@ -104,7 +104,7 @@ def view_group12(request):
     request.GET['scope'] = 'hubei'
     obj = OrganizationViewSet.as_view({'get': 'list'})(request)
     context = get_context(obj)
-    return render(request, 'pages/group12.html', context)
+    return render(request, 'pages/group2.html', context)
 
 # --------------------------------------------------------------
 def view_group2(request):

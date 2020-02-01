@@ -311,7 +311,7 @@
 				}
 
 
-				unit_box.append(html)
+				unit_box.html(html)
 
 
 
