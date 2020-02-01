@@ -828,7 +828,7 @@ input[type="text"] {
 }
 
 .form-group {
-  margin-bottom: 30px;
+  /*margin-bottom: 30px;*/
 }
 .form-group .btn-modify {
   font-family: "Libre Baskerville", serif;
@@ -1398,16 +1398,25 @@ input[type="text"] {
   flex-direction: column;
   float: left;
   justify-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 .contact_box .contact-info{
   width: 100%;
 }
 .contact_box input,
-.demand_box input{
+.demand_box input, 
+.demand_box select {
   width: 200px;
   float: left;
   margin-bottom: 10px;
+}
+.demand_info > .dropdown.bootstrap-select.form-control.bs3 {
+  width: 200px !important;
+  float: left;
+}
+.demand_info > .dropdown.bootstrap-select.form-control.bs3 > button.dropdown-toggle {
+  height: 50px;
 }
 .demand_box input.ps{
   width: 400px;
@@ -1445,4 +1454,9 @@ input[type="text"] {
   transform: scale(1.1);
 }
 
-
+.contact_info + .contact_info,
+.demand_info + .demand_info {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 10px;
+  padding-right: 30px;
+}
