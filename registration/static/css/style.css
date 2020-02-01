@@ -818,7 +818,7 @@ h1, h2, h3, h4, h5, h6, figure {
   -ms-border-radius: 0px;
   border-radius: 0px;
 }
-.form-control:focus, .form-control:active {
+.form-control:focus, .form-control:active,.form-control:hover {
   box-shadow: none;
   border: 2px solid rgba(0, 0, 0, 0.8);
 }
@@ -1391,4 +1391,58 @@ input[type="text"] {
   font-size: 30px;
   padding: 0px;
 }
+/* 募捐单位样式 */
+.contact_box,
+.demand_box{
+  display: flex;
+  flex-direction: column;
+  float: left;
+  justify-items: center;
+  margin-bottom: 30px;
+}
+.contact_box .contact-info{
+  width: 100%;
+}
+.contact_box input,
+.demand_box input{
+  width: 200px;
+  float: left;
+  margin-bottom: 10px;
+}
+.demand_box input.ps{
+  width: 400px;
+}
+.add_contact,
+.add_demand{
+  border: 2px solid rgb(48, 184, 7);
+  color: rgb(48, 184, 7);
+  background-color: #fff;
+  height: 40px;
+  outline: none;
+  transition: all 0.4s;
+  letter-spacing: 1px;
+}
+
+.add_contact:hover,
+.add_demand:hover{
+  background-color: rgb(48, 184, 7);
+  color: white;
+}
+
+.del_btn{
+  border-radius: 4px;
+  width: 80px;
+  height: 30px;
+  border: none;
+  background-color: rgb(252, 28, 28);
+  color: white;
+  position: relative;
+  left: 30px;
+  top: 6px;
+  transition: all 0.4s;
+}
+.del_btn:hover{
+  transform: scale(1.1);
+}
+
 
