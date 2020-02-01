@@ -11,14 +11,105 @@
     <div id="fh5co-events">
         <div class="row animate-box">
             <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
-                <h2 class="list-name">募捐信息列表-所有城市</h2>
+                <h2 class="list-name">需求信息列表-所有城市</h2>
+
             </div>
         </div>
 
     </div>
-    <div class="unit-box" >
+    <div class="unit-box organizations">
 
     </div>
 
 </div>
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+<script>
+
+    var qs = '?scope=',list_name='需求信息列表-所有城市'
+    switch (location.pathname) {
+        case '/group11': 
+            qs += 'wuhan';
+            list_name='需求信息列表-武汉医院'
+            break;
+        case '/group12': 
+            qs += 'hubei';
+            list_name='需求信息列表-湖北医院'
+            break;
+        case '/group2': ;
+        default: 
+            qs += 'china'; 
+            list_name='需求信息列表-全国医院'
+            break;
+    }
+
+    $(".list-name").html(list_name)
+
+
+    var BaseApi = "http://127.0.0.1:8989/api/"
+
+
+    function get_organizations() {
+        var unit_box = $(".organizations")
+        var html = ""
+
+        $.get(BaseApi + "organizations"+qs, function (data, status) {
+            if (status === 'success') {
+                for (var i of data.results) {
+                    html += `<div class="unit">
+					<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+						<li>
+							<p>${i.name}</p>
+						</li>
+
+						<li>
+							<p>省份：${i.province}</p>
+						</li>
+						<li>
+							<p>城市：${i.city}</p>
+						</li>
+						<li>
+						<p>地址：${i.address}</p>
+						</li>`
+                    if (i.demands.length) {
+                        for (var demand of i.demands) {
+                            html += `<li>
+							<p style="color: red;">需求：${demand.name}
+							<span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
+							<p>备注：${demand.remark ? demand.remark : '无'}</p>
+						</li>`
+                        }
+                    }
+
+                    for (var contact of i.contacts) {
+                        html += `<li>
+							<p>联系人：${contact.name}</p>
+							<p>联系电话：${contact.phone}</p>
+						</li>`
+                    }
+
+                    html += `<li>
+                    <p>发布日期：2020-01-31</p>
+                </li>
+				<li>
+					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
+				</li>
+				</ul>
+        		</div>
+				`
+                }
+
+
+                unit_box.html(html)
+
+
+
+            } else {
+                alert('获取数据失败！')
+            }
+        });
+    }
+
+    get_organizations();
+
+</script>
 {% endblock %}
