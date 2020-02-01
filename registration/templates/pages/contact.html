@@ -4,7 +4,9 @@
 
 {% block page_title %}发布募捐信息{% endblock %}
 {% block page_main %}
+
 <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+
 <div class="container-wrap">
 	<div id="fh5co-contact">
 		<div class="row">
@@ -53,13 +55,12 @@
 							</div>
 						</div>
 
-
+						
 						<div class="col-md-6">
 							<div class="form-group">
 								<input id="contact_method" name = "contact_method" type="text" class="form-control" placeholder="您的联系方式" maxlength="20">
 							</div>
 						</div> -->
-
 						<div class="contact_box">
 							<div class="contact_info">
 								<input type="text" class="form-control" placeholder="联系人-称呼">
@@ -88,8 +89,6 @@
 						</div>
 						<script type="text/javascript">
 
-
-
 							$(".add_contact").click(function () {
 								var html = `
 								<div class="contact_info">
@@ -117,9 +116,8 @@
 							})
 
 
-
 							function del_item(opt, self) {
-								
+
 								if (opt === 0) {
 									$(self).parent().next().remove()
 								}
@@ -127,23 +125,45 @@
 								$(self).parent().remove()
 							}
 
+
+							const BaseURL = JSON.parse(localStorage.getItem('GLOGAL')).BaseURL
+
+
+
+
 							function submit_form() {
-								$.ajax({
-									type: "POST",
-									dataType: "json",
-									url: "/users/login",
-									data: $('#form1').serialize(),
-									success: function (result) {
-										console.log(result);
-										if (result.resultCode == 200) {
-											alert("SUCCESS");
-										}
-										;
-									},
-									error: function () {
-										alert("异常！");
-									}
-								});
+								p
+								var data = {
+									"contacts": [],
+									"demands": [],
+									"province": "湖北省",
+									"city": "武汉市",
+									"name": "武汉市人民医院",
+									"address": "武汉",
+									"source": "微信",
+									"verified": false,
+									"is_manual": false,
+									"inspector": "http://127.0.0.1:8989/api/users/2/",
+									"emergency": 0
+								}
+
+								console.log($('#form1').serialize())
+								// $.ajax({
+								// 	type: "POST",
+								// 	dataType: "json",
+								// 	url: "api/organizations",
+								// 	data: $('#form1').serialize(),
+								// 	success: function (result) {
+								// 		console.log(result);
+								// 		if (result.resultCode == 200) {
+								// 			alert("SUCCESS");
+								// 		}
+								// 		;
+								// 	},
+								// 	error: function () {
+								// 		alert("异常！");
+								// 	}
+								// });
 							}
 						</script>
 					</div>

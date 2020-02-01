@@ -4,108 +4,135 @@
 
 {% block page_title %}提交团体信息{% endblock %}
 {% block page_main %}
-		<div class="container-wrap">
-			<div id="fh5co-contact">				
-				<div class="row">
-					<div class="col-md-3 col-md-push-8 animate-box">
-						<h3>我们的联系方式</h3>
-						<ul class="contact-info">
-							<li><i class="icon-phone3"></i>+ 1235 2355 98</li>
-						<li><i class="icon-location3"></i><a href="#">info@yoursite.com</a></li>
-						<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
-					</ul>
-				</div>
-				<div class="col-md-7 col-md-pull-2 animate-box">
-					<h3>递交表格</h3>
-					<h5>递交/修改表格成功后，内容会直接发布</h5>
-                    <h5>（建议在线下编辑好后，再复制上来）</h5>
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
 
-					<form method="post", id="form1">
-						
+<div class="container-wrap">
+	<div id="fh5co-contact">
+		<div class="row">
+			<div class="col-md-3 col-md-push-8 animate-box">
+				<h3>我们的联系方式</h3>
+				<ul class="contact-info">
+					<li><i class="icon-phone3"></i>+ 1235 2355 98</li>
+					<li><i class="icon-location3"></i><a href="#">info@yoursite.com</a></li>
+					<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
+				</ul>
+			</div>
+			<div class="col-md-7 col-md-pull-2 animate-box">
+				<h3>递交表格</h3>
+				<h5>递交/修改表格成功后，内容会直接发布</h5>
+				<h5>（建议在线下编辑好后，再复制上来）</h5>
+
+				<form method="post" , id="form1">
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<select name="type" id="type" class="form-control">							        
-							            <option value="a">慈善机构/公益组织</option>
-							            <option value="b">公司/机构</option>
-							            <option value="c">学生组织</option>
-							            <option value="d">其它</option>
-							    </select>
-							</div>
-						</div>
-						
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="name" name = "name" type="text" class="form-control" placeholder="机构/团体名称" maxlength="15">
+								<select name="type" id="type" class="form-control">
+									<option value="a">慈善机构/公益组织</option>
+									<option value="b">公司/机构</option>
+									<option value="c">学生组织</option>
+									<option value="d">其它</option>
+								</select>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<input id="address" name = "address" type="text" class="form-control" placeholder="所在地（选填）" maxlength="15">
+								<input id="name" name="name" type="text" class="form-control" placeholder="机构/团体名称"
+									maxlength="15">
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<input id="contact_name" name = "contact_name" type="text" class="form-control" placeholder="您的名字" maxlength="10">
+								<input id="address" name="address" type="text" class="form-control"
+									placeholder="所在地（选填）" maxlength="15">
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="contact_method" name = "contact_method" type="text" class="form-control" placeholder="您的联系方式" maxlength="20">
+
+						<div class="contact_box">
+							<div class="contact_info">
+								<input type="text" class="form-control" placeholder="联系人-称呼">
+								<input type="text" class="form-control" placeholder="联系人-手机">
+
 							</div>
+							<button class="add_contact" type="button">添加联系人</button>
+
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="contact_other" name = "contact_other" type="text" class="form-control" placeholder="其它联系人以及联系方式（选填）" maxlength="20">
+
+						<script>
+							$(".add_contact").click(function () {
+								var html = `
+								<div class="contact_info">
+								<input type="text" class="form-control" placeholder="联系人-称呼">
+								<input type="text" class="form-control" placeholder="联系人-手机">
+								<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
 							</div>
-						</div>                      
+								`
+
+								$(this).before(html)
+							})
+
+
+							function del_item(opt, self) {
+
+								if (opt === 0) {
+									$(self).parent().next().remove()
+								}
+
+								$(self).parent().remove()
+							}
+
+						</script>
+
+
+
 						<div class="col-md-12">
-							<textarea id="main_text" name="main_text" class="form-control" rows="7"  maxlength="500" placeholder="正文（简要叙述需求）"
-								onchange="sizecontrol()" onkeydown="sizecontrol()" onkeyup="sizecontrol()" 
-							></textarea> 
+							<textarea id="main_text" name="main_text" class="form-control" rows="7" maxlength="500"
+								placeholder="正文（简要叙述需求）" onchange="sizecontrol()" onkeydown="sizecontrol()"
+								onkeyup="sizecontrol()"></textarea>
 							<span id="ts">已输入: 0/500字</span></p>
 							<script>
-							var maxl=1000//总长  
-							function sizecontrol(){  
-								var contents=document.getElementById("main_text"),
-									ts=document.getElementById("ts"),
-									len=contents.value.length;  
-								if(len>maxl){
-									contents.value=contents.value.substr(0,maxl)
-								}else{
-									ts.innerHTML="已输入："+len+"/"+maxl+" 字"
-								} 
-							}  
+								var maxl = 1000//总长  
+								function sizecontrol() {
+									var contents = document.getElementById("main_text"),
+										ts = document.getElementById("ts"),
+										len = contents.value.length;
+									if (len > maxl) {
+										contents.value = contents.value.substr(0, maxl)
+									} else {
+										ts.innerHTML = "已输入：" + len + "/" + maxl + " 字"
+									}
+								}  
 							</script>
-						
-						</div>                            
+
+						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								
+
 							</div>
 						</div>
 						<br />
 						<div class="col-md-12">
 							<div class="form-group">
-								<input type="submit" value="提交" onclick="group_form_submit()" class="btn btn-primary btn-modify">
+								<input type="submit" value="提交" onclick="group_form_submit()"
+									class="btn btn-primary btn-modify">
 							</div>
 						</div>
 					</div>
-                    </form>
-				</div>
-				
+				</form>
 			</div>
+
 		</div>
-	</div><!-- END container-wrap -->
+	</div>
+</div><!-- END container-wrap -->
 {% endblock %}
 
 {% block page_footer %}
 <script type="text/javascript">
-		/**
-		 * 团队提交
-		 */
+	/**
+	 * 团队提交
+	 */
 	function group_form_submit() {
 		// 取值
 		var name = $('#name').val(),
@@ -113,7 +140,7 @@
 			contact_name = $('#contact_name').val(),
 			contact_method = $('#contact_method').val(),
 			contact_other = $('#contact_other').val();
-			main_text = $('#main_text').val();
+		main_text = $('#main_text').val();
 		// 验证(TODO: 更加严格的验证)
 		var isOk = false,
 			message = '',
@@ -122,8 +149,7 @@
 			field = 'username';
 			message = '请输入团体名称';
 		}
-		else
-		{
+		else {
 			if (!contact_name) {
 				field = 'phone';
 				message = '请输入联系人';
@@ -134,18 +160,18 @@
 					message = '请输入联系方式';
 				}
 				else {
-						isOk = true;
-					}
-				}											
+					isOk = true;
+				}
+			}
 		}
-		
+
 		if (!isOk) {
 			bootbox.alert({
 				size: "small",
 				title: "提示",
 				message: message,
-				callback: function(){
-					setTimeout(function() {
+				callback: function () {
+					setTimeout(function () {
 						$('#' + field).trigger('focus');
 					}, 500);
 				}
@@ -165,9 +191,9 @@
 				main_text: main_text.trim()
 			},
 			dataType: 'json'
-		}).done(function(resp) {
+		}).done(function (resp) {
 			console.log(resp);
-		}).fail(function(err) {
+		}).fail(function (err) {
 			console.error(err);
 		});
 	}

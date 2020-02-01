@@ -25,12 +25,13 @@
 
         
 
-        var BaseApi = "http://127.0.0.1:8989/api/"
+        const BaseURL =  JSON.parse(localStorage.getItem('GLOGAL')).BaseURL  
+
         function get_teams() {
             var unit_box = $(".teams")
             var html = ""
 
-            $.get(BaseApi + "teams", function (data, status) {
+            $.get(BaseURL + "teams", function (data, status) {
                 if (status === 'success') {
                     for (var i of data.results) {
                         html += `        <div class="unit">

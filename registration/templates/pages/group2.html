@@ -25,34 +25,34 @@
 <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
 <script>
 
-    var qs = '?scope=',list_name='需求信息列表-所有城市'
+
+    const BaseURL =  JSON.parse(localStorage.getItem('GLOGAL')).BaseURL  
+
+    var qs = '?scope=', list_name = '需求信息列表-所有城市'
     switch (location.pathname) {
-        case '/group11': 
+        case '/group11':
             qs += 'wuhan';
-            list_name='需求信息列表-武汉医院'
+            list_name = '需求信息列表-武汉医院'
             break;
-        case '/group12': 
+        case '/group12':
             qs += 'hubei';
-            list_name='需求信息列表-湖北医院'
+            list_name = '需求信息列表-湖北医院'
             break;
         case '/group2': ;
-        default: 
-            qs += 'china'; 
-            list_name='需求信息列表-全国医院'
+        default:
+            qs += 'china';
+            list_name = '需求信息列表-全国医院'
             break;
     }
 
     $(".list-name").html(list_name)
 
 
-    var BaseApi = "http://127.0.0.1:8989/api/"
-
-
     function get_organizations() {
         var unit_box = $(".organizations")
         var html = ""
 
-        $.get(BaseApi + "organizations"+qs, function (data, status) {
+        $.get(BaseURL + "organizations" + qs, function (data, status) {
             if (status === 'success') {
                 for (var i of data.results) {
                     html += `<div class="unit">
