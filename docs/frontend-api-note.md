@@ -25,6 +25,7 @@
 >     // 用户是否登录
 >     GLOGAL.CURRENT_LOGINED = true;
 >     ```
+> * 注意: 调用api的请求`url`必须以`/`结尾
 
 ## 示例 - jQuery 发送 ajax 调用 Api
 - 添加/更新 通用代码:
