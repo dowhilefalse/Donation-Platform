@@ -166,6 +166,7 @@
 		if(!window.GLOGAL) {
 			window.GLOGAL = {};
 		}
+		GLOGAL.API_BASE = "{% url 'api:api-root' %}";
 		// 当前用户信息
 		GLOGAL.CURRENT_USER = {% current_user_json %};
 		GLOGAL.CURRENT_LOGINED = {% if user.is_authenticated  %}true{% else %}false{% endif %};
