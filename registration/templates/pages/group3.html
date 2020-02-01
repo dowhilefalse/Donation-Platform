@@ -2,11 +2,27 @@
 
 {% load static %}
 
+{% block head_extra_style %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+{% endblock %}
+
 {% load custom_filters %}
 
-{% block page_title %}团体信息{% endblock %}
+{% block page_title %}全国各地{% endblock %}
 
 {% block page_main %}
+
+<script>
+    function change_show_type1() {
+       form1.style.display='';
+       form2.style.display='none';
+    }
+    function change_show_type2() {
+       form1.style.display='none';
+       form2.style.display='';
+    }
+</script>
+
 <div class="container-wrap">
     <div id="fh5co-events">
         <div class="row animate-box">
@@ -16,8 +32,43 @@
         </div>
 
     </div>
-    <div class="unit-box teams">
 
+    <div style="margin:0 auto;">
+        <nav class="fh5co-nav" role="navigation">
+            <ul style="white-space: nowrap; margin-left:10.0px ">                         
+                <li onclick="change_show_type1(); myFunction()"><a >以表格方式展示</a></li>
+                <li onclick="change_show_type2(); myFunction()"><a >以框框方式展示</a></li>
+            </ul>
+        </nav>
+
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-left:25px; margin-bottom: 0.0px">
+    </div>
+    <style>   
+    th,td {         
+         padding: .65em;         
+    }         
+    th {         
+         background: #555 nonerepeat scroll 0 0;         
+           border: 1px solid #777;  
+           color: black;       
+           /*color: #fff;         */
+    }         
+    td {         
+         border: 1px solid #777;
+         color: black;       
+     } 
+    </style>
+
+
+    <div class="row" , style="margin-left:18px;">
+
+        <div class="unit-table teams-table" id="form1">
+        </div>  
+
+        <div class="unit-box teams" id="form2">
+        </div>
+        
+    </div>
     </div>
 
 </div>
@@ -27,7 +78,7 @@
 <script>
     const BaseURL = GLOGAL.API_BASE;
 
-    function get_teams() {
+    function get_teams_box() {
         var unit_box = $(".teams")
         var html = ""
 
@@ -56,7 +107,7 @@
                             }
                             html += `
         				<li>
-        						<p>发布日期：${i.add_time}</p>
+        						<p>发布日期：${i.add_time.slice(0,10)}</p>
         					</li>
         					<li>
         					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
@@ -74,7 +125,128 @@
             }
         });
     }
-    get_teams()
+
+    function get_teams_table() {
+        var unit_table = $(".teams-table")
+        var html = ""
+
+        $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
+            if (status === 'success') {
+                html += `  <table onload="myFunction()" style="border-collapse: collapse;">                                
+
+                            <thead>
+                                <tr>
+                                    <th>团体名称</th>     
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>发布日期</th>
+                                    <th>是否验证/核实信息过</th>
+                               </tr>
+                            </thead>
+                            <tbody>`
+                for (var i of data.results) {
+                    html += `
+                        <tr>
+                            <td>${ i.name }</td>`
+                    var contact_name = '';
+                    var contact_phone = '';
+                    for (var contact of i.contacts) {
+                        contact_name += contact.name +' '
+                        contact_phone += contact.phone +' '
+                        }
+                    html += `
+                            <td>${ contact_name }</td>
+                            <td>${ contact_phone }</td>
+                            <td>${ i.add_time.slice(0,10) }</td>
+                            <td>${ i.verified ? '<font style="color: green">已核实</font>' : '<font style="color: red">未核实</font>'}</td>
+                        </tr>`}
+
+                html += `</tbody>
+                         </table>`
+
+                unit_table.append(html)
+            } else {
+                alert('获取数据失败！')
+            }
+        });
+        // console.log($(".unit-table"))
+    }
+    get_teams_box()
+    get_teams_table()
+
+    function myFunction() {
+      // 声明变量
+        if (form1.style.display != 'none'){
+//             console.log('here')
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter_search = input.value.toUpperCase();
+            table = document.getElementById("form1");
+            tr = table.getElementsByTagName("tr");
+      // 循环表格每一行，查找匹配项
+            for (i = 1; i < tr.length; i++) {
+//                 console.log(ul[i].getElementsByTagName("li"))
+                td1 = tr[i].getElementsByTagName("td")[0];
+
+                if (td1) {
+                    
+                    if (filter_search){
+                        var search_result = false;
+                        for (j = 0; j < tr[i].getElementsByTagName("td").length; j++){
+                            search_result = search_result || (tr[i].getElementsByTagName("td")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        }
+//                             console.log(search_result)
+                        }
+                    else {
+                        var search_result = true;
+                    }
+//                     console.log(search_result)
+                    if (search_result) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+           }
+        }
+        else{
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter_search = input.value.toUpperCase();
+            table = document.getElementById("form2");
+            ul = table.getElementsByTagName("div");
+//             console.log(ul)
+          // 循环表格每一行，查找匹配项
+            for (i = 0; i < ul.length; i++) {
+//                 console.log(ul[i].getElementsByTagName("li"))
+                li1 = ul[i].getElementsByTagName("p")[0];
+//                 console.log(Boolean(filter_search))
+                if (li1) {
+                    
+                    if (filter_search){
+                        var search_result = false;
+                        for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
+                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        }
+//                             console.log(search_result)
+                        }
+                    else {
+                        var search_result = true;
+                    }
+                    
+                    if (search_result) {
+                        ul[i].style.display = "";
+                    } else {
+                        ul[i].style.display = "none";
+                    }
+                }
+           }
+       }
+    };
+
+    form2.style.display='none';
+    window.onload = myFunction
+
 
 </script>
 {% endblock %}
