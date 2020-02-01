@@ -5,3 +5,4 @@ django-guardian
 django-rest-auth
 hendrix
 aliyun-python-sdk-core
+django-extensions

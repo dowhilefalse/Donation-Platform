@@ -1,4 +1,7 @@
 {% load static %}
+
+{% load custom_tags %}
+
 <!DOCTYPE HTML>
 <html>
 
@@ -160,9 +163,14 @@
 	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
 
 	<script type="text/javascript">
-		if (!window.GLOGAL) {
-			window.GLOGAL = {}
+		if(!window.GLOGAL) {
+			window.GLOGAL = {};
 		}
+		GLOGAL.API_BASE = "{% url 'api:api-root' %}";
+		// 当前用户信息
+		GLOGAL.CURRENT_USER = {% current_user_json %};
+		GLOGAL.CURRENT_LOGINED = {% if user.is_authenticated  %}true{% else %}false{% endif %};
+		GLOGAL.CURRENT_USER_PATH = "{% url 'api:user-detail' pk=user.pk %}";
 		// 当前页面路由名称
 		GLOGAL.PAGE_VIEW_NAME = '{{ request.resolver_match.view_name }}';
 
@@ -182,5 +190,4 @@
 	</script>
 	{% block page_footer %}{% endblock %}
 </body>
-
 </html>
