@@ -10,6 +10,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>{% block page_title %}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/png" href="/favicon.png">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<!-- Facebook and Twitter integration -->
@@ -81,10 +82,10 @@
 								<li><a href="{% url 'registration:page_group3' %}">爱心团体</a></li>
 								{% if user.is_authenticated  %}
 								<li><a href="{% url 'registration:page_contact' %}">
-										<font style="color:#458B00">提交募捐信息</font>
+										<font style="color:#009688">发布募捐信息</font>
 									</a></li>
 								<li><a href="{% url 'registration:page_contact2' %}">
-										<font style="color:#458B00">提交团体信息</font>
+										<font style="color:#009688">提交团体信息</font>
 									</a></li>
 								{% else %}
 								{# <li><a href="{% url 'registration:page_register' %}"><font style="color:#009688">注册/登陆</font></a></li> #}
@@ -159,8 +160,6 @@
 	<script src="{% static 'js/magnific-popup-options.js' %}" type="text/javascript"></script>
 	<!-- Counters -->
 	<script src="{% static 'js/jquery.countTo.js' %}" type="text/javascript"></script>
-	<!-- Main -->
-	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		if(!window.GLOGAL) {
@@ -186,8 +185,13 @@
 					}
 				}
 			});
+
 		});
 	</script>
+
+	<!-- Main -->
+	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+	
 	{% block page_footer %}{% endblock %}
 </body>
 </html>

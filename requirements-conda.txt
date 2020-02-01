@@ -5,4 +5,6 @@ pyOpenSSL
 twisted
 django==2.2
 sqlparse
+chardet
 # PyMySQL
+mysqlclient

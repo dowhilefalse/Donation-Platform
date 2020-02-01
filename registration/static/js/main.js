@@ -257,176 +257,12 @@
 
 	};
 
-	function get_organizations() {
-		var unit_box = $(".unit-box")
-		var html = ""
 
-		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
-			if (status === 'success') {
-				for (var i of data.results) {
-					console.log(i)
-					html += `<div class="unit">
-					<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
-						<li>
-							<p>${i.name}</p>
-						</li>
-
-						<li>
-							<p>省份：${i.province}</p>
-						</li>
-						<li>
-							<p>城市：${i.city}</p>
-						</li>
-						<li>
-						<p>地址：${i.address}</p>
-						</li>`
-					if (i.demands.length) {
-						for (var demand of i.demands) {
-							html += `<li>
-							<p style="color: red;">需求：${demand.name}
-							<span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
-							<p>备注：${demand.remark?demand.remark:'无'}</p>
-						</li>`
-						}
-					}
-
-					for (var contact of i.contacts) {
-						html += `<li>
-							<p>联系人：${contact.name}</p>
-							<p>联系电话：${contact.phone}</p>
-						</li>`
-					}
-
-					html += `<li>
-                    <p>发布日期：2020-01-31</p>
-                </li>
-				<li>
-					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
-				</li>
-				</ul>
-        		</div>
-				`
-				}
-
-
-				unit_box.append(html)
+	
 
 
 
-			} else {
-				alert('获取数据失败！')
-			}
-		});
-		console.log($(".unit-box"))
-	}
-
-    function get_organizations_withindex() {
-		var unit_box_index = $(".unit-box-index")
-		var html = ""
-
-		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
-			if (status === 'success') {
-				for (var i of data.results) {
-// 					console.log(i)
-					html += `<div class="unit-index">
-					<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
-						<li>
-							<p id="name">${i.name}</p>
-						</li>
-
-						<li>
-							省份：<p id="province">${i.province}</p>
-						</li>
-						<li>
-							城市：<p id="city">${i.city}</p>
-						</li>
-						<li>
-						<p>地址：${i.address}</p>
-						</li>`
-					if (i.demands.length) {
-						for (var demand of i.demands) {
-							html += `<li>
-							<p style="color: red;">需求：${demand.name}
-							<span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
-							<p>备注：${demand.remark?demand.remark:'无'}</p>
-						</li>`
-						}
-					}
-
-					for (var contact of i.contacts) {
-						html += `<li>
-							<p>联系人：${contact.name}</p>
-							<p>联系电话：${contact.phone}</p>
-						</li>`
-					}
-
-					html += `<li>
-                    <p>发布日期：2020-01-31</p>
-                </li>
-				<li>
-					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
-				</li>
-				</ul>
-        		</div>
-				`
-				}
-
-
-				unit_box_index.append(html)
-
-
-
-			} else {
-				alert('获取数据失败！')
-			}
-		});
-		console.log($(".unit-box-index"))
-	}
-    
-    function get_organizations_table_withindex() {
-        var unit_table_index = $(".unit-table-index")
-		var html = ""
-
-		$.get(GLOGAL.API_BASE + "organizations", function (data, status) {
-			if (status === 'success') {
-                html += `  <table onload="myFunction()" style="border-collapse: collapse;">
-                            <caption style="font-size: larger;         
-                             margin: 1em auto;  ">募捐列表信息</caption>
-
-                            <thead>
-                                <tr>
-                                    <th>医院名称</th>                                                
-                                    <th>省份</th>
-                                    <th>城市</th>
-                                    <th>地址</th>
-                                    <th>需求</th>
-                                    <th>联系人</th>
-                                    <th>是否验证/核实信息过</th>
-                               </tr>
-                            </thead>
-                            <tbody>`
-				for (var i of data.results) {
-                    html += `
-                        <tr>
-                            <td>${ i.name }</td>
-                            <td>${ i.province }</td>
-                            <td>${ i.city }</td>
-                            <td>${ i.address }</td>
-                            <td>${ i.demands }</td>
-                            <td>${ i.contacts }</td>
-                            <td>${ i.verified ? '已核实' : '未核实'}</td>
-                        </tr>`}
-                html += `</tbody>
-                         </table>`
-
-				unit_table_index.append(html)
-			} else {
-				alert('获取数据失败！')
-			}
-		});
-		console.log($(".unit-table-index"))
-	}
-
+	
 	$(function () {
 		mobileMenuOutsideClick();
 		offcanvasMenu();
@@ -438,13 +274,7 @@
 		loaderPage();
 		counterWayPoint();
 		bibleVerseCarousel();
-		get_organizations();
-        get_organizations_withindex();
-        get_organizations_table_withindex();
 	});
-    
+
+
 }());
-
-
-
- 
