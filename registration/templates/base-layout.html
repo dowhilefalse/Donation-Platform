@@ -163,6 +163,7 @@
 	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
 
 	<script type="text/javascript">
+<<<<<<< HEAD
 		if(!window.GLOGAL) {
 			window.GLOGAL = {};
 		}
@@ -171,6 +172,17 @@
 		GLOGAL.CURRENT_USER = {% current_user_json %};
 		GLOGAL.CURRENT_LOGINED = {% if user.is_authenticated  %}true{% else %}false{% endif %};
 		GLOGAL.CURRENT_USER_PATH = "{% url 'api:user-detail' pk=user.pk %}";
+=======
+		if (!window.GLOGAL) {
+			window.GLOGAL = {
+				BaseURL:'http://127.0.0.1:8989/api/',
+				DevURL:'http://127.0.0.1:8989/api/',
+				ProdURL:''
+			}
+			localStorage.setItem("GLOGAL",JSON.stringify(window.GLOGAL)) 
+		}
+
+>>>>>>> update
 		// 当前页面路由名称
 		GLOGAL.PAGE_VIEW_NAME = '{{ request.resolver_match.view_name }}';
 
@@ -186,6 +198,7 @@
 					}
 				}
 			});
+
 		});
 	</script>
 	{% block page_footer %}{% endblock %}
