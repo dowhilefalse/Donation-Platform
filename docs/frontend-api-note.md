@@ -100,6 +100,7 @@
     ```
     POST /api/organizations/
     ```
+    * demo-01
     ```json
     {
         "contacts": [],
@@ -113,6 +114,30 @@
         "is_manual": false,
         "inspector": "http://127.0.0.1:8989/api/users/2/",
         "emergency": 0
+    }
+    ```
+    * demo-02 (后端更新, 添加 `organization` 时, 嵌套数据 `contact` 和 `demand` 去掉url, `inspector` 自动取自当前登录用户)
+    ```json
+    {
+        "contacts": [
+            {
+                "name": "张医生",
+                "phone": "12345678971"
+            }
+        ],
+        "demands": [
+            {
+                "name": "口罩",
+                "remark": "GB2612-2006标准"
+            },
+            {
+                "name": "防护服",
+                "amount": 100
+            }
+        ],
+        "province": "湖南省",
+        "city": "怀化市",
+        "name": "怀化市人民医院"
     }
     ```
 
