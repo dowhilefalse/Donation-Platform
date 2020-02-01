@@ -23,7 +23,7 @@
 				<h5>递交/修改表格成功后，内容会直接发布</h5>
 				<h5>（建议在线下编辑好后，再复制上来）</h5>
 
-				<form method="post" , id="form1">
+				<form method="post" id="form1">
 
 					<div class="row">
 						<div class="col-md-6">
@@ -63,8 +63,8 @@
 						</div> -->
 						<div class="contact_box">
 							<div class="contact_info">
-								<input type="text" class="form-control" placeholder="联系人-称呼">
-								<input type="text" class="form-control" placeholder="联系人-手机">
+								<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+								<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
 
 							</div>
 							<button class="add_contact" type="button">添加联系人</button>
@@ -73,17 +73,19 @@
 
 						<div class="demand_box">
 							<div class="demand_info">
-								<input type="text" class="form-control" placeholder="需求物品(例：医用口罩)">
-								<input type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
+								<input name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)">
+								<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
+								<div>
+									<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
+								</div>
 							</div>
-							<input type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
 							<button class="add_demand" type="button">添加需求</button>
 						</div>
 
 						<br />
 						<div class="col-md-12">
 							<div class="form-group">
-								<input type="submit" value="提交" onclick="submit_form()"
+								<input type="button" value="提交" onclick="submit_form()"
 									class="btn btn-primary btn-modify">
 							</div>
 						</div>
@@ -103,11 +105,11 @@
 	$(".add_contact").click(function () {
 		var html = `
 			<div class="contact_info">
-			<input type="text" class="form-control" placeholder="联系人-称呼">
-			<input type="text" class="form-control" placeholder="联系人-手机">
-			<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
-		</div>
-		`;
+				<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+				<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
+				<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
+			</div>
+			`;
 		$(this).before(html)
 	})
 
@@ -115,64 +117,105 @@
 	$(".add_demand").click(function () {
 		var html = `
 			<div class="demand_info">
-			<input type="text" class="form-control" placeholder="需求物品(例：医用口罩)">
-			<input type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
-			<button onclick='del_item(0,this)' class='del_btn' type="button">删除该项</button>
-		</div>
-		<input type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
-		`;
-
+				<input name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)">
+				<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
+				<button onclick='del_item(0,this)' class='del_btn' type="button">删除该项</button>
+				<div>
+					<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
+				</div>
+			</div>
+			`;
 		$(this).before(html)
 	})
 
 
 	function del_item(opt, self) {
 
-		if (opt === 0) {
-			$(self).parent().next().remove()
-		}
+		// if (opt === 0) {
+		// 	$(self).parent().next().remove()
+		// }
 
 		$(self).parent().remove()
 	}
 
-
 	const BaseURL = GLOGAL.API_BASE;
 
-
-
-
 	function submit_form() {
+		var $form = $('#form1');
 		var data = {
 			"contacts": [],
 			"demands": [],
-			"province": "湖北省",
-			"city": "武汉市",
-			"name": "武汉市人民医院",
-			"address": "武汉",
-			"source": "微信",
-			"verified": false,
-			"is_manual": false,
-			"inspector": "http://127.0.0.1:8989/api/users/2/",
-			"emergency": 0
+			"province": $form.find('select[name="province"]').val(),
+			"city": $form.find('select[name="city"]').val(),
+			"name": $form.find('input[name="name"]').val(),
+			"address": $form.find('input[name="address"]').val()
+		};
+
+		var $contacts = $form.find('.contact_box').children('.contact_info');
+		for (var i = 0; i < $contacts.length; i++) {
+			var $item = $contacts.filter(`:eq(${i})`);
+			var name = $item.find('input[name="contact-name"]').val(),
+				phone = $item.find('input[name="contact-phone"]').val();
+			// TODO: 验证要求 phone 和 name 必填
+			if (!phone) {
+				// TODO: toast error tip
+				continue;
+			}
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			data['contacts'].push({
+				'name': name,
+				'phone': phone
+			});
 		}
 
-		console.log($('#form1').serialize())
-		// $.ajax({
-		// 	type: "POST",
-		// 	dataType: "json",
-		// 	url: "api/organizations",
-		// 	data: $('#form1').serialize(),
-		// 	success: function (result) {
-		// 		console.log(result);
-		// 		if (result.resultCode == 200) {
-		// 			alert("SUCCESS");
-		// 		}
-		// 		;
-		// 	},
-		// 	error: function () {
-		// 		alert("异常！");
-		// 	}
-		// });
+		var $demands = $form.find('.demand_box').children('.demand_info');
+		for (var i = 0; i < $demands.length; i++) {
+			var $item = $demands.filter(`:eq(${i})`);
+			var name = $item.find('input[name="demand-name"]').val(),
+				amount = Number.parseInt($item.find('input[name="demand-amount"]').val()),
+				remark = $item.find('input[name="demand-remark"]').val();
+			// name 必填
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			var item = {'name': name};
+			if (!!amount && Number.isInteger(amount) && amount > 0) {
+				item['amount'] = amount;
+			}
+			if (!!remark) {
+				item['remark'] = remark;
+			}
+			data['demands'].push(item);
+		}
+
+		console.log(data)
+		// console.log($('#form1').serialize())
+
+		$.ajax({
+			type: "POST",
+			url: BaseURL + "organizations/",
+			data: JSON.stringify(data),
+			processData: false,
+			contentType:"application/json; charset=utf-8",
+			dataType: "json",
+			success: function (resp) {
+				console.log(resp);
+				if (resp.id >0 && !!resp.url) {
+					alert("成功");
+					window.reload();
+				}
+				else {
+					alert("失败");
+				}
+			},
+			error: function (jqXHR) {
+				alert("Error: " + jqXHR.status);
+			}
+		});
 	}
 	</script>
 
