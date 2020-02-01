@@ -27,16 +27,38 @@
         </div>
 
         <nav class="fh5co-nav" role="navigation">
-            <ul style="white-space: nowrap; margin-left:10.0px ">                         
-                <li onclick="change_show_type1(); myFunction()"><a >表格展示</a></li>
-                <li onclick="change_show_type2(); myFunction()"><a >框框展示</a></li>
-            </ul>
+            <div class="container-wrap">
+                <div class="top-menu">
+                    <div class="row">
+                        <div class="col-md-12 col-md-offset-0 text-center">
+                            <ul style="white-space: nowrap">
+<!--        TODO: 美化排版                          -->
+                                 <style type="text/css">
+                                    select {
+                                    overflow:auto;
+                                    display: block;
+                                    margin: 0 auto;
+                                    display: inline-block;
+                                    white-space: nowrap;
+                                    }           
+                                </style>
+                                <li onclick="change_show_type1(); myFunction()"><a >表格</a></li>
+                                <li onclick="change_show_type2(); myFunction()"><a >框框</a></li>
+                            </ul>
+                                选择省份或地区<select id="province" name="province" class="form-control" style=" width:95px;" onchange="selectprovince(this); myFunction()"></select>
+                                选择城市<select id="city" name="city" class="form-control" style=" width:95px;" onchange="myFunction()"></select>
+                                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索...">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </nav>
-            <p style="margin-left:20.0px">选择省份或地区</p>
-            <select id="province" title="Tooltip" name="province" class="form-control" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px;" onchange="selectprovince(this); myFunction()"></select>
-            <p style="margin-left:20.0px; margin-bottom:0px">选择城市</p>
-            <select id="city" name="city" class="form-control" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-5px; padding:0px;" onchange="myFunction()"></select>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-bottom: 50.0px">
+        <style type="text/css">
+            select {
+            white-space: nowrap;
+            }           
+        </style>
         <style>   
         th,td {         
              padding: .65em;         
@@ -53,12 +75,65 @@
         
 
         <div class="row" , style="margin-left:18px;">
-            <div class="unit-table-index" id="form1">
-            </div>
+                <div class="events-entry">
+                    <table id="form1" onload="myFunction()" style="border-collapse: collapse;         
+                     font-family: Futura, Arial, sans-serif;">
+                    <caption style="font-size: larger;         
+                     margin: 1em auto;  ">募捐列表信息</caption>
+
+                    <thead>
+                        <tr>
+                            <th>医院名称
+                            <th>地址
+                            <th>联系人
+                            <th>省份
+                            <th>城市
+                            <th>需求
+                            <th>发布日期
+                            <th>是否验证/核实信息过
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for items in data %}
+                        <tr>
+                            <td>{{ items.6 }}</td>
+                            <td>{{ items.7 }}</td>
+                            <td>{{ items.2 }}</td>
+                            <td>{{ items.4 }}</td>
+                            <td>{{ items.5 }}</td>
+                            <td>{{ items.3 }}</td>
+                            <td>{{ items.10 }}</td>
+                            <td>{{ items.10 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
             <div class="events-entry">
                     <div class="unit-box-index" id="form2">
+                     
+					
                     </div>
             </div>
+<!--                     {%for items in data %}
+                    
+                        <div class="col-md-4 animate-box" style="height: 600px; width:335px; border: #000000; border-width:1.5px; margin-right:10px; margin-bottom:10px; border-style:solid">
+                            <div class="events-entry">
+                                <ul style="list-style: none; font-size:18px; color: black">
+                                    <li><font style="font-size: 25">{{ items.6 }}</font></li>
+                                    <li><font style="font-size: 25">地址：</font>{{ items.7 }}</li>
+                                    <li><font style="font-size: 25">联系人：</font>{{ items.2 }}</li>
+                                    <li><font style="font-size: 25">省份：</font>{{ items.4 }}</li>
+                                    <li><font style="font-size: 25">城市：</font>{{ items.5 }}</li>
+                                    <li><font style="font-size: 25">需求：</font>{{ items.3 }}</li>
+                                    <li><font style="font-size: 25">发布日期：</font>{{ items.10 }}</li>
+                                    {% if items.9%}
+                                    <li><font style="font-size: 25 color: green">已核实</font></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %} -->
         </div>
 
     </div>
@@ -228,50 +303,34 @@
             option.value = list2element[i];
             ddlCity.appendChild(option);
         }
-//         console.log(document.getElementById("city").options[0]);
+        console.log(document.getElementById("city").options[0]);
         document.getElementById("city").value = list2element[0];
     }
     
     function myFunction() {
       // 声明变量
         if (form1.style.display != 'none'){
-//             console.log('here')
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("myInput");
-            filter_search = input.value.toUpperCase();
-            filter_province = document.getElementById("province").value.toUpperCase();
-            filter_city = document.getElementById("city").value.toUpperCase();
-            table = document.getElementById("form1");
-            tr = table.getElementsByTagName("tr");
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter_search = input.value.toUpperCase();
+        filter_province = document.getElementById("province").value.toUpperCase();
+        filter_city = document.getElementById("city").value.toUpperCase();
+        table = document.getElementById("form1");
+        tr = table.getElementsByTagName("tr");
       // 循环表格每一行，查找匹配项
-            for (i = 1; i < tr.length; i++) {
-//                 console.log(ul[i].getElementsByTagName("li"))
-                td1 = tr[i].getElementsByTagName("td")[0];
-                td2 = tr[i].getElementsByTagName("td")[1];  //province
-                td3 = tr[i].getElementsByTagName("td")[2];  //city 
-                console.log(td2.innerHTML.toUpperCase())
-                console.log(td2.innerHTML.toUpperCase().indexOf(filter_province) > -1)
-                console.log(td3.innerHTML.toUpperCase().indexOf(filter_city) > -1)
-                if (td1 && td2 && td3) {
-                    
-                    if (filter_search){
-                        var search_result = false;
-                        for (j = 0; j < tr[i].getElementsByTagName("td").length; j++){
-                            search_result = search_result || (tr[i].getElementsByTagName("td")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
-                        }
-//                             console.log(search_result)
-                        }
-                    else {
-                        var search_result = true;
-                    }
-//                     console.log(search_result)
-                    if (search_result && (((td2.innerHTML.toUpperCase().indexOf(filter_province) > -1) && (td3.innerHTML.toUpperCase().indexOf(filter_city) > -1 || filter_city == "所有")) || filter_province == "所有")) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+        for (i = 0; i < tr.length; i++) {
+
+            td1 = tr[i].getElementsByTagName("td")[0];
+            td2 = tr[i].getElementsByTagName("td")[3];  //province
+            td3 = tr[i].getElementsByTagName("td")[4];  //city
+            if (td1 && td2 && td3) {
+                if (((td1.innerHTML.toUpperCase().indexOf(filter_search) > -1 && td2.innerHTML.toUpperCase().indexOf(filter_province) > -1) && (td3.innerHTML.toUpperCase().indexOf(filter_city) > -1 || filter_city == "所有")) || filter_province == "所有") {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                  }
                 }
-           }
+          }
         }
         else{
             var input, filter, table, tr, td, i;
@@ -280,29 +339,26 @@
             filter_province = document.getElementById("province").value.toUpperCase();
             filter_city = document.getElementById("city").value.toUpperCase();
             table = document.getElementById("form2");
-            ul = table.getElementsByTagName("div");
-//             console.log(ul)
+            ul = table.getElementsByTagName("ul");
+
           // 循环表格每一行，查找匹配项
             for (i = 0; i < ul.length; i++) {
-//                 console.log(ul[i].getElementsByTagName("li"))
+                console.log(ul[i].getElementsByTagName("li"))
                 li1 = ul[i].getElementsByTagName("p")[0];
                 li2 = ul[i].getElementsByTagName("p")[1];  //province
-                li3 = ul[i].getElementsByTagName("p")[2];  //city 
-//                 console.log(Boolean(filter_search))
+                li3 = ul[i].getElementsByTagName("p")[2];  //city                
                 if (li1 && li2 && li3) {
-                    
                     if (filter_search){
-                        var search_result = false;
+                        var filter_search = false;
                         for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
-                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
-                        }
-//                             console.log(search_result)
+                            filter_search = filter_search || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        
+                        console.log(filter_search)}
                         }
                     else {
-                        var search_result = true;
+                        var filter_search = true;
                     }
-                    
-                    if (search_result && (((li2.innerHTML.toUpperCase().indexOf(filter_province) > -1) && (li3.innerHTML.toUpperCase().indexOf(filter_city) > -1 || filter_city == "所有")) || filter_province == "所有")) {
+                    if (filter_search && (((li2.innerHTML.toUpperCase().indexOf(filter_province) > -1) && (li3.innerHTML.toUpperCase().indexOf(filter_city) > -1 || filter_city == "所有")) || filter_province == "所有")) {
                         ul[i].style.display = "";
                     } else {
                         ul[i].style.display = "none";
