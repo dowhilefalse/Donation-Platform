@@ -165,13 +165,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 AUTH_USER_MODEL = 'registration.User'
 
 # 短信配置
+SMS_USE = False # 是否使用短信验证码(否则为假的验证码)
 SMS_accessKeyId = '<accessKeyId>'
 SMS_accessSecret = '<accessSecret>'
 SMS_TemplateCode = '<TemplateCode>'
 SMS_SignName = '<SignName>'
 
 # custom added
-AUTHENTICATION_BACKENDS = ( 
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )

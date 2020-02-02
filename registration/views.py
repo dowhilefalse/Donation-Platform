@@ -6,6 +6,7 @@ import traceback
 import random 
 import uuid
 
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import login,  logout, authenticate
@@ -15,6 +16,7 @@ from django.contrib import messages
 
 from .models import User
 from api.views import OrganizationViewSet, TeamViewSet
+from .sms_helper import send_sms
 
 # 读取数据
 def get_context(obj):
@@ -45,12 +47,16 @@ def view_index(request):
     return render(request, 'pages/index.html', context)
 
 def view_contact(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse('registration:page_quick_register_login'))
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
     context = {}
     return render(request, 'pages/contact.html', context)
 
 def view_contact2(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse('registration:page_quick_register_login'))
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
     context = {}
@@ -59,7 +65,9 @@ def view_contact2(request):
 def view_register(request):
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
-    context = {}
+    context = {
+        'use_sms': settings.SMS_USE,
+    }
     return render(request, 'pages/register.html', context)
 
 def view_about(request):
@@ -213,12 +221,17 @@ def view_phone_captcha(request):
         # TODO: 请求频率限制
         rate_ok = True
         if rate_ok:
-           # code = str(random.randint(100000, 999999))
-            # TODO: 生成验证码 OK
-            code = '123579'
+            def generate_code():
+                return ''.join(map(str, random.choices(range(0, 10), k=6)))
+            # 生成验证码
+            # code = str(random.randint(100000, 999999))
+            code = generate_code() if settings.SMS_USE else '123579'
             try:
                 # TODO: 发送验证码
                 send_ok = True
+                error_message = None
+                if settings.SMS_USE:
+                    send_ok, error_message = send_sms(phone, code)
                 if send_ok:
                     session_key = 'captcha-{0}'.format(phone)
                     request.session[session_key] = code
@@ -226,7 +239,7 @@ def view_phone_captcha(request):
                     desc = '发送成功'
                 else:
                     error = 4
-                    desc = '发送失败'
+                    desc = '发送失败: {0}'.format(error_message)
             except Exception as e:
                 traceback.print_exc()
                 error = 5
@@ -246,6 +259,8 @@ def view_login(request):
     '''
     常规登录
     '''
+    if request.user.is_authenticated:
+        return redirect(reverse('registration:page_index'))
     if request.method == 'POST':
         account = request.POST.get('account', None)
         password = request.POST.get('password', None)
@@ -278,6 +293,8 @@ def view_quick_register_login(request):
     '''
     快速注册/登录
     '''
+    if request.user.is_authenticated:
+        return redirect(reverse('registration:page_index'))
     if request.method == 'POST':
         phone = request.POST.get('phone', None)
         captcha_code = request.POST.get('captcha', None)
@@ -332,7 +349,7 @@ def view_quick_register_login(request):
         else:
             if code_ok:
                 error = 5
-                desc = '验证码已过期'
+                desc = '验证码无效或已过期'
             else:
                 error = 6
                 desc = '缺少参数(手机号、验证码)'
@@ -340,9 +357,12 @@ def view_quick_register_login(request):
             'error': error,
             'desc': desc,
         })
-    context = {}
+    context = {
+        'use_sms': settings.SMS_USE,
+    }
     return render(request, 'pages/quick-register-login.html', context)
 
 def view_logout(request):
-    logout(request) # 清除session
+    if request.user.is_authenticated:
+        logout(request) # 清除session
     return redirect(reverse('registration:page_index'))
