@@ -48,7 +48,7 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<!-- 注: 调试阶段，暂时写死验证码 -->
-									<input value="123579" id="captcha" type="text" class="form-control" placeholder="手机验证码">
+									<input value="{% if use_sms %}{% else %}123579{% endif %}" id="captcha" type="text" class="form-control" placeholder="手机验证码">
 									<span class="input-group-btn">
 										<input id="btn-ajax-captcha" class="btn btn-default" type="button" value="发送">
 									</span>
