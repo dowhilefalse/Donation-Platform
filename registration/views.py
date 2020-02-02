@@ -95,9 +95,9 @@ def view_group11(request):
     request.GET['scope'] = 'wuhan'
     request.GET._mutable = False #make it False once edit done
 
-    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
-
-    context = get_context(obj)
+    # obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
+    # context = get_context(obj)
+    context = {}
     # TODO: 将obj.data传递到模板中 OK
     return render(request, 'pages/group2.html', context)
 
@@ -110,8 +110,9 @@ def view_group12(request):
     # 传递查询参数, 调用API方法
     request.GET = request.GET.copy()
     request.GET['scope'] = 'hubei'
-    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
-    context = get_context(obj)
+    # obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
+    # context = get_context(obj)
+    context = {}
     return render(request, 'pages/group2.html', context)
 
 # --------------------------------------------------------------
@@ -124,8 +125,9 @@ def view_group2(request):
     # 传递查询参数, 调用API方法
     request.GET = request.GET.copy() # django请求参数需要复制(方式二)后才能修改
     request.GET['scope'] = 'china'
-    obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
-    context = get_context(obj)
+    # obj = OrganizationViewSet.as_view({'get': 'list'}, app_name='api')(request)
+    # context = get_context(obj)
+    context = {}
     return render(request, 'pages/group2.html', context)
 
 # --------------------------------------------------------------
