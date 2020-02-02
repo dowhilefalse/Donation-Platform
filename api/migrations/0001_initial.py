@@ -37,6 +37,7 @@ class Migration(migrations.Migration):
                 ('address', models.TextField(blank=True, default=None, null=True, verbose_name='所在地')),
                 ('verified', models.BooleanField(default=False, verbose_name='已验证')),
                 ('add_time', models.DateTimeField(auto_now=True, verbose_name='添加时间')),
+                ('main_text', models.DateTimeField(auto_now=True, verbose_name='正文')),
             ],
             options={
                 'verbose_name': '(爱心)团体',

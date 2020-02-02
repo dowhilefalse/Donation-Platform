@@ -170,3 +170,23 @@
         "emergency": 0
     }
     ```
+
+## API自定义查询参数
+* `GET /api/organizations/`
+    + 精确查询
+        - `province`: `string` 省, 优先级高于`scope`
+        - `city`: `string` 市
+        - `inspector`: `integer` 信息提交者用户id
+        - `name`: `string` 机构名, 优先级高于`fuzzy_name`
+        - `address`: `string` 机构地址, 优先级高于`fuzzy_address`
+        - `verified`: `bool`(`true`/`false` 或 `1`/`0`) 是否已验证
+    + 模糊查询
+        - `fuzzy_name`: `string` 机构名
+        - `fuzzy_address`: `string` 机构地址
+    + 专用查询
+        - `scope`: `string`, 可选值如下:
+            * `wuhan`: 武汉(武汉市)
+            * `hubei`: 武汉周边(湖北省中除武汉外的城市)
+            * `china`: 全国各地(湖北省以外的行政区划的城市)
+    + 通用参数
+        - `page`: `integer` 分页查询页码

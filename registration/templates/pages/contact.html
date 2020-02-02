@@ -4,10 +4,77 @@
 
 {% block head_extra_style %}
 	<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap-table.min.css' %}">
+	<style type="text/css">
+		#contact-tabs-content {
+			padding-top: 0.8em;
+		}
+		#form-contact-mine {
+			display: none;
+		}
+		#form-contact-mine + .row {
+			display: none;
+			margin: auto auto 10px auto;
+			border-bottom: 1px solid #ccc;
+		}
+	</style>
 {% endblock %}
 
 {% block page_title %}发布募捐信息{% endblock %}
 {% block page_main %}
+
+<script type="text/x-template" id="form-contact-template">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				选择省份或地区
+				<select name="province" class="form-control"></select>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				选择城市
+				<select name="city" class="form-control"></select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<input name="name" type="text" class="form-control" placeholder="机构/个人名称" maxlength="15">
+		</div>
+
+		<div class="col-md-6">
+			<input name="address" type="text" class="form-control" placeholder="地址详情（选填）" maxlength="15">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="contact_box">
+				<div class="contact_info">
+					<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+					<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
+
+				</div>
+				<button class="add_contact" type="button">添加联系人</button>
+
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<div class="demand_box">
+				<div class="demand_info">
+					<select name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)"></select>
+					<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
+					<div>
+						<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
+					</div>
+				</div>
+				<button class="add_demand" type="button">添加需求</button>
+			</div>
+		</div>
+
+	</div>
+</script>
 
 <div class="container-wrap">
 	<div id="fh5co-contact">
@@ -21,68 +88,48 @@
 				</ul>
 			</div>
 			<div class="col-md-7 col-md-pull-2 animate-box">
-				<h3>递交表格</h3>
-				<h5>递交/修改表格成功后，内容会直接发布</h5>
-				<h5>（建议在线下编辑好后，再复制上来）</h5>
+				<ul id="contact-tabs" class="nav nav-tabs">
+					<style>
+					.li.a{
+						color: red;
+					}
+					</style>
+					<li class="active">
+						<a href="#tab-submit-new" data-toggle="tab">递交表格</a>
+					</li>
+					<li><a href="#tab-submit-mine" data-toggle="tab">我递交的</a></li>
+				</ul>
+				<div id="contact-tabs-content" class="tab-content">
+					<div class="tab-pane fade in active" id="tab-submit-new">
+						<h5>递交/修改表格成功后，内容会直接发布</h5>
+						<h5>（建议在线下编辑好后，再复制上来）</h5>
 
-				<form method="post" id="form1">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								选择省份或地区
-								<select id="province" name="province" class="form-control"></select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								选择城市
-								<select id="city" name="city" class="form-control"></select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<input id="name" name="name" type="text" class="form-control" placeholder="机构/个人名称" maxlength="15">
-						</div>
-
-						<div class="col-md-6">
-							<input id="address" name="address" type="text" class="form-control" placeholder="地址详情（选填）" maxlength="15">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="contact_box">
-								<div class="contact_info">
-									<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
-									<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
-
+						<form id="form-contact-new"></form>
+						<div class="row">
+							<div class="col-md-push-3 col-md-9">
+								<div class="form-group">
+									<input type="button" value="提交" onclick="submit_contact_new()"
+										class="btn btn-primary btn-modify">
 								</div>
-								<button class="add_contact" type="button">添加联系人</button>
-
-							</div>
-						</div>
-
-						<div class="col-md-12">
-							<div class="demand_box">
-								<div class="demand_info">
-									<select name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)"></select>
-									<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
-									<div>
-										<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
-									</div>
-								</div>
-								<button class="add_demand" type="button">添加需求</button>
-							</div>
-						</div>
-
-						<div class="col-md-12">
-							<div class="form-group">
-								<input type="button" value="提交" onclick="submit_form()"
-									class="btn btn-primary btn-modify">
 							</div>
 						</div>
 					</div>
-				</form>
+					<div class="tab-pane fade" id="tab-submit-mine">
+						<form id="form-contact-mine"></form>
+						<div class="row">
+							<div class="col-md-push-2 col-md-10">
+								<div class="form-group">
+									<input type="button" value="取消" onclick="cancel_contact_mine()"
+										class="btn btn-default btn-modify">
+									<input type="button" value="保存" onclick="save_contact_mine()"
+										class="btn btn-primary btn-modify">
+								</div>
+							</div>
+						</div>
+
+						<table class="table mine-contact-list"></table>
+					</div>
+				</div>
 			</div>
 
 		</div>
@@ -94,9 +141,63 @@
 <script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/bootstrap-select.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/defaults-zh_CN.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap-table.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap-table-zh-CN.min.js' %}" type="text/javascript"></script>
 
 <script type="text/javascript">
 	$.fn.selectpicker.Constructor.BootstrapVersion = '3';
+
+	var demandList = [
+		'医用防护服',
+		'N95口罩',
+		'医用外科口罩',
+		'一次性医用口罩',
+		'一次性医用帽',
+		'护目镜',
+		'防冲击眼罩',
+		'防护面罩',
+		'隔离衣',
+		'手术衣',
+		'医用一次性乳胶手套'
+	];
+
+	var territory = {
+		'湖北省': ["武汉市", "十堰市", "襄樊市", "荆门市", "孝感市", "黄冈市", "鄂州市", "黄石市", "咸宁市", "荆州市", "宜昌市", "随州市", "恩施土家族苗族自治州", "仙桃市", "天门市", "潜江市", "神农架林区", "其他"],
+		'北京市': ["北京", "东城区", "西城区", "崇文区", "宣武区", "朝阳区", "丰台区", "石景山区", " 海淀区（中关村）", "门头沟区", "房山区", "通州区", "顺义区", "昌平区", "大兴区", "怀柔区", "平谷区", "密云县", "延庆县", " 其他"],
+		'天津市': ["和平区", "河东区", "河西区", "南开区", "红桥区", "塘沽区", "汉沽区", "大港区", "西青区", "津南区", "武清区", "蓟县", "宁河县", "静海县", "其他"],
+		'河北省': ["石家庄市", "张家口市", "承德市", "秦皇岛市", "唐山市", "廊坊市", "衡水市", "沧州市", "邢台市", "邯郸市", "保定市", "其他"],
+		'山西省': ["太原市", "朔州市", "大同市", "长治市", "晋城市", "忻州市", "晋中市", "临汾市", "吕梁市", "运城市", "其他"],
+		'内蒙古': ["呼和浩特市", "包头市", "赤峰市", "呼伦贝尔市", "鄂尔多斯市", "乌兰察布市", "巴彦淖尔市", "兴安盟", "阿拉善盟", "锡林郭勒盟", "其他"],
+		'辽宁省': ["沈阳市", "朝阳市", "阜新市", "铁岭市", "抚顺市", "丹东市", "本溪市", "辽阳市", "鞍山市", "大连市", "营口市", "盘锦市", "锦州市", "葫芦岛市", "其他"],
+		'吉林省': ["长春市", "白城市", "吉林市", "四平市", "辽源市", "通化市", "白山市", "延边朝鲜族自治州", "其他"],
+		'黑龙江省': ["哈尔滨市", "七台河市", "黑河市", "大庆市", "齐齐哈尔市", "伊春市", "佳木斯市", "双鸭山市", "鸡西市", "大兴安岭地区(加格达奇)", "牡丹江", "鹤岗市", "绥化市　", "其他"],
+		'上海市': ["黄浦区", "卢湾区", "徐汇区", "长宁区", "静安区", "普陀区", "闸北区", "虹口区", "杨浦区", "闵行区", "宝山区", "嘉定区", "浦东新区", "金山区", "松江区", "青浦区", "南汇区", "奉贤区", "崇明县", "其他"],
+		'江苏省': ["南京市", "徐州市", "连云港市", "宿迁市", "淮安市", "盐城市", "扬州市", "泰州市", "南通市", "镇江市", "常州市", "无锡市", "苏州市", "其他"],
+		'浙江省': ["杭州市", "湖州市", "嘉兴市", "舟山市", "宁波市", "绍兴市", "衢州市", "金华市", "台州市", "温州市", "丽水市", "其他"],
+		'安徽省': ["合肥市", "宿州市", "淮北市", "亳州市", "阜阳市", "蚌埠市", "淮南市", "滁州市", "马鞍山市", "芜湖市", "铜陵市", "安庆市", "黄山市", "六安市", "巢湖市", "池州市", "宣城市", "其他"],
+		'福建省': ["福州市", "南平市", "莆田市", "三明市", "泉州市", "厦门市", "漳州市", "龙岩市", "宁德市", "其他"],
+		'江西省': ["南昌市", "九江市", "景德镇市", "鹰潭市", "新余市", "萍乡市", "赣州市", "上饶市", "抚州市", "宜春市", "吉安市", "其他"],
+		'山东省': ["济南市", "聊城市", "德州市", "东营市", "淄博市", "潍坊市", "烟台市", "威海市", "青岛市", "日照市", "临沂市", "枣庄市", "济宁市", "泰安市", "莱芜市", "滨州市", "菏泽市", "其他"],
+		'河南省': ["郑州市", "三门峡市", "洛阳市", "焦作市", "新乡市", "鹤壁市", "安阳市", "濮阳市", "开封市", "商丘市", "许昌市", "漯河市", "平顶山市", "南阳市", "信阳市", "周口市", "驻马店市", "其他"],
+		'湖南省': ["长沙市", "张家界市", "常德市", "益阳市", "岳阳市", "株洲市", "湘潭市", "衡阳市", "郴州市", "永州市", "邵阳市", "怀化市", "娄底市", "湘西土家族苗族自治州", "其他"],
+		'广东省': ["广州市", "清远市市", "韶关市", "河源市", "梅州市", "潮州市", "汕头市", "揭阳市", "汕尾市", " 惠州市", "东莞市", "深圳市", "珠海市", "中山市", "江门市", "佛山市", "肇庆市", "云浮市", "阳江市", "茂名市", "湛江市", " 其他"],
+		'广西壮族自治区': ["南宁市", "桂林市", "柳州市", "梧州市", "贵港市", "玉林市", "钦州市", "北海市", "防城港市", "崇左市", "百色市", "河池市", "来宾市", "贺州市", "其他"],
+		'海南省': ["海口市", "三亚市", "其他"],
+		'重庆市': ["渝中区", "大渡口区", "江北区", "沙坪坝区", "九龙坡区", "南岸区", "北碚区", "万盛区", "双桥区", "渝北区", "巴南区", "万州区", "涪陵区", "黔江区", "长寿区", "合川市", "永川市", "江津市", "南川市", "綦江县", "潼南县", "铜梁县", "大足县", "璧山县", "垫江县", "武隆县", "丰都县", "城口县", "开县", "巫溪县", "巫山县", "奉节县", "云阳县", "忠县", "石柱土家族自治县", "彭水苗族土家族自治县", "酉阳土家族苗族自治县", "秀山土家族苗族自治县", "其他"],
+		'四川省': ["成都市", "广元市", "绵阳市", "德阳市", "南充市", "广安市", "遂宁市", "内江市", "乐山市", "自贡市", "泸州市", "宜宾市", "攀枝花市", "巴中市", "资阳市", "眉山市", "雅安", "阿坝藏族羌族自治州", "甘孜藏族自治州", "凉山彝族自治州县", "其他"],
+		'贵州省': ["贵阳市", "六盘水市", "遵义市", "安顺市", "毕节地区", "铜仁地区", "黔东南苗族侗族自治州", "黔南布依族苗族自治州", "黔西南布依族苗族自治州", "其他"],
+		'云南省': ["昆明市", "曲靖市", "玉溪市", "保山市", "昭通市", "丽江市", "普洱市", "临沧市", "宁德市", "德宏傣族景颇族自治州", "怒江傈僳族自治州", "楚雄彝族自治州", "红河哈尼族彝族自治州", "文山壮族苗族自治州", "大理白族自治州", "迪庆藏族自治州", "西双版纳傣族自治州", "其他"],
+		'西藏自治区': ["拉萨市", "那曲地区", "昌都地区", "林芝地区", "山南地区", "日喀则地区", "阿里地区", "其他"],
+		'陕西省': ["西安市", "延安市", "铜川市", "渭南市", "咸阳市", "宝鸡市", "汉中市", "安康市", "商洛市", "其他"],
+		'甘肃省': ["兰州市 ", "嘉峪关市", "金昌市", "白银市", "天水市", "武威市", "酒泉市", "张掖市", "庆阳市", "平凉市", "定西市", "陇南市", "临夏回族自治州", "甘南藏族自治州", "其他"],
+		'青海省': ["西宁市", "海东地区", "海北藏族自治州", "黄南藏族自治州", "玉树藏族自治州", "海南藏族自治州", "果洛藏族自治州", "海西蒙古族藏族自治州", "其他"],
+		'宁夏回族自治区': ["银川市", "石嘴山市", "吴忠市", "固原市", "中卫市", "其他"],
+		'新疆维吾尔自治区': ["乌鲁木齐市", "克拉玛依市", "喀什地区", "阿克苏地区", "和田地区", "吐鲁番地区", "哈密地区", "塔城地区", "阿勒泰地区", "克孜勒苏柯尔克孜自治州", "博尔塔拉蒙古自治州", "昌吉回族自治州伊犁哈萨克自治州", "巴音郭楞蒙古自治州", "河子市", "阿拉尔市", "五家渠市", "图木舒克市", "其他"],
+		'香港特别行政区': ["香港", "其他"],
+		'澳门特别行政区': ["澳门", "其他"],
+		'台湾省': ["台北市", "其他"],
+		'其它': ["其他"]
+	};
 
 	function setupDorpDown($demandSelect) {
 		$demandSelect.selectpicker({
@@ -107,20 +208,6 @@
 			'noneResultsText': '回车输入新需求物品',
 			'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
 		});
-
-		var demandList = [
-			'医用防护服',
-			'N95口罩',
-			'医用外科口罩',
-			'一次性医用口罩',
-			'一次性医用帽',
-			'护目镜',
-			'防冲击眼罩',
-			'防护面罩',
-			'隔离衣',
-			'手术衣',
-			'医用一次性乳胶手套'
-		];
 
 		for (var i = 0; i < demandList.length; i++) {
 			var value = demandList[i];
@@ -168,39 +255,112 @@
 		});
 	}
 
-	var $firstDemand = $('.demand_info').find('select[name="demand-name"]');
-	setupDorpDown($firstDemand);
+	function setupFrom($form, initData) {
+		var formTemplate = $('#form-contact-template').html();
+		$form.empty();
+		$form.html(formTemplate);
 
-
-	$(".add_contact").click(function () {
-		var html = `
-			<div class="contact_info">
-				<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
-				<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
-				<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
-			</div>
-			`;
-		$(this).before(html)
-	})
-
-
-	$(".add_demand").click(function () {
-		var id = `id-${new Date().getTime()}`;
-		var html = `
-			<div class="demand_info" id="${id}">
-				<select name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)"></select>
-				<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
-				<button onclick='del_item(0,this)' class='del_btn' type="button">删除该项</button>
-				<div>
-					<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
+		// 联系人
+		$form.find(".add_contact").click(function () {
+			var html = `
+				<div class="contact_info">
+					<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+					<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
+					<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
 				</div>
-			</div>
-			`;
-		$(this).before(html);
+				`;
+			$(this).before(html)
+		});
 
-		var $newDemand = $(`#${id}`).find('select[name="demand-name"]');
-		setupDorpDown($newDemand);
-	})
+		// (物资)需求
+		var $firstDemand = $form.find('.demand_info').find('select[name="demand-name"]');
+		setupDorpDown($firstDemand);
+		$form.find(".add_demand").click(function () {
+			var id = `id-${new Date().getTime()}`;
+			var html = `
+				<div class="demand_info" id="${id}">
+					<select name="demand-name" type="text" class="form-control" placeholder="需求物品(例：医用口罩)"></select>
+					<input name="demand-amount" type="text" class="form-control" placeholder="需求数量(可选，单位写备注)">
+					<button onclick='del_item(0,this)' class='del_btn' type="button">删除该项</button>
+					<div>
+						<input name="demand-remark" type="text" placeholder="备注(例：GB2626-2006标准)" class="form-control ps">
+					</div>
+				</div>
+				`;
+			$(this).before(html);
+
+			var $newDemand = $(`#${id}`).find('select[name="demand-name"]');
+			setupDorpDown($newDemand);
+		});
+
+		// 省
+		Object.keys(territory).forEach(function(value, idx, arr) {
+			$form.find('select[name="province"]').append(`<option value="${value}">${value}</option>`);
+		});
+		$form.find('select[name="province"]').selectpicker({
+			'liveSearch': true,
+			'liveSearchNormalize': true,
+			'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
+		});
+		$form.find('select[name="province"]').selectpicker('refresh');
+		$form.find('select[name="province"]').change(function () {
+			var province = $form.find('select[name="province"]').selectpicker('val');
+			var cities = territory[province];
+			$form.find('select[name="city"]').empty();
+			for (var i = 0; i < cities.length; i++) {
+				var city = cities[i];
+				$form.find('select[name="city"]').append(`<option value="${city}">${city}</option>`);
+			}
+			$form.find('select[name="city"]').selectpicker('refresh');
+		});
+
+		// 市
+		$form.find('select[name="city"]').selectpicker({
+			'liveSearch': true,
+			'liveSearchNormalize': true,
+			'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
+		});
+		// 市初始化
+		$form.find('select[name="province"]').trigger('change');
+
+		// 数据填充
+		if (!!initData) {
+			console.log(initData);
+			$form.find('select[name="province"]').selectpicker('val', initData.province);
+			$form.find('select[name="province"]').trigger('change');
+			$form.find('select[name="city"]').selectpicker('val', initData.city);
+			$form.find('input[name="name"]').val(initData.name);
+			$form.find('input[name="address"]').val(initData.address);
+			// 联系方式填充
+			for (var i = 0; i < initData.contacts.length; i++) {
+				var contact = initData.contacts[i];
+				if (i > 0) {
+					$form.find(".add_contact").trigger('click');
+				}
+				else {
+				}
+				$form.find(`.contact_info:eq(${i})`).find('input[name="contact-name"]').val(contact.name);
+				$form.find(`.contact_info:eq(${i})`).find('input[name="contact-phone"]').val(contact.phone);
+			}
+			// 需求填充
+			for (var i = 0; i < initData.demands.length; i++) {
+				var demand = initData.demands[i];
+				if (i > 0) {
+					$form.find(".add_demand").trigger('click');
+				}
+				else {
+				}
+				var $demand_name = $form.find(`.demand_info:eq(${i})`).find('select[name="demand-name"]');
+				if (!demandList.includes(demand.name)) {
+					$demand_name.append(`<option value="${demand.name}">${demand.name}</option>`);
+					$demand_name.selectpicker('refresh');
+				}
+				$demand_name.selectpicker('val', demand.name);
+				$form.find(`.demand_info:eq(${i})`).find('input[name="demand-amount"]').val(demand.amount <0 ? '' : demand.amount);
+				$form.find(`.demand_info:eq(${i})`).find('input[name="demand-remark"]').val(demand.remark);
+			}
+		}
+	}
 
 	function del_item(opt, self) {
 
@@ -211,10 +371,8 @@
 		$(self).parent().remove()
 	}
 
-	const BaseURL = GLOGAL.API_BASE;
-
-	function submit_form() {
-		var $form = $('#form1');
+	function submit_contact_new() {
+		var $form = $('#form-contact-new');
 		var data = {
 			"contacts": [],
 			"demands": [],
@@ -247,7 +405,7 @@
 		var $demands = $form.find('.demand_box').children('.demand_info');
 		for (var i = 0; i < $demands.length; i++) {
 			var $item = $demands.filter(`:eq(${i})`);
-			var name = $item.find('input[name="demand-name"]').val(),
+			var name = $item.find('select[name="demand-name"]').val(),
 				amount = Number.parseInt($item.find('input[name="demand-amount"]').val()),
 				remark = $item.find('input[name="demand-remark"]').val();
 			// name 必填
@@ -266,11 +424,11 @@
 		}
 
 		console.log(data)
-		// console.log($('#form1').serialize())
+		// console.log($('#form-contact-new').serialize())
 
 		$.ajax({
 			type: "POST",
-			url: BaseURL + "organizations/",
+			url: GLOGAL.API_BASE + "organizations/",
 			data: JSON.stringify(data),
 			processData: false,
 			contentType:"application/json; charset=utf-8",
@@ -291,266 +449,272 @@
 			}
 		});
 	}
+
+	function save_contact_mine() {
+		var $form = $('#form-contact-mine');
+		// 实现机构信息修改
+		var origin_data = $form.data('origin_contact_info');
+
+		// 基础信息
+		var basic_change = false;
+		var province = $form.find('select[name="province"]').val(),
+			city = $form.find('select[name="city"]').val(),
+			name = $form.find('input[name="name"]').val(),
+			address = $form.find('input[name="address"]').val();
+		if (origin_data.province != province) {
+			basic_change = true;
+			origin_data.province = province;
+		}
+		if (origin_data.city != city) {
+			basic_change = true;
+			origin_data.city = city;
+		}
+		if (origin_data.name != name) {
+			basic_change = true;
+			origin_data.name = name;
+		}
+		if (origin_data.address != address) {
+			basic_change = true;
+			origin_data.address = address;
+		}
+
+		// 联系人信息
+		var contacts_change = false;
+		var contact_phones = [];
+		var $contacts = $form.find('.contact_box').children('.contact_info');
+		for (var i = 0; i < $contacts.length; i++) {
+			var $item = $contacts.filter(`:eq(${i})`);
+			var name = $item.find('input[name="contact-name"]').val(),
+				phone = $item.find('input[name="contact-phone"]').val();
+			// TODO: 验证要求 phone 和 name 必填
+			if (!phone) {
+				// TODO: toast error tip
+				continue;
+			}
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			contact_phones.push(phone);
+			var is_old = false;
+			for (var j = 0; j < origin_data.contacts.length; j++) {
+				var contact = origin_data.contacts[j];
+				if (contact.phone == phone) {
+					// 已存在的联系人(根据 phone 判断)
+					is_old = true;
+					if (contact.name != name) {
+						// 更新联系人称呼
+						origin_data.contacts[j].name = name;
+						contacts_change = true;
+					}
+				}
+			}
+			if (!is_old) {
+				// 新联系人添加
+				origin_data.contacts.push({
+					'name': name,
+					'phone': phone
+				});
+				contacts_change = true;
+			}
+		}
+		if (origin_data.contacts.length > contact_phones.length) {
+			// 联系人有删除
+			// TODO: 从 origin_data 中移除删除的联系人
+		}
+
+		// 需求信息
+		var demands_change = false;
+		var demand_names = [];
+		var $demands = $form.find('.demand_box').children('.demand_info');
+		for (var i = 0; i < $demands.length; i++) {
+			var $item = $demands.filter(`:eq(${i})`);
+			var name = $item.find('select[name="demand-name"]').val(),
+				amount = Number.parseInt($item.find('input[name="demand-amount"]').val()),
+				remark = $item.find('input[name="demand-remark"]').val();
+			// name 必填
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			demand_names.push(name);
+
+			var is_old = false;
+			for (var j = 0; j < origin_data.demands.length; j++) {
+				var demand = origin_data.demands[j];
+				if (demand.name == name) {
+					// 已存在的需求(根据 name 判断)
+					is_old = true;
+					if (demand.amount != amount) {
+						// 更新需求数量、备注
+						if (demand.amount > 0 ) {
+							// 数量已经填写了具体值
+							demands_change = true;
+							origin_data.demands[j].amount = amount;
+						}
+						else {
+							// 数量未填写具体值
+							if (!!amount && Number.isInteger(amount) && amount > 0) {
+								demands_change = true;
+								origin_data.demands[j].amount = amount;
+							}
+						}
+					}
+					if (demand.remark != remark) {
+						demands_change = true;
+						origin_data.demands[j].remark = remark;
+					}
+				}
+			}
+			if (!is_old) {
+				// 新需求添加
+				var item = {'name': name};
+				if (!!amount && Number.isInteger(amount) && amount > 0) {
+					item['amount'] = amount;
+				}
+				if (!!remark) {
+					item['remark'] = remark;
+				}
+				demands_change = true;
+				origin_data.demands.push(item);
+			}
+		}
+		if (origin_data.demands.length > demand_names.length) {
+			// 需求有删除
+			// TODO: 从 origin_data 中移除删除的需求
+		}
+
+		if (basic_change || contacts_change || demands_change) {
+			console.log(origin_data)
+			// TODO: 数据保存
+			$.ajax({
+				type: "PUT",
+				url: GLOGAL.API_BASE + `organizations/${origin_data.id}/`,
+				data: JSON.stringify(origin_data),
+				processData: false,
+				contentType:"application/json; charset=utf-8",
+				dataType: "json",
+				success: function (resp) {
+					console.log(resp);
+					if (resp.id == origin_data.id && !!resp.url) {
+						cancel_contact_mine();
+						// TODO: 刷新数据
+						$('table.mine-contact-list').bootstrapTable('refresh');
+						alert("成功");
+					}
+					else {
+						alert("失败");
+					}
+				},
+				error: function (jqXHR) {
+					alert("Error: " + jqXHR.status);
+				}
+			});
+			// TODO: 刷新表格 table.mine-contact-list
+		}
+		else {
+			// 数据未修改
+			cancel_contact_mine();
+		}
+	}
+
+	function cancel_contact_mine() {
+		var $form = $('#form-contact-mine');
+		$form.next('.row').hide();
+		$form.hide();
+		$form.removeData('origin_contact_info');
+	}
 </script>
 
 <script type="text/javascript">
-	var list1 = new Array;
-	var list2 = new Array;
-	list1[list1.length] = "湖北省";
-	list1[list1.length] = "北京市";
-	list1[list1.length] = "天津市";
-	list1[list1.length] = "河北省";
-	list1[list1.length] = "山西省";
-	list1[list1.length] = "内蒙古";
-	list1[list1.length] = "辽宁省";
-	list1[list1.length] = "吉林省";
-	list1[list1.length] = "黑龙江省";
-	list1[list1.length] = "上海市";
-	list1[list1.length] = "江苏省";
-	list1[list1.length] = "浙江省";
-	list1[list1.length] = "安徽省";
-	list1[list1.length] = "福建省";
-	list1[list1.length] = "江西省";
-	list1[list1.length] = "山东省";
-	list1[list1.length] = "河南省";
-	list1[list1.length] = "湖南省";
-	list1[list1.length] = "广东省";
-	list1[list1.length] = "广西壮族自治区";
-	list1[list1.length] = "海南省";
-	list1[list1.length] = "重庆市";
-	list1[list1.length] = "四川省";
-	list1[list1.length] = "贵州省";
-	list1[list1.length] = "云南省";
-	list1[list1.length] = "西藏自治区";
-	list1[list1.length] = "陕西省";
-	list1[list1.length] = "甘肃省";
-	list1[list1.length] = "青海省";
-	list1[list1.length] = "宁夏回族自治区";
-	list1[list1.length] = "新疆维吾尔自治区";
-	list1[list1.length] = "香港特别行政区";
-	list1[list1.length] = "澳门特别行政区";
-	list1[list1.length] = "台湾";
-	list1[list1.length] = "其它";
-
-
-	list2[list2.length] = new Array("武汉市", "十堰市", "襄樊市", "荆门市", "孝感市", "黄冈市", "鄂州市", "黄石市",
-		"咸宁市", "荆州市", "宜昌市", "随州市", "恩施土家族苗族自治州", "仙桃市", "天门市", "潜江市", "神农架林区", "其他");
-	list2[list2.length] = new Array("北京", "东城区", "西城区", "崇文区", "宣武区", "朝阳区", "丰台区", "石景山区", " 海淀区（中关村）", "门头沟区", "房山区", "通州区", "顺义区", "昌平区", "大兴区", "怀柔区", "平谷区", "密云县", "延庆县", " 其他");
-	list2[list2.length] = new Array("和平区", "河东区", "河西区", "南开区", "红桥区", "塘沽区", "汉沽区", "大港区",
-		"西青区", "津南区", "武清区", "蓟县", "宁河县", "静海县", "其他");
-	list2[list2.length] = new Array("石家庄市", "张家口市", "承德市", "秦皇岛市", "唐山市", "廊坊市", "衡水市",
-		"沧州市", "邢台市", "邯郸市", "保定市", "其他");
-	list2[list2.length] = new Array("太原市", "朔州市", "大同市", "长治市", "晋城市", "忻州市", "晋中市", "临汾市",
-		"吕梁市", "运城市", "其他");
-	list2[list2.length] = new Array("呼和浩特市", "包头市", "赤峰市", "呼伦贝尔市", "鄂尔多斯市", "乌兰察布市",
-		"巴彦淖尔市", "兴安盟", "阿拉善盟", "锡林郭勒盟", "其他");
-	list2[list2.length] = new Array("沈阳市", "朝阳市", "阜新市", "铁岭市", "抚顺市", "丹东市", "本溪市", "辽阳市",
-		"鞍山市", "大连市", "营口市", "盘锦市", "锦州市", "葫芦岛市", "其他");
-	list2[list2.length] = new Array("长春市", "白城市", "吉林市", "四平市", "辽源市", "通化市", "白山市", "延边朝鲜族自治州", "其他");
-	list2[list2.length] = new Array("哈尔滨市", "七台河市", "黑河市", "大庆市", "齐齐哈尔市", "伊春市", "佳木斯市",
-		"双鸭山市", "鸡西市", "大兴安岭地区(加格达奇)", "牡丹江", "鹤岗市", "绥化市　", "其他");
-	list2[list2.length] = new Array("黄浦区", "卢湾区", "徐汇区", "长宁区", "静安区", "普陀区", "闸北区", "虹口区",
-		"杨浦区", "闵行区", "宝山区", "嘉定区", "浦东新区", "金山区", "松江区", "青浦区", "南汇区", "奉贤区", "崇明县", "其他");
-	list2[list2.length] = new Array("南京市", "徐州市", "连云港市", "宿迁市", "淮安市", "盐城市", "扬州市", "泰州市",
-		"南通市", "镇江市", "常州市", "无锡市", "苏州市", "其他");
-	list2[list2.length] = new Array("杭州市", "湖州市", "嘉兴市", "舟山市", "宁波市", "绍兴市", "衢州市", "金华市",
-		"台州市", "温州市", "丽水市", "其他");
-	list2[list2.length] = new Array("合肥市", "宿州市", "淮北市", "亳州市", "阜阳市", "蚌埠市", "淮南市", "滁州市",
-		"马鞍山市", "芜湖市", "铜陵市", "安庆市", "黄山市", "六安市", "巢湖市", "池州市", "宣城市", "其他");
-	list2[list2.length] = new Array("福州市", "南平市", "莆田市", "三明市", "泉州市", "厦门市", "漳州市", "龙岩市", "宁德市", "其他");
-	list2[list2.length] = new Array("南昌市", "九江市", "景德镇市", "鹰潭市", "新余市", "萍乡市", "赣州市", "上饶市",
-		"抚州市", "宜春市", "吉安市", "其他");
-	list2[list2.length] = new Array("济南市", "聊城市", "德州市", "东营市", "淄博市", "潍坊市", "烟台市", "威海市",
-		"青岛市", "日照市", "临沂市", "枣庄市", "济宁市", "泰安市", "莱芜市", "滨州市", "菏泽市", "其他");
-	list2[list2.length] = new Array("郑州市", "三门峡市", "洛阳市", "焦作市", "新乡市", "鹤壁市", "安阳市", "濮阳市",
-		"开封市", "商丘市", "许昌市", "漯河市", "平顶山市", "南阳市", "信阳市", "周口市", "驻马店市", "其他");
-	list2[list2.length] = new Array("长沙市", "张家界市", "常德市", "益阳市", "岳阳市", "株洲市", "湘潭市", "衡阳市",
-		"郴州市", "永州市", "邵阳市", "怀化市", "娄底市", "湘西土家族苗族自治州", "其他");
-	list2[list2.length] = new Array("广州市", "清远市市", "韶关市", "河源市", "梅州市", "潮州市", "汕头市", "揭阳市",
-		"汕尾市", " 惠州市", "东莞市", "深圳市", "珠海市", "中山市", "江门市", "佛山市", "肇庆市", "云浮市",
-		"阳江市", "茂名市", "湛江市", " 其他");
-	list2[list2.length] = new Array("南宁市", "桂林市", "柳州市", "梧州市", "贵港市", "玉林市", "钦州市", "北海市",
-		"防城港市", "崇左市", "百色市", "河池市", "来宾市", "贺州市", "其他");
-	list2[list2.length] = new Array("海口市", "三亚市", "其他");
-	list2[list2.length] = new Array("渝中区", "大渡口区", "江北区", "沙坪坝区", "九龙坡区", "南岸区", "北碚区",
-		"万盛区", "双桥区", "渝北区", "巴南区", "万州区", "涪陵区", "黔江区", "长寿区", "合川市", "永川市",
-		"江津市", "南川市", "綦江县", "潼南县", "铜梁县", "大足县", "璧山县", "垫江县", "武隆县", "丰都县",
-		"城口县", "开县", "巫溪县", "巫山县", "奉节县", "云阳县", "忠县", "石柱土家族自治县", "彭水苗族土家族自治县",
-		"酉阳土家族苗族自治县", "秀山土家族苗族自治县", "其他");
-	list2[list2.length] = new Array("成都市", "广元市", "绵阳市", "德阳市", "南充市", "广安市", "遂宁市",
-		"内江市", "乐山市", "自贡市", "泸州市", "宜宾市", "攀枝花市", "巴中市", "资阳市", "眉山市", "雅安",
-		"阿坝藏族羌族自治州", "甘孜藏族自治州", "凉山彝族自治州县", "其他");
-	list2[list2.length] = new Array("贵阳市", "六盘水市", "遵义市", "安顺市", "毕节地区", "铜仁地区",
-		"黔东南苗族侗族自治州", "黔南布依族苗族自治州", "黔西南布依族苗族自治州", "其他");
-	list2[list2.length] = new Array("昆明市", "曲靖市", "玉溪市", "保山市", "昭通市", "丽江市", "普洱市",
-		"临沧市", "宁德市", "德宏傣族景颇族自治州", "怒江傈僳族自治州", "楚雄彝族自治州", "红河哈尼族彝族自治州",
-		"文山壮族苗族自治州", "大理白族自治州", "迪庆藏族自治州", "西双版纳傣族自治州", "其他");
-	list2[list2.length] = new Array("拉萨市", "那曲地区", "昌都地区", "林芝地区", "山南地区", "日喀则地区", "阿里地区", "其他");
-	list2[list2.length] = new Array("西安市", "延安市", "铜川市", "渭南市", "咸阳市", "宝鸡市", "汉中市", "安康市", "商洛市", "其他");
-	list2[list2.length] = new Array("兰州市 ", "嘉峪关市", "金昌市", "白银市", "天水市", "武威市", "酒泉市",
-		"张掖市", "庆阳市", "平凉市", "定西市", "陇南市", "临夏回族自治州", "甘南藏族自治州", "其他");
-	list2[list2.length] = new Array("西宁市", "海东地区", "海北藏族自治州", "黄南藏族自治州", "玉树藏族自治州",
-		"海南藏族自治州", "果洛藏族自治州", "海西蒙古族藏族自治州", "其他");
-	list2[list2.length] = new Array("银川市", "石嘴山市", "吴忠市", "固原市", "中卫市", "其他");
-	list2[list2.length] = new Array("乌鲁木齐市", "克拉玛依市", "喀什地区", "阿克苏地区", "和田地区", "吐鲁番地区",
-		"哈密地区", "塔城地区", "阿勒泰地区", "克孜勒苏柯尔克孜自治州", "博尔塔拉蒙古自治州",
-		"昌吉回族自治州伊犁哈萨克自治州", "巴音郭楞蒙古自治州", "河子市", "阿拉尔市", "五家渠市", "图木舒克市", "其他");
-	list2[list2.length] = new Array("香港", "其他");
-	list2[list2.length] = new Array("澳门", "其他");
-	list2[list2.length] = new Array("台湾", "其他");
-
-	var ddlProvince = document.getElementById("province");
-	var ddlCity = document.getElementById("city");
-	for (var i = 0; i < list1.length; i++) {
-		var option = document.createElement("option");
-		option.appendChild(document.createTextNode(list1[i]));
-		option.value = list1[i];
-		ddlProvince.appendChild(option);
-		//city initialize
-		var firstprovince = list2[0];
-		for (var j = 0; j < firstprovince.length; j++) {
-			var optioncity = document.createElement("option");
-			optioncity.appendChild(document.createTextNode(firstprovince[j]));
-			optioncity.value = firstprovince[j];
-			ddlCity.appendChild(optioncity);
-		}
-	}
-
-	$('#province').selectpicker({
-		'liveSearch': true,
-		'liveSearchNormalize': true,
-		'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
-	});
-	$('#province').selectpicker('refresh');
-
-	$('#city').selectpicker({
-		'liveSearch': true,
-		'liveSearchNormalize': true,
-		'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
-	});
-	$('#city').selectpicker('refresh');
-
-	function indexof(obj, value) {
-		var k = 0;
-		for (; k < obj.length; k++) {
-			if (obj[k] == value)
-				return k;
-		}
-		return k;
-	}
-
-	$(function (obj) { /* DOM ready */
-		$("#province").change(function () {
-			// console.log('testsele')
-			ddlCity.options.length = 0;//clear
-			$('#city').empty();
-			var index = indexof(list1, document.getElementById("province").value);
-			var list2element = list2[index];
-			for (var i = 0; i < list2element.length; i++) {
-				var option = document.createElement("option");
-				option.appendChild(document.createTextNode(list2element[i]));
-				option.value = list2element[i];
-				ddlCity.appendChild(option);
-			}
-			$('#city').selectpicker('refresh');
+	$(document).ready(function () {
+		// 新递交表单
+		setupFrom($('#form-contact-new'));
+		// 阻止默认提交
+		$('#form-contact-new, #form-contact-mine').on('submit', function(event) {
+			event.preventDefault();
+			return false;
 		});
-		$("#province").trigger('change');
-	});
 
-	function selectprovince(obj) {
-		console.log('testsele')
-		ddlCity.options.length = 0;//clear
-		var index = indexof(list1, obj.value);
-		var list2element = list2[index];
-		for (var i = 0; i < list2element.length; i++) {
-			var option = document.createElement("option");
-			option.appendChild(document.createTextNode(list2element[i]));
-			option.value = list2element[i];
-			ddlCity.appendChild(option);
-		}
-	}
-
-
-	function org_form_submit() {
-		// 取值
-		var province = $('#province').val(),
-			city = $('#city').val(),
-			name = $('#name').val(),
-			contact_name = $('#contact_name').val(),
-			contact_method = $('#contact_method').val(),
-			name = $('#contact_other').val(),
-			main_text = $('#main_text').val()
-		// 验证(TODO: 更加严格的验证)
-		var isOk = false
-		if (!name) {
-			field = 'name';
-			message = '请输入机构名称';
-		}
-		else {
-			if (!province) {
-				field = 'province';
-				message = '请选择省份/地区';
-			}
-			else {
-				if (!city) {
-					field = 'city';
-					message = '请选择城市';
-				}
-				else {
-					if (!contact_name) {
-						field = 'contact_name';
-						message = '请输入联系者';
+		// 我递交的
+		$('table.mine-contact-list').bootstrapTable({
+			pagination: true, // 是否显示分页
+			sortable: false, // 是否启用排序
+			sortOrder: "asc", // 排序方式
+  			search: false, // 是否显示分页
+  			striped: true, // 是否显示行间隔色
+  			uniqueId: "url", //每一行的唯一标识，一般为主键列
+  			clickToSelect: true, //是否启用点击选中行
+  			showColumns: false, //是否显示列设置按钮
+        	showRefresh: false, //是否显示刷新按钮
+  			showLoading:true,
+			columns: [
+				{
+					field: 'id',
+					title: '#',
+					formatter: function(value, row, index) {
+						return (index + 1).toString();
 					}
-					else {
-						if (!contact_method) {
-							field = 'contact_method';
-							message = '请输入联系方式';
-						}
-						else {
-							if (!main_text) {
-								field = 'main_text';
-								message = '请输入正文/需求/募捐信息';
-							}
-							else {
-								isOk = true;
-							}
-						}
+				},
+				{
+					field: 'name',
+					title: '机构(医院)名称'
+				},
+				{
+					field: 'province',
+					title: '省'
+				},
+				{
+					field: 'city',
+					title: '市'
+				},
+				{
+					field: 'verified',
+					title: '审核状态'
+				},
+				{
+					title: '详情',
+					formatter: function(value, row, index) {
+						return ['<a data-url="', row.url, '" href="javascript:;">查看/修改</a>'].join('');
 					}
 				}
-			}
-		}
-		if (!isOk) {
-			bootbox.alert({
-				size: "small",
-				title: "提示",
-				message: message,
-				callback: function () {
-					setTimeout(function () {
-						$('#' + field).trigger('focus');
-					}, 500);
-				}
-			});
-			return;
-		}
-		// 请求
-		$.ajax({
-			url: GLOGAL.URL_FORM_ORG,
-			type: 'POST',
-			data: {
-				province: province.trim(),
-				city: city.trim(),
-				name: name.trim(),
-				contact_name: contact_name.trim(),
-				contact_method: contact_method.trim(),
-				contact_other: contact_other.trim(),
-				main_text: main_text.trim(),
-			},
-			dataType: 'json'
-		}).done(function (resp) {
-			console.log(resp);
-		}).fail(function (err) {
-			console.error(err);
+			],
+			ajax: function(params) {
+	            $.ajax({
+	                type: 'GET',
+	                url: GLOGAL.API_BASE + 'organizations/',
+	                data: data = {
+						'mine': 'true',
+					},
+	                dataType: 'json'
+	            }).done(function(resp, status, xhr) {
+	                params.success({
+	                    rows: resp.results,
+	                    total: resp.count
+	                }, status, xhr);
+	            }).fail(function(e) {
+	                console.error(e);
+	                params.error(e);
+	            });
+	        }
 		});
-	}
+		$('table.mine-contact-list').on('click', 'td a[data-url]', function(event) {
+			var url = $(this).attr('data-url');
+			var dataSource = $('table.mine-contact-list').data('bootstrap.table').data;
+			var selectedItem = $(dataSource).filter(function(idx, item) {
+				return item.url == url;
+			}).get(0);
+			// console.log(selectedItem);
+			// 我的递交详情表单
+			var $form = $('#form-contact-mine');
+			$form.show();
+			$form.next('.row').show();
+			$form.data('origin_contact_info', selectedItem);
+			setupFrom($form, selectedItem);
+		});
+
+		// 初始状态
+		$('#contact-tabs li:eq(0) a[data-toggle="tab"]').tab('show');
+	});
 </script>
 {% endblock %}

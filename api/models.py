@@ -69,6 +69,7 @@ class Team(models.Model):
     address = models.TextField(verbose_name='所在地', default=None, blank=True, null=True)
     verified = models.BooleanField(verbose_name='已验证', default=False)
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now=True)
+    main_text = models.TextField(verbose_name='正文', default=None, blank=True, null=True)    
     inspector = models.ForeignKey(User, verbose_name='添加人', on_delete=models.CASCADE)
 
     def __str__(self):

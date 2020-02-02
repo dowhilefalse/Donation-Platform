@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'django_filters',
     'corsheaders',
     'django_extensions',
     'registration.apps.RegistrationConfig',
@@ -106,7 +107,7 @@ DATABASES = {
         'NAME': 'db_donation', # 数据库
         'USER': 'root',  # 用户名
         'PASSWORD': 'root',  # 密码
-        'POST': '3306',  # 端口
+        'PORT': '3306',  # 端口
         'HOST': '127.0.0.1',  # IP
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -165,13 +166,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 AUTH_USER_MODEL = 'registration.User'
 
 # 短信配置
+SMS_USE = False # 是否使用短信验证码(否则为假的验证码)
 SMS_accessKeyId = '<accessKeyId>'
 SMS_accessSecret = '<accessSecret>'
 SMS_TemplateCode = '<TemplateCode>'
 SMS_SignName = '<SignName>'
 
 # custom added
-AUTHENTICATION_BACKENDS = ( 
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
@@ -185,6 +187,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
 

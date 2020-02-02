@@ -42,7 +42,7 @@
             </ul>
         </nav>
 
-        <div class="row" style="margin-left:13px">
+        <div class="row" style="margin-left:53px">
             <a style="margin-left:10.0px; margin-right:10.0px; font-size: 15px color:black"><b><font style="color:black">选择省份/地区</font></b></a>
             <select id="province" name="province" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px;" onchange="selectprovince(this); myFunction()"></select>
             <a style="margin-left:10.0px; margin-right:10.0px; margin-bottom:0px; font-size: 15px"><b><font style="color:black">选择城市</font></b></a>
@@ -142,7 +142,7 @@
                         for (var demand of i.demands) {
                             html += `<li>
                             <p style="color: red;">需求：${demand.name}
-                            <span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
+                            <span style="color:rgb(75, 75, 75)"> (共需:${demand.amount}、已收:${demand.receive_amount})</span></p>
                             <p>备注：${demand.remark?demand.remark:'无'}</p>
                         </li>`
                         }
@@ -181,7 +181,8 @@
 
         $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
             if (status === 'success') {
-                html += `  <table onload="myFunction()" style="border-collapse: collapse;">                               
+                html += `  <div style="overflow:auto;">
+                <table onload="myFunction()" style="border-collapse: collapse;">                               
 
                             <thead>
                                 <tr>
@@ -191,23 +192,39 @@
                                     <th>地址</th>
                                     <th>需求</th>
                                     <th>联系人</th>
-                                    <th>是否验证/核实信息过</th>
+                                    <th>信息已验证</th>
                                </tr>
                             </thead>
                             <tbody>`
-                for (var i of data.results) {
+                    for (var i of data.results) {
+                        contact_str = '';
+                        i.contacts.forEach(function (contact,index) {
+                            contact_str += contact.name + ' : ' + contact.phone;
+                            if(index < i.contacts.length-1){
+                                contact_str += '<br>';
+                            }
+                        });
+                        demand_str = '';
+                        i.demands.forEach(function (demand,index) {
+                            console.log()
+                            demand_str += demand.name + ' : ' + demand.amount + ' 已收:' + demand.receive_amount;
+                            if(index < i.demands.length-1){
+                                demand_str += '<br>';
+                            }
+                        });
                     html += `
                         <tr>
                             <td>${ i.name }</td>
                             <td>${ i.province }</td>
                             <td>${ i.city }</td>
                             <td>${ i.address }</td>
-                            <td>${ i.demands }</td>
-                            <td>${ i.contacts }</td>
+                            <td>${ demand_str }</td>
+                            <td>${ contact_str }</td>
                             <td>${ i.verified ? '<font style="color: green">已核实</font>' : '<font style="color: red">未核实</font>'}</td>
                         </tr>`}
                 html += `</tbody>
-                         </table>`
+                         </table>
+                         </div>`
 
                 unit_table.append(html)
             } else {
