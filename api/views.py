@@ -5,6 +5,11 @@ from django.db.models import Q
 from django.utils.decorators import classonlymethod
 from rest_framework import viewsets
 from rest_framework.reverse import reverse
+from rest_framework.permissions import (
+    IsAuthenticated, 
+    DjangoModelPermissionsOrAnonReadOnly,
+    AllowAny
+)
 
 from registration.models import User
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
@@ -17,9 +22,12 @@ from .serializers import (
     TeamSerializer
 )
 
+from .permissions import AuthenticatedFullPermission
+
 
 class PatchedViewSet(viewsets.ModelViewSet):
     rewrite_app_name = None
+    permission_classes = (AuthenticatedFullPermission,)
 
     @classonlymethod
     def as_view(cls, actions=None, **initkwargs):
@@ -38,6 +46,8 @@ class UserViewSet(PatchedViewSet):
     """
     API endpoint that allows User to be viewed or edited.
     """
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
     queryset = User.objects.all().order_by('phone')
     serializer_class = UserSerializer
 
@@ -83,6 +93,8 @@ class OrganizationViewSet(PatchedViewSet):
                 queryset = queryset.filter(Q(province='湖北省') & ~Q(city='武汉市'))
             else:
                 queryset = queryset.filter(~Q(province='湖北省'))
+        if self.request.query_params.get('mine', 'false') == 'true':
+            queryset = queryset.filter(inspector=self.request.user)
         # 按紧急程度正序, 时间倒序
         return queryset.order_by('emergency', '-add_time')
 
