@@ -36,6 +36,8 @@ pip install -r requirements-pip.txt
 python manage.py migrate
 # 创建管理用户(用户名、手机号、密码)
 python manage.py createsuperuser
+# static文件初始化
+python manage.py collectstatic
 ```
 
 ## step-04- 运行
