@@ -171,7 +171,7 @@ SMS_TemplateCode = '<TemplateCode>'
 SMS_SignName = '<SignName>'
 
 # custom added
-AUTHENTICATION_BACKENDS = ( 
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
