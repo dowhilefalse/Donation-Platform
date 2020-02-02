@@ -24,6 +24,8 @@ pip install -r requirements-pip.txt
 ```
 
 ## step-02 - 创建sql
+> 注: 默认采用sqlite数据库, **step-02**无需操作
+
 1. 创建数据库
 	```sql
 	CREATE DATABASE db_donation DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -36,11 +38,11 @@ pip install -r requirements-pip.txt
 python manage.py migrate
 # 创建管理用户(用户名、手机号、密码)
 python manage.py createsuperuser
-# static文件初始化
+# static文件初始化(deploy only required)
 python manage.py collectstatic
 ```
 
-## step-04- 运行
+## step-04 - 运行
 ```bash
 # start server (use one of below 3 types of wsgi-server:)
 # # wsgi-server 1: django server (worst performance)
