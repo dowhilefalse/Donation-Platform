@@ -106,7 +106,7 @@ DATABASES = {
         'NAME': 'db_donation', # 数据库
         'USER': 'root',  # 用户名
         'PASSWORD': 'root',  # 密码
-        'POST': '3306',  # 端口
+        'PORT': '3306',  # 端口
         'HOST': '127.0.0.1',  # IP
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -171,7 +171,7 @@ SMS_TemplateCode = '<TemplateCode>'
 SMS_SignName = '<SignName>'
 
 # custom added
-AUTHENTICATION_BACKENDS = ( 
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
