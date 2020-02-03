@@ -36,17 +36,17 @@
 
     <div style="margin:0 auto;">
         <nav class="fh5co-nav" role="navigation">
-            <ul style="white-space: nowrap; margin-left:10.0px ">                         
+            <ul style="white-space: nowrap; margin-left:10.0px "> 
+                <li onclick="change_show_type2(); myFunction()"><a ><font style="color:black">以框框方式展示</font></a></li>                        
                 <li onclick="change_show_type1(); myFunction()"><a ><font style="color:black">以表格方式展示</font></a></li>
-                <li onclick="change_show_type2(); myFunction()"><a ><font style="color:black">以框框方式展示</font></a></li>
             </ul>
         </nav>
 
-        <div class="row" style="margin-left:13px">
+        <div class="row" style="margin-left:13px" id="category">
             <a style="margin-left:10.0px; margin-right:10.0px; font-size: 15px color:black"><b><font style="color:black">选择省份/地区</font></b></a>
-            <select id="province" name="province" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px;" onchange="selectprovince(this); myFunction()"></select>
+            <select id="province" data-container="body" name="province" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px" onchange="selectprovince(this); myFunction()"></select>
             <a style="margin-left:10.0px; margin-right:10.0px; margin-bottom:0px; font-size: 15px"><b><font style="color:black">选择城市</font></b></a>
-            <select id="city" name="city" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-5px; padding:0px;" onchange="myFunction()"></select>
+            <select id="city" data-container="body" name="city" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-5px; padding:0px;" onchange="myFunction()"></select>
             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-left:25px; margin-bottom: 0.0px">
         </div>
     </div>
@@ -65,7 +65,6 @@
          color: black;       
      } 
     </style>
-    
 
     <div class="row" , style="margin-left:18px;">
 
@@ -124,42 +123,49 @@
                 for (var i of data.results) {
 //                  console.log(i)
                     html += `<div class="unit">
-                    <ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+                    <style>
+                    .a{
+                            color: black;
+                        }
+
+                    </style>
+                    <ul style="margin-left: -25px; list-style: none; font-size:14px; color: rgb(75, 75, 75)">
                         <li>
-                            <p id="name">${i.name}</p>
+                            <a id="name" style="font-size: 20px; margin-left:-9px; color:black">${i.name}</a>
                         </li>
 
                         <li>
-                            <p id="province">省份：${i.province}</p>
+                            <a id="province" style="color:black">省份：${i.province}</a>
                         </li>
                         <li>
-                            <p id="city">城市：${i.city}</p>
+                            <a id="city" style="color:black">城市：${i.city}</a>
                         </li>
                         <li>
-                            <p>地址：${i.address}</p>
+                            <a style="color:black">地址：${i.address}</a>
                         </li>`
                     if (i.demands.length) {
                         for (var demand of i.demands) {
-                            html += `<li>
-                            <p style="color: red;">需求：${demand.name}
-                            <span style="color:rgb(75, 75, 75)"> (共需：${demand.amount}、已收${demand.receive_amount})</span></p>
-                            <p>备注：${demand.remark?demand.remark:'无'}</p>
+                            html += `<li><font style="color:black">需求：</font></br>
+                            <a style="color: red;">${demand.name}
+                            <a style="color:black">(共需 ${demand.amount}、已收 ${demand.receive_amount})</a>
+                            <a style="color:black">${demand.remark?'('+demand.remark+')':''}</a>
                         </li>`
                         }
                     }
 
                     for (var contact of i.contacts) {
                         html += `<li>
-                            <p>联系人：${contact.name}</p>
-                            <p>联系电话：${contact.phone}</p>
+                            <a style="color:black">联系人：${contact.name}</a>
+                            <a style="color:black">电话：${contact.phone}</a>
                         </li>`
                     }
 
-                    html += `<li>
-                    <p>发布日期：2020-01-31</p>
+                    html += `
+                <li>
+                    ${i.verified ? '<a style="color: green">已核实</a>' : '<a style="color: red">未核实</a>'}
                 </li>
                 <li>
-                    ${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
+                    <a style="color:grey">发布日期：${i.add_time.slice(0,10)}</a>
                 </li>
                 </ul>
                 </div>
@@ -181,7 +187,8 @@
 
         $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
             if (status === 'success') {
-                html += `  <table onload="myFunction()" style="border-collapse: collapse;">                               
+                html += `  <div style="overflow:auto; margin-left:44px">
+                <table onload="myFunction()" style="border-collapse: collapse;">                               
 
                             <thead>
                                 <tr>
@@ -191,23 +198,39 @@
                                     <th>地址</th>
                                     <th>需求</th>
                                     <th>联系人</th>
-                                    <th>是否验证/核实信息过</th>
+                                    <th>信息已验证</th>
                                </tr>
                             </thead>
                             <tbody>`
-                for (var i of data.results) {
+                    for (var i of data.results) {
+                        contact_str = '';
+                        i.contacts.forEach(function (contact,index) {
+                            contact_str += contact.name + ' : ' + contact.phone;
+                            if(index < i.contacts.length-1){
+                                contact_str += '<br>';
+                            }
+                        });
+                        demand_str = '';
+                        i.demands.forEach(function (demand,index) {
+                            console.log()
+                            demand_str += demand.name + ' : ' + demand.amount + ' 已收:' + demand.receive_amount;
+                            if(index < i.demands.length-1){
+                                demand_str += '<br>';
+                            }
+                        });
                     html += `
                         <tr>
                             <td>${ i.name }</td>
                             <td>${ i.province }</td>
                             <td>${ i.city }</td>
                             <td>${ i.address }</td>
-                            <td>${ i.demands }</td>
-                            <td>${ i.contacts }</td>
+                            <td>${ demand_str }</td>
+                            <td>${ contact_str }</td>
                             <td>${ i.verified ? '<font style="color: green">已核实</font>' : '<font style="color: red">未核实</font>'}</td>
                         </tr>`}
                 html += `</tbody>
-                         </table>`
+                         </table>
+                         </div>`
 
                 unit_table.append(html)
             } else {
@@ -466,16 +489,16 @@
           // 循环表格每一行，查找匹配项
             for (i = 0; i < ul.length; i++) {
 //                 console.log(ul[i].getElementsByTagName("li"))
-                li1 = ul[i].getElementsByTagName("p")[0];
-                li2 = ul[i].getElementsByTagName("p")[1];  //province
-                li3 = ul[i].getElementsByTagName("p")[2];  //city 
+                li1 = ul[i].getElementsByTagName("a")[0];
+                li2 = ul[i].getElementsByTagName("a")[1];  //province
+                li3 = ul[i].getElementsByTagName("a")[2];  //city 
 //                 console.log(Boolean(filter_search))
                 if (li1 && li2 && li3) {
                     
                     if (filter_search){
                         var search_result = false;
-                        for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
-                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        for (j = 0; j < ul[i].getElementsByTagName("a").length; j++){
+                            search_result = search_result || (ul[i].getElementsByTagName("a")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
                         }
 //                             console.log(search_result)
                         }
@@ -495,7 +518,7 @@
 
 // 初始化
 
-    form2.style.display='none';
+    form1.style.display='none';
     window.onload = myFunction;
 
 

@@ -114,7 +114,7 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Team
-        fields = ['url', 'id', 'contacts', 'name', 'address', 'verified', 'add_time',]
+        fields = ['url', 'id', 'contacts', 'name', 'address', 'main_text', 'verified', 'add_time',]
         extra_kwargs = {
             'id': {'required': False},
             'url': {'required': False, 'read_only': True},
