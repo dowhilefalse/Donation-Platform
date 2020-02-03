@@ -97,8 +97,9 @@ class OrganizationViewSet(PatchedViewSet):
                 else:
                     queryset = queryset.filter(~Q(province='湖北省'))
         # 仅查询当前登录者提交的
-        if self.request.query_params.get('mine', 'false') == 'true':
-            queryset = queryset.filter(inspector=self.request.user)
+        if self.request.user.is_authenticated:
+            if self.request.query_params.get('mine', 'false') == 'true':
+                queryset = queryset.filter(inspector=self.request.user)
         # 按名称-模糊查询
         if not bool(self.request.query_params.get('name', None)):
             fuzzy_name = self.request.query_params.get('fuzzy_name', None)
@@ -128,6 +129,31 @@ class TeamViewSet(PatchedViewSet):
     """
     API endpoint that allows Team to be viewed or edited.
     """
-    # queryset = Team.objects.all()
-    queryset = Team.objects.all().order_by('-add_time')
+    filterset_fields = ['name', 'address', 'verified']
+
+    # 默认查询集
+    queryset = Team.objects.all()
+
+    def get_queryset(self):
+        '''
+        修改默认查询集
+        '''
+        queryset = self.queryset
+        # 仅查询当前登录者提交的
+        if self.request.user.is_authenticated:
+            if self.request.query_params.get('mine', 'false') == 'true':
+                queryset = queryset.filter(inspector=self.request.user)
+        # 按名称-模糊查询
+        if not bool(self.request.query_params.get('name', None)):
+            fuzzy_name = self.request.query_params.get('fuzzy_name', None)
+            if bool(fuzzy_name):
+                queryset = queryset.filter(name__icontains=fuzzy_name)
+        # 按地址-模糊查询
+        if not bool(self.request.query_params.get('address', None)):
+            fuzzy_address = self.request.query_params.get('fuzzy_address', None)
+            if bool(fuzzy_address):
+                queryset = queryset.filter(address__icontains=fuzzy_address)
+        # 按时间倒序
+        return queryset.order_by('-add_time')
+
     serializer_class = TeamSerializer
