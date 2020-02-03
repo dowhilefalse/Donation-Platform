@@ -98,11 +98,11 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': { # default/sqlite
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    'mysql': {
+    'mysql': { # default/mysql
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_donation', # 数据库
         'USER': 'root',  # 用户名

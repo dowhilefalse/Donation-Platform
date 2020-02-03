@@ -129,7 +129,7 @@ class TeamViewSet(PatchedViewSet):
     """
     API endpoint that allows Team to be viewed or edited.
     """
-    filterset_fields = ['name', 'address', 'verified']
+    filterset_fields = ['type', 'name', 'address', 'verified']
 
     # 默认查询集
     queryset = Team.objects.all()
