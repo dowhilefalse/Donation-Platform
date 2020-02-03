@@ -36,45 +36,44 @@
 
     <div style="margin:0 auto;">
         <nav class="fh5co-nav" role="navigation">
-            <ul style="white-space: nowrap; margin-left:10.0px ">                         
+            <ul style="white-space: nowrap; margin-left:10.0px ">
                 <li onclick="change_show_type1(); myFunction()"><a ><font style="color:black">以表格方式展示</font></a></li>
                 <li onclick="change_show_type2(); myFunction()"><a ><font style="color:black">以框框方式展示</font></a></li>
             </ul>
         </nav>
 
-        <div class="row" style="margin-left:13px">
+        <div class="row" style="margin-left:13px" id="category">
             <a style="margin-left:10.0px; margin-right:10.0px; font-size: 15px color:black"><b><font style="color:black">选择省份/地区</font></b></a>
-            <select id="province" name="province" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px;" onchange="selectprovince(this); myFunction()"></select>
+            <select id="province" data-container="body" name="province" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-20.0px; padding:0px" onchange="selectprovince(this); myFunction()"></select>
             <a style="margin-left:10.0px; margin-right:10.0px; margin-bottom:0px; font-size: 15px"><b><font style="color:black">选择城市</font></b></a>
-            <select id="city" name="city" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-5px; padding:0px;" onchange="myFunction()"></select>
+            <select id="city" data-container="body" name="city" style=" width:95px; white-space: nowrap; display:inline; margin-left:20.0px; margin-top:-5px; padding:0px;" onchange="myFunction()"></select>
             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-left:25px; margin-bottom: 0.0px">
         </div>
     </div>
-    <style>   
-    th,td {         
-         padding: .65em;         
-    }         
-    th {         
-         background: #555 nonerepeat scroll 0 0;         
-           border: 1px solid #777;  
-           color: black;       
+    <style>
+    th,td {
+         padding: .65em;
+    }
+    th {
+         background: #555 nonerepeat scroll 0 0;
+           border: 1px solid #777;
+           color: black;
            /*color: #fff;         */
-    }         
-    td {         
+    }
+    td {
          border: 1px solid #777;
-         color: black;       
-     } 
+         color: black;
+     }
     </style>
-    
 
     <div class="row" , style="margin-left:18px;">
 
         <div class="unit-table organizations-table" id="form1">
-        </div>  
+        </div>
 
         <div class="unit-box organizations-box" id="form2">
         </div>
-        
+
     </div>
     </div>
 
@@ -174,18 +173,18 @@
         });
         // console.log($(".unit-box"))
     }
-    
+
     function get_organizations_table() {
         var unit_table = $(".organizations-table")
         var html = ""
 
         $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
             if (status === 'success') {
-                html += `  <table onload="myFunction()" style="border-collapse: collapse;">                               
+                html += `  <table onload="myFunction()" style="border-collapse: collapse;">
 
                             <thead>
                                 <tr>
-                                    <th>医院名称</th>                                                
+                                    <th>医院名称</th>
                                     <th>省份</th>
                                     <th>城市</th>
                                     <th>地址</th>
@@ -196,6 +195,13 @@
                             </thead>
                             <tbody>`
                 for (var i of data.results) {
+                  contact_str = '';
+                  i.contacts.forEach(function (contact,index) {
+                      contact_str += contact.name + ' : ' + contact.phone;
+                      if(index < i.contacts.length-1){
+                        contact_str += '<br>';
+                      }
+                  });
                     html += `
                         <tr>
                             <td>${ i.name }</td>
@@ -203,7 +209,7 @@
                             <td>${ i.city }</td>
                             <td>${ i.address }</td>
                             <td>${ i.demands }</td>
-                            <td>${ i.contacts }</td>
+                            <td>${ contact_str }</td>
                             <td>${ i.verified ? '<font style="color: green">已核实</font>' : '<font style="color: red">未核实</font>'}</td>
                         </tr>`}
                 html += `</tbody>
@@ -227,7 +233,7 @@
     }
     else{
     list1[list1.length] = "所有"}
-    
+
     list1[list1.length] = "北京市";
     list1[list1.length] = "天津市";
     list1[list1.length] = "河北省";
@@ -401,7 +407,7 @@
     function selectprovince(obj) {
         ddlCity.options.length = 0;//clear
         var index = indexof(list1,obj.value);
-        var list2element = list2[index];        
+        var list2element = list2[index];
         for(var i =0;i<list2element.length; i++)
         {
             var option = document.createElement("option");
@@ -412,7 +418,7 @@
 //         console.log(document.getElementById("city").options[0]);
         document.getElementById("city").value = list2element[0];
     }
-    
+
     function myFunction() {
       // 声明变量
         if (form1.style.display != 'none'){
@@ -429,16 +435,16 @@
 //                 console.log(ul[i].getElementsByTagName("li"))
                 td1 = tr[i].getElementsByTagName("td")[0];
                 td2 = tr[i].getElementsByTagName("td")[1];  //province
-                td3 = tr[i].getElementsByTagName("td")[2];  //city 
+                td3 = tr[i].getElementsByTagName("td")[2];  //city
                 console.log(td2.innerHTML.toUpperCase())
                 console.log(td2.innerHTML.toUpperCase().indexOf(filter_province) > -1)
                 console.log(td3.innerHTML.toUpperCase().indexOf(filter_city) > -1)
                 if (td1 && td2 && td3) {
-                    
+
                     if (filter_search){
                         var search_result = false;
                         for (j = 0; j < tr[i].getElementsByTagName("td").length; j++){
-                            search_result = search_result || (tr[i].getElementsByTagName("td")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                            search_result = search_result || (tr[i].getElementsByTagName("td")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)
                         }
 //                             console.log(search_result)
                         }
@@ -468,21 +474,21 @@
 //                 console.log(ul[i].getElementsByTagName("li"))
                 li1 = ul[i].getElementsByTagName("p")[0];
                 li2 = ul[i].getElementsByTagName("p")[1];  //province
-                li3 = ul[i].getElementsByTagName("p")[2];  //city 
+                li3 = ul[i].getElementsByTagName("p")[2];  //city
 //                 console.log(Boolean(filter_search))
                 if (li1 && li2 && li3) {
-                    
+
                     if (filter_search){
                         var search_result = false;
                         for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
-                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)
                         }
 //                             console.log(search_result)
                         }
                     else {
                         var search_result = true;
                     }
-                    
+
                     if (search_result && (((li2.innerHTML.toUpperCase().indexOf(filter_province) > -1) && (li3.innerHTML.toUpperCase().indexOf(filter_city) > -1 || filter_city == "所有")) || filter_province == "所有")) {
                         ul[i].style.display = "";
                     } else {
