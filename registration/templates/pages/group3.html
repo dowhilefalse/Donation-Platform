@@ -87,35 +87,36 @@
                 for (var i of data.results) {
                     html += `
                     <div class="unit">
-        				<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+        				<ul style="margin-left: -25px; list-style: none; font-size:14px; color: rgb(75, 75, 75)">
         					<li>
-        						<p>${i.name}</p>
+        						<a style="font-size: 20px; margin-left:-9px; color:black">${i.name}</a>
         					</li>
         	
         					<li>
-        						<p>地址：${i.address}</p>
+        						<a style="color:black">地址：${i.address}</a>
         					</li>
                             <li>
-                                <p>${i.main_text}</p>
+                                <a style="color:black">${i.main_text}</a>
                             </li>
                             `
 
                             for (var contact of i.contacts) {
                                 html += `
         					<li>
-        						<p>联系人：${contact.name}</p>
-        						<p>联系电话：${contact.phone}</p>
+        						<a style="color:black">联系人：${contact.name}</a>
+        						<a style="color:black">联系电话：${contact.phone}</a>
         	
         					</li>
         					`
                             }
                             html += `
-        				<li>
-        						<p>发布日期：${i.add_time.slice(0,10)}</p>
-        					</li>
+        				
         					<li>
-        					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
+        					${i.verified ? '<a style="color: green">已核实</a>' : '<p style="color: red">未核实</a>'}
         					</li>
+                            <li>
+                                <a style="color:grey">发布日期：${i.add_time.slice(0,10)}</a>
+                            </li>
         				</ul>
         			</div>
     				`
@@ -137,7 +138,7 @@
         $.get(GLOGAL.API_BASE + "teams", function (data, status) {
             if (status === 'success') {
                 html += `  
-                <div style="overflow:auto; margin-right: 30px">  
+                <div style="overflow:auto; margin-right: 30px; margin-left: 44px">  
                 <table onload="myFunction()" style="border-collapse: collapse;">                                
 
                             <thead>
@@ -228,14 +229,14 @@
           // 循环表格每一行，查找匹配项
             for (i = 0; i < ul.length; i++) {
 //                 console.log(ul[i].getElementsByTagName("li"))
-                li1 = ul[i].getElementsByTagName("p")[0];
+                li1 = ul[i].getElementsByTagName("a")[0];
 //                 console.log(Boolean(filter_search))
                 if (li1) {
                     
                     if (filter_search){
                         var search_result = false;
-                        for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
-                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        for (j = 0; j < ul[i].getElementsByTagName("a").length; j++){
+                            search_result = search_result || (ul[i].getElementsByTagName("a")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
                         }
 //                             console.log(search_result)
                         }
