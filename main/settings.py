@@ -98,11 +98,11 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': { # default/sqlite
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    'mysql': {
+    'mysql': { # default/mysql
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_donation', # 数据库
         'USER': 'root',  # 用户名
@@ -204,3 +204,17 @@ HENDRIX_CHILD_RESOURCES = (
     'hendrix.contrib.concurrency.resources.MessageResource',
     'hendrix.contrib.resources.static.DjangoStaticsFinder'
 )
+
+CACHE_DIR = os.path.join(BASE_DIR, 'cache')
+CACHES = {
+    'default': {
+        'BACKEND': 'diskcache.DjangoCache',
+        'LOCATION': CACHE_DIR,
+        'TIMEOUT': 300,
+        'SHARDS': 8,
+        'DATABASE_TIMEOUT': 0.010,  # 10 milliseconds
+        'OPTIONS': {
+            'size_limit': 2 ** 30   # 1 gigabyte
+        },
+    },
+}

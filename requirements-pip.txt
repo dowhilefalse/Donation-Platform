@@ -1,9 +1,11 @@
 # douban: pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com <package>
+django-model-utils
 djangorestframework
 django-cors-headers
 django-guardian
 django-rest-auth
 django-filter>=2.0.0
+diskcache
 hendrix
 aliyun-python-sdk-core
 django-extensions

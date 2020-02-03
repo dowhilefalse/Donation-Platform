@@ -99,7 +99,7 @@
             break;
         case '/group12':
             qs += 'hubei';
-            list_name = '需求信息列表-湖北医院'
+            list_name = '需求信息列表-武汉周边城市医院'
             init_province = '湖北省'
             init_city = '所有'
             break;
@@ -118,7 +118,7 @@
         var unit_box = $(".organizations-box")
         var html = ""
 
-        $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
+        $.get(GLOGAL.API_BASE + "organizations/" + qs, function (data, status) {
             if (status === 'success') {
                 for (var i of data.results) {
 //                  console.log(i)

@@ -66,6 +66,7 @@ python twisted-server.py --port 8989
 * 国内用户使用pip安装包慢时，可以使用豆瓣源加速
 	- 单个包-示例: `pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com <package>`
 	- 清单文件-示例: `pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com -r requirements.txt`
+* 开发阶段, 使用sqlite数据时, 若执行 `python manage.py migrate` 报MySQL相关的错(连接错误、数据库`db_donation`不存在等), 可暂时将 `main/settings.py` 中 `DATABASE` 下的 `mysql` 配置节暂时删除, 执行完 `migrate` 命令后再恢复`mysql` 配置节
 
 ## technology stack
 * FrontEnd

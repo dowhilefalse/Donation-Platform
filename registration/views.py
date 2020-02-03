@@ -15,7 +15,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from .models import User
-from api.views import OrganizationViewSet, TeamViewSet
+from api.views import OrganizationViewSet, TeamViewSet, Team
 from .sms_helper import send_sms
 
 # 读取数据
@@ -59,7 +59,9 @@ def view_contact2(request):
         return redirect(reverse('registration:page_quick_register_login'))
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
-    context = {}
+    context = {
+        'team_types': Team.TYPES,
+    }
     return render(request, 'pages/contact2.html', context)
 
 def view_register(request):

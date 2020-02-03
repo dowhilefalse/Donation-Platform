@@ -195,6 +195,7 @@
         - `page`: `integer` 分页查询页码
 * `GET /api/teams/` 查询(爱心)团体信息
     + 精确查询
+        - `type`: `string`, 取值参见后端 `api.models.Team` 模型类的 `TYPES` 属性, 团体分类
         - `name`: `string` 团体名, 优先级高于`fuzzy_name`
         - `address`: `string` 团体地址, 优先级高于`fuzzy_address`
         - `verified`: `bool`(`true`/`false` 或 `1`/`0`) 是否已验证

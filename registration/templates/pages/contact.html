@@ -480,7 +480,7 @@
 
 		// 联系人信息
 		var contacts_change = false;
-		var contact_phones = [];
+		var contacts_list = [];
 		var $contacts = $form.find('.contact_box').children('.contact_info');
 		for (var i = 0; i < $contacts.length; i++) {
 			var $item = $contacts.filter(`:eq(${i})`);
@@ -495,37 +495,37 @@
 				// TODO: toast error tip
 				continue;
 			}
-			contact_phones.push(phone);
 			var is_old = false;
 			for (var j = 0; j < origin_data.contacts.length; j++) {
 				var contact = origin_data.contacts[j];
 				if (contact.phone == phone) {
 					// 已存在的联系人(根据 phone 判断)
 					is_old = true;
+					var new_contact = $.extend({}, contact, {}, true);
 					if (contact.name != name) {
-						// 更新联系人称呼
-						origin_data.contacts[j].name = name;
+						// 联系人有更新
 						contacts_change = true;
+						new_contact.name = name;
 					}
+					contacts_list.push(new_contact);
+					break;
 				}
 			}
 			if (!is_old) {
 				// 新联系人添加
-				origin_data.contacts.push({
+				contacts_list.push({
 					'name': name,
 					'phone': phone
 				});
 				contacts_change = true;
 			}
 		}
-		if (origin_data.contacts.length > contact_phones.length) {
-			// 联系人有删除
-			// TODO: 从 origin_data 中移除删除的联系人
-		}
+		// 更新联系人集合
+		origin_data.contacts = contacts_list;
 
 		// 需求信息
 		var demands_change = false;
-		var demand_names = [];
+		var demands_list = [];
 		var $demands = $form.find('.demand_box').children('.demand_info');
 		for (var i = 0; i < $demands.length; i++) {
 			var $item = $demands.filter(`:eq(${i})`);
@@ -537,7 +537,6 @@
 				// TODO: toast error tip
 				continue;
 			}
-			demand_names.push(name);
 
 			var is_old = false;
 			for (var j = 0; j < origin_data.demands.length; j++) {
@@ -545,25 +544,31 @@
 				if (demand.name == name) {
 					// 已存在的需求(根据 name 判断)
 					is_old = true;
+					var new_demand = $.extend({}, demand, {}, true);
 					if (demand.amount != amount) {
 						// 更新需求数量、备注
 						if (demand.amount > 0 ) {
 							// 数量已经填写了具体值
 							demands_change = true;
-							origin_data.demands[j].amount = amount;
+							new_demand.amount = amount;
 						}
 						else {
 							// 数量未填写具体值
 							if (!!amount && Number.isInteger(amount) && amount > 0) {
 								demands_change = true;
-								origin_data.demands[j].amount = amount;
+								new_demand.amount = amount;
 							}
 						}
 					}
 					if (demand.remark != remark) {
 						demands_change = true;
-						origin_data.demands[j].remark = remark;
+						new_demand.remark = remark;
 					}
+					if (new_demand.amount === null || Number.isNaN(new_demand.amount)) {
+						new_demand.amount = -1;
+					}
+					demands_list.push(new_demand);
+					break;
 				}
 			}
 			if (!is_old) {
@@ -576,13 +581,11 @@
 					item['remark'] = remark;
 				}
 				demands_change = true;
-				origin_data.demands.push(item);
+				demands_list.push(item);
 			}
 		}
-		if (origin_data.demands.length > demand_names.length) {
-			// 需求有删除
-			// TODO: 从 origin_data 中移除删除的需求
-		}
+		// 更新需求集合
+		origin_data.demands = demands_list;
 
 		if (basic_change || contacts_change || demands_change) {
 			console.log(origin_data)
@@ -686,7 +689,8 @@
 	                data: data = {
 						'mine': 'true',
 					},
-	                dataType: 'json'
+	                dataType: 'json',
+	                cache: false
 	            }).done(function(resp, status, xhr) {
 	                params.success({
 	                    rows: resp.results,
