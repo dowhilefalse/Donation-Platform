@@ -4,12 +4,24 @@
 
 {% block head_extra_style %}
 	<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap-table.min.css' %}">
+	<style type="text/css">
+		#contact-tabs-content {
+			padding-top: 0.8em;
+		}
+		#form-contact-mine {
+			display: none;
+		}
+		#form-contact-mine + .row {
+			display: none;
+			margin: auto auto 10px auto;
+			border-bottom: 1px solid #ccc;
+		}
+	</style>
 {% endblock %}
-
 
 {% block page_title %}提交团体信息{% endblock %}
 {% block page_main %}
-<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
 
 <div class="container-wrap">
 	<div id="fh5co-contact">
@@ -22,121 +34,44 @@
 					<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>
 				</ul>
 			</div>
-			<div class="col-md-7 col-md-pull-2 animate-box">
-				<h3>递交表格</h3>
-				<h5>递交/修改表格成功后，内容会直接发布</h5>
-				<h5>（建议在线下编辑好后，再复制上来）</h5>
+			<div class="col-md-7 col-md-pull-2 animate-box">			
+				<ul id="contact-tabs" class="nav nav-tabs">
+					<li class="active">
+						<a href="#tab-submit-new" data-toggle="tab">递交表格</a>
+					</li>
+					<li><a href="#tab-submit-mine" data-toggle="tab">我递交的</a></li>
+				</ul>
+				<div id="contact-tabs-content" class="tab-content">
+					<div class="tab-pane fade in active" id="tab-submit-new">
+						<h5>递交/修改表格成功后，内容会直接发布</h5>
+						<h5>（建议在线下编辑好后，再复制上来）</h5>
 
-				<form method="post" , id="form1">
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<select name="type" id="type" class="form-control">
-									<option value="a">慈善机构/公益组织</option>
-									<option value="b">公司/机构</option>
-									<option value="c">学生组织</option>
-									<option value="d">其它</option>
-								</select>
-							</div>
-						</div>
-						<script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
-						<script src="{% static 'js/bootstrap-select.min.js' %}" type="text/javascript"></script>
-						<script src="{% static 'js/defaults-zh_CN.min.js' %}" type="text/javascript"></script>
-						<script>
-							$('#type').selectpicker({
-								'liveSearch': true,
-								'liveSearchNormalize': true,
-								'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
-							});
-							$('#province').selectpicker('refresh');
-						</script>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="name" name="name" type="text" class="form-control" placeholder="机构/团体名称"
-									maxlength="15">
-							</div>
-						</div>
-					
-						<div class="col-md-6">
-							<div class="form-group">
-								<input id="address" name="address" type="text" class="form-control"
-									placeholder="所在地（选填）" maxlength="15">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="contact_box">
-								<div class="contact_info">
-									<input type="text" class="form-control" placeholder="联系人-称呼">
-									<input type="text" class="form-control" placeholder="联系人-手机">
-
+						<form id="form-contact-new"></form>
+						<div class="row">
+							<div class="col-md-push-3 col-md-9">
+								<div class="form-group">
+									<input type="button" value="提交" onclick="submit_contact_new()"
+										class="btn btn-primary btn-modify">
 								</div>
-								<button class="add_contact" type="button">添加联系人</button>
-
 							</div>
 						</div>
 					</div>
-						<script>
-							$(".add_contact").click(function () {
-								var html = `
-								<div class="contact_info">
-								<input type="text" class="form-control" placeholder="联系人-称呼">
-								<input type="text" class="form-control" placeholder="联系人-手机">
-								<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
-							</div>
-								`
-
-								$(this).before(html)
-							})
-
-
-							function del_item(opt, self) {
-
-								if (opt === 0) {
-									$(self).parent().next().remove()
-								}
-
-								$(self).parent().remove()
-							}
-
-						</script>
-
-
-					<div class="row">
-						<div class="col-md-12">
-							<textarea id="main_text" name="main_text" class="form-control" rows="7" maxlength="1000"
-								placeholder="正文（简要叙述需求）" onchange="sizecontrol()" onkeydown="sizecontrol()"
-								onkeyup="sizecontrol()"></textarea>
-							<span id="ts">已输入: 0/1000字</span></p>
-							<script>
-								var maxl = 1000//总长  
-								function sizecontrol() {
-									var contents = document.getElementById("main_text"),
-										ts = document.getElementById("ts"),
-										len = contents.value.length;
-									if (len > maxl) {
-										contents.value = contents.value.substr(0, maxl)
-									} else {
-										ts.innerHTML = "已输入：" + len + "/" + maxl + " 字"
-									}
-								}  
-							</script>
-
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<input type="submit" value="提交" onclick="group_form_submit()"
-									class="btn btn-primary btn-modify">
+					<div class="tab-pane fade" id="tab-submit-mine">
+						<form id="form-contact-mine"></form>
+						<div class="row">
+							<div class="col-md-push-2 col-md-10">
+								<div class="form-group">
+									<input type="button" value="取消" onclick="cancel_contact_mine()"
+										class="btn btn-default btn-modify">
+									<input type="button" value="保存" onclick="save_contact_mine()"
+										class="btn btn-primary btn-modify">
+								</div>
 							</div>
 						</div>
+
+						<table class="table mine-contact-list"></table>
 					</div>
-				</form>
+				</div>
 			</div>
 
 		</div>
@@ -145,73 +80,393 @@
 {% endblock %}
 
 {% block page_footer %}
+
+<!-- <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script> -->
+<script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/defaults-zh_CN.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap-table.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap-table-zh-CN.min.js' %}" type="text/javascript"></script>
+
+<script type="text/x-template" id="form-contact-template">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<select name="type" id="type" class="form-control">
+					<option value="a">慈善机构/公益组织</option>
+					<option value="b">公司/机构</option>
+					<option value="c">学生组织</option>
+					<option value="d">其它</option>
+				</select>
+			</div>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<input id="name" name="name" type="text" class="form-control" placeholder="机构/团体名称"
+					maxlength="15">
+			</div>
+		</div>
+	
+		<div class="col-md-6">
+			<div class="form-group">
+				<input id="address" name="address" type="text" class="form-control"
+					placeholder="所在地（选填）" maxlength="15">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="contact_box">
+				<div class="contact_info">
+					<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+					<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
+
+				</div>
+				<button class="add_contact" type="button">添加联系人</button>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<textarea id="main_text" name="main_text" class="form-control" rows="7" maxlength="200"
+				placeholder="正文（简要叙述需求）" onchange="sizecontrol()" onkeydown="sizecontrol()"
+				onkeyup="sizecontrol()"></textarea>
+			<span id="ts">已输入: 0/200字</span></p>			
+		</div>
+	</div>
+</script>
+
+
 <script type="text/javascript">
+	$.fn.selectpicker.Constructor.BootstrapVersion = '3';
+
+	var maxl = 200//总长  
+	function sizecontrol() {
+		var contents = document.getElementById("main_text"),
+			ts = document.getElementById("ts"),
+			len = contents.value.length;
+		if (len > maxl) {
+			contents.value = contents.value.substr(0, maxl)
+		} else {
+			ts.innerHTML = "已输入：" + len + "/" + maxl + " 字"
+		}
+	}  
+
+	$('#type').selectpicker({
+		'liveSearch': true,
+		'liveSearchNormalize': true,
+		'mobile': (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent)
+	});
 	/**
 	 * 团队提交
 	 */
-	function group_form_submit() {
-		// 取值
-		var name = $('#name').val(),
-			address = $('#address').val(),
-			contact_name = $('#contact_name').val(),
-			contact_method = $('#contact_method').val(),
-			contact_other = $('#contact_other').val();
-		main_text = $('#main_text').val();
-		// 验证(TODO: 更加严格的验证)
-		var isOk = false,
-			message = '',
-			field = '';
-		if (!name) {
-			field = 'username';
-			message = '请输入团体名称';
-		}
-		else {
-			if (!contact_name) {
-				field = 'phone';
-				message = '请输入联系人';
-			}
-			else {
-				if (!contact_method) {
-					field = 'captcha';
-					message = '请输入联系方式';
+	
+	function setupFrom($form, initData) {
+		var formTemplate = $('#form-contact-template').html();
+		$form.empty();
+		$form.html(formTemplate);
+		// console.log(formTemplate)
+		// 联系人
+		$form.find(".add_contact").click(function () {
+			var html = `
+				<div class="contact_info">
+					<input name="contact-name" type="text" class="form-control" placeholder="联系人-称呼">
+					<input name="contact-phone" type="text" class="form-control" placeholder="联系人-手机">
+					<button onclick='del_item(1,this)' class='del_btn' type="button">删除该项</button>
+				</div>
+				`;
+			$(this).before(html)
+		});
+
+		if (!!initData) {
+			console.log(initData);
+			$form.find('input[name="name"]').val(initData.name);
+			$form.find('input[name="address"]').val(initData.address);
+			$form.find('textarea[name="main_text"]').val(initData.main_text);
+			// 联系方式填充
+			for (var i = 0; i < initData.contacts.length; i++) {
+				var contact = initData.contacts[i];
+				if (i > 0) {
+					$form.find(".add_contact").trigger('click');
 				}
 				else {
-					isOk = true;
 				}
+				$form.find(`.contact_info:eq(${i})`).find('input[name="contact-name"]').val(contact.name);
+				$form.find(`.contact_info:eq(${i})`).find('input[name="contact-phone"]').val(contact.phone);
 			}
 		}
+	}
 
-		if (!isOk) {
-			bootbox.alert({
-				size: "small",
-				title: "提示",
-				message: message,
-				callback: function () {
-					setTimeout(function () {
-						$('#' + field).trigger('focus');
-					}, 500);
-				}
+	function del_item(opt, self) {
+
+		// if (opt === 0) {
+		// 	$(self).parent().next().remove()
+		// }
+
+		$(self).parent().remove()
+	}
+
+
+	function submit_contact_new() {
+		var $form = $('#form-contact-new');
+		var data = {
+			"contacts": [],
+			"main_text": $form.find('textarea[name="main_text"]').val(),
+			"name": $form.find('input[name="name"]').val(),
+			"address": $form.find('input[name="address"]').val()
+		};
+		
+
+		var $contacts = $form.find('.contact_box').children('.contact_info');
+		for (var i = 0; i < $contacts.length; i++) {
+			var $item = $contacts.filter(`:eq(${i})`);
+			var name = $item.find('input[name="contact-name"]').val(),
+				phone = $item.find('input[name="contact-phone"]').val();
+			// TODO: 验证要求 phone 和 name 必填
+			if (!phone) {
+				// TODO: toast error tip
+				continue;
+			}
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			data['contacts'].push({
+				'name': name,
+				'phone': phone
 			});
-			return;
 		}
-		// 请求
+
+		console.log(data)
+		// console.log($('#form-contact-new').serialize())
+
 		$.ajax({
-			url: GLOGAL.URL_FORM_GROUP, //TODO 后端接受数据
-			type: 'POST',
-			data: {
-				name: name.trim(),
-				address: address.trim(),
-				contact_name: contact_name.trim(),
-				contact_method: contact_method.trim(),
-				contact_other: contact_other.trim(),
-				main_text: main_text.trim()
+			type: "POST",
+			url: GLOGAL.API_BASE + "teams/",
+			data: JSON.stringify(data),
+			processData: false,
+			contentType:"application/json; charset=utf-8",
+			dataType: "json",
+			success: function (resp) {
+				console.log(resp);
+				if (resp.id >0 && !!resp.url) {
+					alert("成功");
+					// 刷新页面
+					window.location.href = window.location.href;
+				}
+				else {
+					alert("失败");
+				}
 			},
-			dataType: 'json'
-		}).done(function (resp) {
-			console.log(resp);
-		}).fail(function (err) {
-			console.error(err);
+			error: function (jqXHR) {
+				alert("Error: " + jqXHR.status);
+			}
 		});
 	}
+
+	function save_contact_mine() {
+		var $form = $('#form-contact-mine');
+		// console.log('save_contact')
+		// 实现机构信息修改
+		var origin_data = $form.data('origin_contact_info');
+
+		// 基础信息
+		var basic_change = false;
+		var name = $form.find('input[name="name"]').val(),
+			address = $form.find('input[name="address"]').val();
+			main_text = $form.find('textarea[name="main_text"]').val();
+
+		if (origin_data.name != name) {
+			basic_change = true;
+			origin_data.name = name;
+		}
+		if (origin_data.address != address) {
+			basic_change = true;
+			origin_data.address = address;
+		}
+		console.log(origin_data)
+		console.log(origin_data.main_text)
+		console.log(main_text)
+		if (origin_data.main_text != main_text) {
+			basic_change = true;
+			origin_data.main_text = main_text;
+		}
+
+		// 联系人信息
+		var contacts_change = false;
+		var contact_phones = [];
+		var $contacts = $form.find('.contact_box').children('.contact_info');
+		for (var i = 0; i < $contacts.length; i++) {
+			var $item = $contacts.filter(`:eq(${i})`);
+			var name = $item.find('input[name="contact-name"]').val(),
+				phone = $item.find('input[name="contact-phone"]').val();				
+			// TODO: 验证要求 phone 和 name 必填
+			if (!phone) {
+				// TODO: toast error tip
+				continue;
+			}
+			if (!name) {
+				// TODO: toast error tip
+				continue;
+			}
+			contact_phones.push(phone);
+			var is_old = false;
+			for (var j = 0; j < origin_data.contacts.length; j++) {
+				var contact = origin_data.contacts[j];
+				if (contact.phone == phone) {
+					// 已存在的联系人(根据 phone 判断)
+					is_old = true;
+					if (contact.name != name) {
+						// 更新联系人称呼
+						origin_data.contacts[j].name = name;
+						contacts_change = true;
+					}
+				}
+			}
+			if (!is_old) {
+				// 新联系人添加
+				origin_data.contacts.push({
+					'name': name,
+					'phone': phone
+				});
+				contacts_change = true;
+			}
+		}
+		if (origin_data.contacts.length > contact_phones.length) {
+			// 联系人有删除
+			// TODO: 从 origin_data 中移除删除的联系人
+		}
+
+		// 需求信息
+
+
+		if (basic_change || contacts_change) {
+			console.log(origin_data)
+			// TODO: 数据保存
+			$.ajax({
+				type: "PUT",
+				url: GLOGAL.API_BASE + `teams/${origin_data.id}/`,
+				data: JSON.stringify(origin_data),
+				processData: false,
+				contentType:"application/json; charset=utf-8",
+				dataType: "json",
+				success: function (resp) {
+					console.log(resp);
+					if (resp.id == origin_data.id && !!resp.url) {
+						cancel_contact_mine();
+						// TODO: 刷新数据
+						$('table.mine-contact-list').bootstrapTable('refresh');
+						alert("成功");
+					}
+					else {
+						alert("失败");
+					}
+				},
+				error: function (jqXHR) {
+					alert("Error: " + jqXHR.status);
+				}
+			});
+			// TODO: 刷新表格 table.mine-contact-list
+		}
+		else {
+			// 数据未修改
+			cancel_contact_mine();
+		}
+	}
+
+	function cancel_contact_mine() {
+		var $form = $('#form-contact-mine');
+		$form.next('.row').hide();
+		$form.hide();
+		$form.removeData('origin_contact_info');
+	}
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		// 新递交表单
+		setupFrom($('#form-contact-new'));
+
+		// 阻止默认提交
+		$('#form-contact-new, #form-contact-mine').on('submit', function(event) {
+			event.preventDefault();
+			return false;
+		});
+
+		// 我递交的
+		$('table.mine-contact-list').bootstrapTable({
+			pagination: true, // 是否显示分页
+			sortable: false, // 是否启用排序
+			sortOrder: "asc", // 排序方式
+  			search: false, // 是否显示分页
+  			striped: true, // 是否显示行间隔色
+  			uniqueId: "url", //每一行的唯一标识，一般为主键列
+  			clickToSelect: true, //是否启用点击选中行
+  			showColumns: false, //是否显示列设置按钮
+        	showRefresh: false, //是否显示刷新按钮
+  			showLoading:true,
+			columns: [
+				{
+					field: 'id',
+					title: '#',
+					formatter: function(value, row, index) {
+						return (index + 1).toString();
+					}
+				},
+				{
+					field: 'name',
+					title: '团体名称'
+				},
+				{
+					field: 'verified',
+					title: '审核状态'
+				},
+				{
+					title: '详情',
+					formatter: function(value, row, index) {
+						return ['<a data-url="', row.url, '" href="javascript:;">查看/修改</a>'].join('');
+					}
+				}
+			],
+			ajax: function(params) {
+	            $.ajax({
+	                type: 'GET',
+	                url: GLOGAL.API_BASE + 'teams/',
+	                data: data = {
+						'mine': 'true',
+					},
+	                dataType: 'json'
+	            }).done(function(resp, status, xhr) {
+	                params.success({
+	                    rows: resp.results,
+	                    total: resp.count
+	                }, status, xhr);
+	            }).fail(function(e) {
+	                console.error(e);
+	                params.error(e);
+	            });
+	        }
+		});
+		$('table.mine-contact-list').on('click', 'td a[data-url]', function(event) {
+			var url = $(this).attr('data-url');
+			var dataSource = $('table.mine-contact-list').data('bootstrap.table').data;
+			var selectedItem = $(dataSource).filter(function(idx, item) {
+				return item.url == url;
+			}).get(0);
+			// console.log(selectedItem);
+			// 我的递交详情表单
+			var $form = $('#form-contact-mine');
+			$form.show();
+			$form.next('.row').show();
+			$form.data('origin_contact_info', selectedItem);
+			setupFrom($form, selectedItem);
+		});
+
+		// 初始状态
+		$('#contact-tabs li:eq(0) a[data-toggle="tab"]').tab('show');
+	});
 </script>
 {% endblock %}

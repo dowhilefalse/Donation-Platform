@@ -26,7 +26,7 @@
 <div class="container-wrap">
     <div id="fh5co-events">
         <div class="row animate-box">
-            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 50px;">
+            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" style="margin-bottom: 0px;">
                 <h2>募捐信息列表-爱心团体</h2>
             </div>
         </div>
@@ -35,13 +35,13 @@
 
     <div style="margin:0 auto;">
         <nav class="fh5co-nav" role="navigation">
-            <ul style="white-space: nowrap; margin-left:10.0px ">                         
-                <li onclick="change_show_type1(); myFunction()"><a >以表格方式展示</a></li>
-                <li onclick="change_show_type2(); myFunction()"><a >以框框方式展示</a></li>
+            <ul style="white-space: nowrap; margin-left:10.0px ">  
+                <li onclick="change_show_type2(); myFunction()"><a >以框框方式展示</a></li>                       
+                <li onclick="change_show_type1(); myFunction()"><a >以表格方式展示</a></li>                
             </ul>
         </nav>
 
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-left:25px; margin-bottom: 0.0px">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索关键词...", style="margin-left:65px; margin-bottom: 0.0px">
     </div>
     <style>   
     th,td {         
@@ -87,31 +87,36 @@
                 for (var i of data.results) {
                     html += `
                     <div class="unit">
-        				<ul style="list-style: none; font-size:18px; color: rgb(75, 75, 75)">
+        				<ul style="margin-left: -25px; list-style: none; font-size:14px; color: rgb(75, 75, 75)">
         					<li>
-        						<p>${i.name}</p>
+        						<a style="font-size: 20px; margin-left:-9px; color:black">${i.name}</a>
         					</li>
         	
         					<li>
-        						<p>地址：${i.address}</p>
-        					</li>`
+        						<a style="color:black">地址：${i.address}</a>
+        					</li>
+                            <li>
+                                <a style="color:black">${i.main_text}</a>
+                            </li>
+                            `
 
                             for (var contact of i.contacts) {
                                 html += `
         					<li>
-        						<p>联系人：${contact.name}</p>
-        						<p>联系电话：${contact.phone}</p>
+        						<a style="color:black">联系人：${contact.name}</a>
+        						<a style="color:black">联系电话：${contact.phone}</a>
         	
         					</li>
         					`
                             }
                             html += `
-        				<li>
-        						<p>发布日期：${i.add_time.slice(0,10)}</p>
-        					</li>
+        				
         					<li>
-        					${i.verified ? '<p style="color: green">已核实</p>' : '<p style="color: red">未核实</p>'}
+        					${i.verified ? '<a style="color: green">已核实</a>' : '<p style="color: red">未核实</a>'}
         					</li>
+                            <li>
+                                <a style="color:grey">发布日期：${i.add_time.slice(0,10)}</a>
+                            </li>
         				</ul>
         			</div>
     				`
@@ -130,17 +135,20 @@
         var unit_table = $(".teams-table")
         var html = ""
 
-        $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
+        $.get(GLOGAL.API_BASE + "teams", function (data, status) {
             if (status === 'success') {
-                html += `  <table onload="myFunction()" style="border-collapse: collapse;">                                
+                html += `  
+                <div style="overflow:auto; margin-right: 30px; margin-left: 44px">  
+                <table onload="myFunction()" style="border-collapse: collapse;">                                
 
                             <thead>
                                 <tr>
                                     <th>团体名称</th>     
                                     <th>联系人</th>
                                     <th>联系电话</th>
+                                    <th>正文</th>
                                     <th>发布日期</th>
-                                    <th>是否验证/核实信息过</th>
+                                    <th>信息已验证</th>
                                </tr>
                             </thead>
                             <tbody>`
@@ -157,12 +165,14 @@
                     html += `
                             <td>${ contact_name }</td>
                             <td>${ contact_phone }</td>
+                            <td>${ i.main_text }</td>
                             <td>${ i.add_time.slice(0,10) }</td>
                             <td>${ i.verified ? '<font style="color: green">已核实</font>' : '<font style="color: red">未核实</font>'}</td>
                         </tr>`}
 
                 html += `</tbody>
-                         </table>`
+                         </table>
+                         </div>`
 
                 unit_table.append(html)
             } else {
@@ -219,14 +229,14 @@
           // 循环表格每一行，查找匹配项
             for (i = 0; i < ul.length; i++) {
 //                 console.log(ul[i].getElementsByTagName("li"))
-                li1 = ul[i].getElementsByTagName("p")[0];
+                li1 = ul[i].getElementsByTagName("a")[0];
 //                 console.log(Boolean(filter_search))
                 if (li1) {
                     
                     if (filter_search){
                         var search_result = false;
-                        for (j = 0; j < ul[i].getElementsByTagName("p").length; j++){
-                            search_result = search_result || (ul[i].getElementsByTagName("p")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
+                        for (j = 0; j < ul[i].getElementsByTagName("a").length; j++){
+                            search_result = search_result || (ul[i].getElementsByTagName("a")[j].innerHTML.toUpperCase().indexOf(filter_search) > -1)                    
                         }
 //                             console.log(search_result)
                         }
@@ -244,7 +254,7 @@
        }
     };
 
-    form2.style.display='none';
+    form1.style.display='none';
     window.onload = myFunction
 
 
