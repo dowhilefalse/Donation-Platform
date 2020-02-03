@@ -5,6 +5,7 @@ django-cors-headers
 django-guardian
 django-rest-auth
 django-filter>=2.0.0
+diskcache
 hendrix
 aliyun-python-sdk-core
 django-extensions

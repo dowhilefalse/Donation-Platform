@@ -204,3 +204,17 @@ HENDRIX_CHILD_RESOURCES = (
     'hendrix.contrib.concurrency.resources.MessageResource',
     'hendrix.contrib.resources.static.DjangoStaticsFinder'
 )
+
+CACHE_DIR = os.path.join(BASE_DIR, 'cache')
+CACHES = {
+    'default': {
+        'BACKEND': 'diskcache.DjangoCache',
+        'LOCATION': CACHE_DIR,
+        'TIMEOUT': 300,
+        'SHARDS': 8,
+        'DATABASE_TIMEOUT': 0.010,  # 10 milliseconds
+        'OPTIONS': {
+            'size_limit': 2 ** 30   # 1 gigabyte
+        },
+    },
+}

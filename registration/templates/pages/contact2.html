@@ -442,7 +442,8 @@
 	                data: data = {
 						'mine': 'true',
 					},
-	                dataType: 'json'
+	                dataType: 'json',
+	                cache: false
 	            }).done(function(resp, status, xhr) {
 	                params.success({
 	                    rows: resp.results,

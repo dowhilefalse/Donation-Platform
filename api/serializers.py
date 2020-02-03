@@ -1,7 +1,32 @@
+'''
+开发设计思路:
+
+我们在管理后台(admin)单个添加和或csv批量导入的，称之为 后台添加
+用户自己递交的，称之为 人工添加
+用户递交信息时，根据区分字段查询出的数据 称之为 已存在数据
+
+[列说明: 数据是谁添加的  数据核实状态  递交请求处理方案]
+[递交请求处理方案: 查询出的已存在数据如何处理, 提交的数据如何处理]
+
+(医疗)机构递交请求(区分: 省 + 市 + 名称)
+    后台添加        已核实  删除, 创建
+    后台添加        未核实  删除, 创建
+    人工添加(本人)  已核实  更新(合并联系人、合并需求)
+    人工添加(本人)  未核实  删除, 创建
+    人工添加(他人)  已核实  ?(暂未处理, 丢弃数据)
+    人工添加(他人)  未核实  ?(暂未处理, 丢弃数据)
+
+(爱心)团队递交请求(区分： 名称)
+    本人添加  已核实  更新(合并联系人)
+    本人添加  未核实  删除, 创建
+    他人添加  已核实  ?(暂未处理, 丢弃数据)
+    他人添加  未核实  ?(暂未处理, 丢弃数据)
+'''
 from rest_framework import serializers
 
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from registration.models import User
+from .cache_helper import clear_by_prefix
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,6 +49,14 @@ class OrganizationContactSerializer(serializers.HyperlinkedModelSerializer):
             'organization': {'required': False},
         }
 
+    def create(self, validated_data):
+        clear_by_prefix('organization')
+        return super(OrganizationContactSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        clear_by_prefix('organization')
+        return super(OrganizationContactSerializer, self).update(instance, validated_data)
+
 class OrganizationDemandSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = OrganizationDemand
@@ -37,6 +70,14 @@ class OrganizationDemandSerializer(serializers.HyperlinkedModelSerializer):
             'amount': {'required': False},
             'receive_amount': {'required': False},
         }
+
+    def create(self, validated_data):
+        clear_by_prefix('organization')
+        return super(OrganizationDemandSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        clear_by_prefix('organization')
+        return super(OrganizationDemandSerializer, self).update(instance, validated_data)
 
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
     contacts = OrganizationContactSerializer(source='organizationcontact_set', many=True)
@@ -127,6 +168,8 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
             self.f_contacts_update(instance, contacts_data, delete_exclude=False)
             self.f_demands_update(instance, demands_data, delete_exclude=False)
 
+        clear_by_prefix('organization')
+
         return instance
 
     def f_contacts_update(self, instance, contacts_data, delete_exclude=True):
@@ -177,6 +220,8 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         self.f_contacts_update(instance, contacts_data)
         self.f_demands_update(instance, demands_data)
 
+        clear_by_prefix('organization')
+
         return instance 
 
 # -----------------------------------------------------------------------------------------------------
@@ -191,6 +236,14 @@ class TeamContactSerializer(serializers.HyperlinkedModelSerializer):
             'add_time': {'required': False, 'read_only': True},
             'team': {'required': False},
         }
+
+    def create(self, validated_data):
+        clear_by_prefix('team')
+        return super(TeamContactSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        clear_by_prefix('team')
+        return super(TeamContactSerializer, self).update(instance, validated_data)
 
 class TeamSerializer(serializers.HyperlinkedModelSerializer):
     contacts = TeamContactSerializer(source='teamcontact_set', many=True)
@@ -257,6 +310,8 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
         if is_update_related:
             self.f_contacts_update(instance, contacts_data, delete_exclude=False)
 
+        clear_by_prefix('team')
+
         return instance
 
     def f_contacts_update(self, instance, contacts_data, delete_exclude=True):
@@ -286,5 +341,7 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
         instance = super(TeamSerializer, self).update(instance, validated_data)
 
         self.f_contacts_update(instance, contacts_data)
+
+        clear_by_prefix('team')
 
         return instance 
