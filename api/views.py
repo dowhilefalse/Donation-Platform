@@ -2,7 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.db.models import Q
-from django.utils.decorators import classonlymethod
+from django.utils.decorators import classonlymethod, method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from rest_framework import viewsets
 from rest_framework.reverse import reverse
 from rest_framework.permissions import (
@@ -37,10 +39,20 @@ class PatchedViewSet(viewsets.ModelViewSet):
         return super(PatchedViewSet, cls).as_view(actions=actions, **initkwargs)
 
     def initialize_request(self, request, *args, **kwargs):
+        print('request hook')
         if self.rewrite_app_name is not None:
             request.resolver_match.app_name = self.rewrite_app_name
             request.resolver_match.namespace = self.rewrite_app_name
         return super(PatchedViewSet, self).initialize_request(request, *args, **kwargs)
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        final_response = super(PatchedViewSet, self).finalize_response(request, response, *args, **kwargs)
+        print('response hook')
+        return final_response
+
+    # ModelViewSet default actions:
+    # `create()`, `update()`, `partial_update()`, `destroy()`
+    # `retrieve()`, `list()`
 
 class UserViewSet(PatchedViewSet):
     """
@@ -59,6 +71,21 @@ class OrganizationContactViewSet(PatchedViewSet):
     queryset = OrganizationContact.objects.all().order_by('-add_time')
     serializer_class = OrganizationContactSerializer
 
+    cache_key_prefix='organization-contact' # 缓存前缀
+    cache_expire = 60 * 60 * 2 # 缓存时长: 2小时
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, format=None):
+        print('list hook')
+        return super(OrganizationContactViewSet, self).list(request, format=format)
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def retrieve(self, request, *args, **kwargs):
+        print('retrieve hook')
+        return super(OrganizationContactViewSet, self).retrieve( request, *args, **kwargs)
+
 class OrganizationDemandViewSet(PatchedViewSet):
     """
     API endpoint that allows OrganizationDemand to be viewed or edited.
@@ -66,6 +93,21 @@ class OrganizationDemandViewSet(PatchedViewSet):
     # queryset = OrganizationDemand.objects.all()
     queryset = OrganizationDemand.objects.all().order_by('-add_time')
     serializer_class = OrganizationDemandSerializer
+
+    cache_key_prefix='organization-demand' # 缓存前缀
+    cache_expire = 60 * 60 * 2 # 缓存时长: 2小时
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, format=None):
+        print('list hook')
+        return super(OrganizationDemandViewSet, self).list(request, format=format)
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def retrieve(self, request, *args, **kwargs):
+        print('retrieve hook')
+        return super(OrganizationDemandViewSet, self).retrieve( request, *args, **kwargs)
 
 class OrganizationViewSet(PatchedViewSet):
     """
@@ -97,8 +139,9 @@ class OrganizationViewSet(PatchedViewSet):
                 else:
                     queryset = queryset.filter(~Q(province='湖北省'))
         # 仅查询当前登录者提交的
-        if self.request.query_params.get('mine', 'false') == 'true':
-            queryset = queryset.filter(inspector=self.request.user)
+        if self.request.user.is_authenticated:
+            if self.request.query_params.get('mine', 'false') == 'true':
+                queryset = queryset.filter(inspector=self.request.user)
         # 按名称-模糊查询
         if not bool(self.request.query_params.get('name', None)):
             fuzzy_name = self.request.query_params.get('fuzzy_name', None)
@@ -114,6 +157,21 @@ class OrganizationViewSet(PatchedViewSet):
 
     serializer_class = OrganizationSerializer
 
+    cache_key_prefix='organization' # 缓存前缀
+    cache_expire = 60 * 60 * 2 # 缓存时长: 2小时
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, format=None):
+        print('list hook')
+        return super(OrganizationViewSet, self).list(request, format=format)
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def retrieve(self, request, *args, **kwargs):
+        print('retrieve hook')
+        return super(OrganizationViewSet, self).retrieve( request, *args, **kwargs)
+
 # ----------------------------------------------------------------
 
 class TeamContactViewSet(PatchedViewSet):
@@ -124,10 +182,65 @@ class TeamContactViewSet(PatchedViewSet):
     queryset = TeamContact.objects.all().order_by('-add_time')
     serializer_class = TeamContactSerializer
 
+    cache_key_prefix='team-contact' # 缓存前缀
+    cache_expire = 60 * 60 * 2 # 缓存时长: 2小时
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, format=None):
+        print('list hook')
+        return super(TeamContactViewSet, self).list(request, format=format)
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def retrieve(self, request, *args, **kwargs):
+        print('retrieve hook')
+        return super(TeamContactViewSet, self).retrieve( request, *args, **kwargs)
+
 class TeamViewSet(PatchedViewSet):
     """
     API endpoint that allows Team to be viewed or edited.
     """
-    # queryset = Team.objects.all()
-    queryset = Team.objects.all().order_by('-add_time')
+    filterset_fields = ['type', 'name', 'address', 'verified']
+
+    # 默认查询集
+    queryset = Team.objects.all()
+
+    def get_queryset(self):
+        '''
+        修改默认查询集
+        '''
+        queryset = self.queryset
+        # 仅查询当前登录者提交的
+        if self.request.user.is_authenticated:
+            if self.request.query_params.get('mine', 'false') == 'true':
+                queryset = queryset.filter(inspector=self.request.user)
+        # 按名称-模糊查询
+        if not bool(self.request.query_params.get('name', None)):
+            fuzzy_name = self.request.query_params.get('fuzzy_name', None)
+            if bool(fuzzy_name):
+                queryset = queryset.filter(name__icontains=fuzzy_name)
+        # 按地址-模糊查询
+        if not bool(self.request.query_params.get('address', None)):
+            fuzzy_address = self.request.query_params.get('fuzzy_address', None)
+            if bool(fuzzy_address):
+                queryset = queryset.filter(address__icontains=fuzzy_address)
+        # 按时间倒序
+        return queryset.order_by('-add_time')
+
     serializer_class = TeamSerializer
+
+    cache_key_prefix='team' # 缓存前缀
+    cache_expire = 60 * 60 * 2 # 缓存时长: 2小时
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, format=None):
+        print('list hook')
+        return super(TeamViewSet, self).list(request, format=format)
+
+    @method_decorator(cache_page(cache_expire, key_prefix=cache_key_prefix))
+    @method_decorator(vary_on_cookie)
+    def retrieve(self, request, *args, **kwargs):
+        print('retrieve hook')
+        return super(TeamViewSet, self).retrieve( request, *args, **kwargs)

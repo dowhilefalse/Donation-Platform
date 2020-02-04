@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from model_utils import Choices
+
 from registration.models import User
 
 
@@ -65,6 +67,13 @@ class OrganizationDemand(models.Model):
 
 class Team(models.Model):
     """docstring for Team"""
+    TYPES = Choices(
+        ('charity', '慈善机构/公益组织'),
+        ('company', '公司/机构'),
+        ('student', '学生组织'),
+        ('other', '其它'),
+    )
+    type = models.CharField(verbose_name='团队类型', max_length=128, choices=TYPES, default=TYPES.charity)
     name = models.CharField(verbose_name='名称', max_length=128)
     address = models.TextField(verbose_name='所在地', default=None, blank=True, null=True)
     verified = models.BooleanField(verbose_name='已验证', default=False)

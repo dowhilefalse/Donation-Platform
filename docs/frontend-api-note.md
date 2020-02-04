@@ -172,7 +172,7 @@
     ```
 
 ## API自定义查询参数
-* `GET /api/organizations/`
+* `GET /api/organizations/` 查询(医疗)机构信息
     + 精确查询
         - `province`: `string` 省, 优先级高于`scope`
         - `city`: `string` 市
@@ -188,5 +188,23 @@
             * `wuhan`: 武汉(武汉市)
             * `hubei`: 武汉周边(湖北省中除武汉外的城市)
             * `china`: 全国各地(湖北省以外的行政区划的城市)
+        - `mine`: `string`, 固定值 `true` 表示仅查询当前登录用户递交的
+            - 未登录时忽略
+            - 其他值忽略
+    + 通用参数
+        - `page`: `integer` 分页查询页码
+* `GET /api/teams/` 查询(爱心)团体信息
+    + 精确查询
+        - `type`: `string`, 取值参见后端 `api.models.Team` 模型类的 `TYPES` 属性, 团体分类
+        - `name`: `string` 团体名, 优先级高于`fuzzy_name`
+        - `address`: `string` 团体地址, 优先级高于`fuzzy_address`
+        - `verified`: `bool`(`true`/`false` 或 `1`/`0`) 是否已验证
+    + 模糊查询
+        - `fuzzy_name`: `string` 团体名
+        - `fuzzy_address`: `string` 团体地址
+    + 专用查询
+        - `mine`: `string`, 固定值 `true` 表示仅查询当前登录用户递交的
+            - 未登录时忽略
+            - 其他值忽略
     + 通用参数
         - `page`: `integer` 分页查询页码

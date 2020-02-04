@@ -15,7 +15,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from .models import User
-from api.views import OrganizationViewSet, TeamViewSet
+from api.views import OrganizationViewSet, TeamViewSet, Team
 from .sms_helper import send_sms
 
 # 读取数据
@@ -59,7 +59,9 @@ def view_contact2(request):
         return redirect(reverse('registration:page_quick_register_login'))
     if request.method == 'POST':
         return redirect(reverse('registration:page_index'))
-    context = {}
+    context = {
+        'team_types': Team.TYPES,
+    }
     return render(request, 'pages/contact2.html', context)
 
 def view_register(request):
@@ -224,7 +226,7 @@ def view_phone_captcha(request):
         rate_ok = True
         if rate_ok:
             def generate_code():
-                return ''.join(map(str, random.choices(range(0, 10), k=6)))
+                return ''.join(map(str, [random.choice(range(0, 10)) for _ in range(6)]))
             # 生成验证码
             # code = str(random.randint(100000, 999999))
             code = generate_code() if settings.SMS_USE else '123579'
