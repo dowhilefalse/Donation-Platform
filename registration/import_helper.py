@@ -61,7 +61,7 @@ territory = {
     '香港特别行政区': ["香港", "其他"],
     '澳门特别行政区': ["澳门", "其他"],
     '台湾省': ["台北市", "其他"],
-    '其它': ["其他"]
+    '其他': ["其他"]
 }
 
 # 机构数据库模型列名与上传文件列名映射
@@ -181,12 +181,37 @@ def parse_dataframe(df, user):
                             'remark': remark,
                             'amount': amount
                         })
-        # 省市精确名字处理
+        # 省精确名字处理
         if organization['province'] not in territory:
-            organization['province'] = next((filter(lambda item: similar(organization['province'], item) > 0, territory)), '其他')
+            current_similar_value = 0
+            organization_province = None
+            for province_name in territory:
+                # 相似度查找
+                similar_value = similar(organization['province'], province_name)
+                if similar_value > current_similar_value:
+                    current_similar_value = similar_value
+                    organization_province = province_name
+            if current_similar_value > 0.5:
+                # 如果相似度大于0.5, 则说明省份找到
+                organization['province'] = organization_province
+            else:
+                organization['province'] = '其他'
+        # 市精确名字处理
         current_cities = territory[organization['province']]
         if organization['city'] not in current_cities:
-            organization['city'] = next((filter(lambda item: similar(organization['city'], item) > 0, current_cities)), '其他')
+            current_similar_value = 0
+            organization_city = None
+            for city_name in current_cities:
+                # 相似度查找
+                similar_value = similar(organization['city'], city_name)
+                if similar_value > current_similar_value:
+                    current_similar_value = similar_value
+                    organization_city = city_name
+            if current_similar_value > 0.5:
+                # 如果相似度大于0.5, 则说明省份找到
+                organization['city'] = organization_city
+            else:
+                organization['city'] = '其他'
         # 联系人信息处理
         # 联系人列表
         contact_list = []
@@ -243,7 +268,7 @@ def import_row(organization, contact_list, demand_list):
         defaults=organization
     )
     need_create = False
-    if created:
+    if not created:
         # 如果已经存在了后台添加的, 则删除
         if not instance.is_manual:
             instance.delete()
