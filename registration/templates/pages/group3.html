@@ -114,14 +114,14 @@
                 for (var i of data.results) {
                     html += `
                     <div class="unit">
-        				<ul style="margin-left: -25px; list-style: none; font-size:14px; color: rgb(75, 75, 75)">
-        					<li>
-        						<a style="font-size: 20px; margin-left:-9px; color:black">${i.name}</a>
-        					</li>
+                        <ul style="margin-left: -25px; list-style: none; font-size:14px; color: rgb(75, 75, 75)">
+                            <li>
+                                <a style="font-size: 20px; margin-left:-9px; color:black">${i.name}</a>
+                            </li>
 
-        					<li>
-        						<a style="color:black">地址：${i.address}</a>
-        					</li>
+                            <li>
+                                <a style="color:black">地址：${i.address}</a>
+                            </li>
                             <li>
                                 <a style="color:black">${i.main_text}</a>
                             </li>
@@ -129,24 +129,24 @@
 
                             for (var contact of i.contacts) {
                                 html += `
-        					<li>
-        						<a style="color:black">联系人：${contact.name}</a>
-        						<a style="color:black">联系电话：${contact.phone}</a>
+                            <li>
+                                <a style="color:black">联系人：${contact.name}</a>
+                                <a style="color:black">联系电话：${contact.phone}</a>
 
-        					</li>
-        					`
+                            </li>
+                            `
                             }
                             html += `
 
-        					<li>
-        					${i.verified ? '<a style="color: green">已核实</a>' : '<p style="color: red">未核实</a>'}
-        					</li>
+                            <li>
+                            ${i.verified ? '<a style="color: green">已核实</a>' : '<p style="color: red">未核实</a>'}
+                            </li>
                             <li>
                                 <a style="color:grey">发布日期：${i.add_time.slice(0,10)}</a>
                             </li>
-        				</ul>
-        			</div>
-    				`
+                        </ul>
+                    </div>
+                    `
                 }
 
                 unit_box.html(html)
@@ -175,7 +175,7 @@
                                     <th>联系电话</th>
                                     <th>正文</th>
                                     <th>发布日期</th>
-                                    <th>信息已验证</th>
+                                    <th>信息验证</th>
                                </tr>
                             </thead>
                             <tbody>`
@@ -282,7 +282,9 @@
     };
 
     form1.style.display='none';
-    window.onload = myFunction
+    setTimeout(function (){
+                myFunction();
+            }, 500);
 
 
 </script>

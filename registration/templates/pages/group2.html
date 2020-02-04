@@ -236,7 +236,7 @@
                                     <th>地址</th>
                                     <th>需求</th>
                                     <th>联系人</th>
-                                    <th>信息已验证</th>
+                                    <th>信息验证</th>
                                </tr>
                             </thead>
                             <tbody>`
@@ -557,7 +557,9 @@
 // 初始化
 
     form1.style.display='none';
-    window.onload = myFunction;
+    setTimeout(function (){
+                myFunction();
+            }, 500);
 
 
 </script>
