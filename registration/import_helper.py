@@ -276,12 +276,13 @@ def import_row(organization, contact_list, demand_list):
     else:
         need_create = True
     if need_create:
-        instance = Organization.objects.create(
-            name=name,
-            province=province,
-            city=city,
-            **organization
-        )
+        if not created:
+            instance = Organization.objects.create(
+                name=name,
+                province=province,
+                city=city,
+                **organization
+            )
         for contact_data in contact_list:
             contact_data.pop('organization', None)
             contact = OrganizationContact.objects.create(
