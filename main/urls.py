@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.templatetags.staticfiles import static as static_url
 from django.views.generic.base import RedirectView
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path, re_path, resolve, Resolver404
 from rest_framework import routers
 
 from api import views as api_views
@@ -32,6 +32,7 @@ favicon_view = RedirectView.as_view(url=static_url('favicon.png'), permanent=Tru
 robots_view = RedirectView.as_view(url=static_url('robots.txt'), permanent=True)
 
 router = routers.DefaultRouter()
+router.register(r'images', api_views.ImageViewSet)
 router.register(r'users', api_views.UserViewSet)
 router.register(r'organizations', api_views.OrganizationViewSet)
 router.register(r'organization-contacts', api_views.OrganizationContactViewSet)
@@ -48,10 +49,11 @@ urlpatterns = [
     path('api/', include((router.urls, 'api'), namespace='api')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('rest-auth/', include('rest_auth.urls')),
+    path('filer/', include('filer.urls')),
     path('', include('registration.urls')),
 ]
 
-from django.urls import resolve, Resolver404
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 try:
     resolve('/static/favicon.png')
 except Resolver404:

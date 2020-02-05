@@ -5,3 +5,4 @@ static/
 !*/static/
 *.log
 cache/
+media/

@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'coronacharity.info',
+    'wetogether2020.com',
 ]
 
 __hostname = None
@@ -57,6 +58,9 @@ INSTALLED_APPS = [
     'rest_auth',
     'django_filters',
     'corsheaders',
+    'easy_thumbnails',
+    'filer',
+    'mptt',
     'django_extensions',
     'registration.apps.RegistrationConfig',
     'api.apps.ApiConfig',
@@ -162,6 +166,10 @@ STATIC_URL = '/static/'
 # `python manage.py collectstatic`
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Media Path
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 AUTH_USER_MODEL = 'registration.User'
 
@@ -218,3 +226,34 @@ CACHES = {
         },
     },
 }
+
+# Maximum Upload Image
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_IMAGE_UPLOAD_SIZE = 5242880  # 5MB
+
+# easy_thumbnails to support retina displays
+THUMBNAIL_HIGH_RESOLUTION = True
+
+# Subject location aware cropping
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    #'easy_thumbnails.processors.scale_and_crop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)
+
+# “filer” part of the URL
+FILER_CANONICAL_URL = 'canonical/'
+
+if DEBUG:
+    # Debugging and logging
+    FILER_DEBUG = True
+    FILER_ENABLE_LOGGING = True

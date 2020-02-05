@@ -12,10 +12,13 @@ from rest_framework.permissions import (
     DjangoModelPermissionsOrAnonReadOnly,
     AllowAny
 )
+from rest_framework.exceptions import PermissionDenied
+from filer.models.imagemodels import Image
 
 from registration.models import User
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from .serializers import (
+    ImageSerializer,
     UserSerializer,
     OrganizationContactSerializer,
     OrganizationDemandSerializer,
@@ -54,6 +57,24 @@ class PatchedViewSet(viewsets.ModelViewSet):
     # `create()`, `update()`, `partial_update()`, `destroy()`
     # `retrieve()`, `list()`
 
+class ImageViewSet(PatchedViewSet):
+    """
+    API endpoint that allows Image to be viewed or edited.
+    """
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
+    queryset = Image.objects.all().order_by('-uploaded_at')
+    serializer_class = ImageSerializer
+    def list(self, request, format=None):
+        if request.user.is_authenticated:
+            return super(ImageViewSet, self).list(request, format=format)
+        raise PermissionDenied()
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         return super(ImageViewSet, self).retrieve( request, *args, **kwargs)
+    #     raise PermissionDenied()
+
 class UserViewSet(PatchedViewSet):
     """
     API endpoint that allows User to be viewed or edited.
@@ -62,6 +83,16 @@ class UserViewSet(PatchedViewSet):
 
     queryset = User.objects.all().order_by('phone')
     serializer_class = UserSerializer
+
+    def list(self, request, format=None):
+        if request.user.is_authenticated:
+            return super(UserViewSet, self).list(request, format=format)
+        raise PermissionDenied()
+
+    def retrieve(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super(UserViewSet, self).retrieve( request, *args, **kwargs)
+        raise PermissionDenied()        
 
 class OrganizationContactViewSet(PatchedViewSet):
     """

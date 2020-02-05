@@ -23,11 +23,25 @@
     他人添加  未核实  ?(暂未处理, 丢弃数据)
 '''
 from rest_framework import serializers
+from filer.models.imagemodels import Image
 
 from .models import Organization, OrganizationContact, OrganizationDemand, Team, TeamContact
 from registration.models import User
 from .cache_helper import clear_by_prefix
 
+
+class ImageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['url', 'id', 'folder', 'file', 'label', 'original_filename', 'size', 'width', 'height', 'uploaded_at']
+        extra_kwargs = {
+            'id': {'required': False},
+            'url': {'required': False, 'read_only': True},
+            'size': {'required': False, 'read_only': True},
+            'width': {'required': False, 'read_only': True},
+            'height': {'required': False, 'read_only': True},
+            'uploaded_at': {'required': False, 'read_only': True},
+        }
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -250,12 +264,13 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Team
-        fields = ['url', 'id', 'contacts', 'type', 'name', 'address', 'main_text', 'verified', 'add_time',]
+        fields = ['url', 'id', 'contacts', 'type', 'name', 'address', 'main_text', 'verified', 'inspector', 'wechat_qrcode', 'add_time',]
         extra_kwargs = {
             'id': {'required': False},
             'url': {'required': False, 'read_only': True},
             'add_time': {'required': False, 'read_only': True},
             'inspector': {'required': False},
+            'wechat_qrcode': {'required': False},
         }
 
     def create(self, validated_data):
