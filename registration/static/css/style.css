@@ -22,7 +22,7 @@ body {
 
 :root {
   --Color_text: #fff;
-  --Color_tab: #658361;   /* tab主要的颜色*/
+  --Color_tab: rgba(0, 120, 106, 1.0);   /* tab主要的颜色*/
   --Color_hover: #70926c;
   --Color_slider: #70926c;
   --Color_bottombox: #586e72;
@@ -1406,6 +1406,18 @@ input[type="text"] {
   margin-bottom: 40px;
   background-color:  rgba(0, 150, 136, 0.12);
   box-shadow: 2px 2px 2px rgb(192, 192, 192);
+
+}
+@media screen and (max-width: 768px) {
+.unit{
+  transition:all 0.5s;
+  width: 90%;
+  /*border-radius: 8px;*/
+  margin-bottom: 40px;
+  background-color:  rgba(0, 150, 136, 0.12);
+  box-shadow: 2px 2px 2px rgb(192, 192, 192);
+}
+
 }
 .unit:hover{
   opacity: 1;

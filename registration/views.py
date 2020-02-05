@@ -226,7 +226,7 @@ def view_phone_captcha(request):
         rate_ok = True
         if rate_ok:
             def generate_code():
-                return ''.join(map(str, random.choices(range(0, 10), k=6)))
+                return ''.join(map(str, [random.choice(range(0, 10)) for _ in range(6)]))
             # 生成验证码
             # code = str(random.randint(100000, 999999))
             code = generate_code() if settings.SMS_USE else '123579'
