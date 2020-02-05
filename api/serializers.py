@@ -328,7 +328,7 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
                 )
         
         if bool(contact_phones) and delete_exclude:
-            TeamContact.objects.filter(organization=instance).exclude(phone__in=contact_phones).delete()
+            TeamContact.objects.filter(team=instance).exclude(phone__in=contact_phones).delete()
 
     def update(self, instance, validated_data):
         user = self.context['request'].user
