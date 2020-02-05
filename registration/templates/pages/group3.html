@@ -36,7 +36,7 @@
     <div class="after_title">
         <nav class="fh5co-nav" role="navigation">
             <ul style="white-space: nowrap; margin-left:10.0px ">
-                <li onclick="change_show_type2(); myFunction()"><a >以模块方式展示</a></li>
+                <li onclick="change_show_type2(); myFunction()"><a >以框框方式展示</a></li>
                 <li onclick="change_show_type1(); myFunction()"><a >以表格方式展示</a></li>
             </ul>
         </nav>
@@ -80,20 +80,10 @@
          margin-top: -20px
        }
      }
-    .row_show{
-          margin-left:18px;
-         }
-                
-    @media screen and (max-width: 768px) {
-    .row_show{
-          margin-left:40px;
-         }
-        
-        }
     </style>
 
 
-    <div class="row row_show">
+    <div class="row" , style="margin-left:18px;">
 
         <div class="unit-table teams-table" id="form1">
         </div>
@@ -175,23 +165,17 @@
         $.get(GLOGAL.API_BASE + "teams", function (data, status) {
             if (status === 'success') {
                 html += `
-                <style>
-                  th, td {
-                    padding: 6px;                            
-                    max-width: 300px;
-                  }
-                </style>
                 <div id="table" style="overflow:auto; margin-right: 30px;">
                 <table onload="myFunction()" style="border-collapse: collapse;">
 
                             <thead>
                                 <tr>
-                                    <th style="min-width:100px">团体名称</th>
-                                    <th style="min-width:60px">联系人</th>
-                                    <th style="min-width:60px">联系电话</th>
-                                    <th style="min-width:300px">正文</th>
-                                    <th style="min-width:80px">发布日期</th>
-                                    <th style="min-width:60px">信息验证</th>
+                                    <th>团体名称</th>
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>正文</th>
+                                    <th>发布日期</th>
+                                    <th>信息验证</th>
                                </tr>
                             </thead>
                             <tbody>`
