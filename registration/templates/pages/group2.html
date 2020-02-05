@@ -37,7 +37,7 @@
     <div class="after_title">
         <nav class="fh5co-nav" role="navigation">
             <ul style="white-space: nowrap; margin-left:10.0px ">
-                <li onclick="change_show_type2(); myFunction()"><a ><font style="color:black">以框框方式展示</font></a></li>
+                <li onclick="change_show_type2(); myFunction()"><a ><font style="color:black">以模块方式展示</font></a></li>
                 <li onclick="change_show_type1(); myFunction()"><a ><font style="color:black">以表格方式展示</font></a></li>
             </ul>
         </nav>
@@ -98,19 +98,28 @@
          margin-top: -20px
        }
      }
+
+     .row_show{
+          margin-left:18px;
+         }
+                
+     @media screen and (max-width: 768px) {
+      .row_show{
+          margin-left:40px;          
+         }        
+        }
+        
     </style>
 
-    <div class="row" , style="margin-left:18px;">
+    <div class="row row_show" >
 
-        <div class="unit-table organizations-table" id="form1">
+        <div data-container="container-wrap" style = "overflow-x: scroll;" class="unit-table organizations-table" id="form1">
         </div>
 
-        <div class="unit-box organizations-box" id="form2">
+        <div data-container="container-wrap" class="unit-box organizations-box" id="form2">
         </div>
 
     </div>
-    </div>
-
 </div>
 {% endblock %}
 
@@ -183,9 +192,17 @@
                         </li>`
                     if (i.demands.length) {
                         for (var demand of i.demands) {
+                            var demand_amount;
+                            console.log(demand.amount)
+                            if (demand.amount == -1){
+                                demand_amount = '大量'
+                            }
+                            else{
+                                demand_amount = demand.amount
+                            }
                             html += `<li><font style="color:black">需求：</font></br>
                             <a style="color: red;">${demand.name}
-                            <a style="color:black">(共需 ${demand.amount}、已收 ${demand.receive_amount})</a>
+                            <a style="color:black">(共需 ${demand_amount}、已收 ${demand.receive_amount})</a>
                             <a style="color:black">${demand.remark?'('+demand.remark+')':''}</a>
                         </li>`
                         }
@@ -223,20 +240,28 @@
         var unit_table = $(".organizations-table")
         var html = ""
 
-        $.get(GLOGAL.API_BASE + "organizations", function (data, status) {
+        $.get(GLOGAL.API_BASE + "organizations" + qs, function (data, status) {
             if (status === 'success') {
-                html += `  <div style="overflow:auto; margin-right:30px" id="table" >
-                <table onload="myFunction()" style="border-collapse: collapse;">
+
+                html += ` 
+                        <style>
+                          th, td {
+                            padding: 6px;                            
+                            max-width: 300px;
+                          }
+                        </style>
+                         <div style="overflow:auto; margin-right:30px" id="table" >
+                        <table onload="myFunction()" style="border-collapse: collapse;">
 
                             <thead>
                                 <tr>
-                                    <th>医院名称</th>
-                                    <th>省份</th>
-                                    <th>城市</th>
-                                    <th>地址</th>
-                                    <th>需求</th>
-                                    <th>联系人</th>
-                                    <th>信息验证</th>
+                                    <th style="min-width:100px">医院名称</th>
+                                    <th style="min-width:60px">省份</th>
+                                    <th style="min-width:60px">城市</th>
+                                    <th style="min-width:100px">地址</th>
+                                    <th style="min-width:200px">需求</th>
+                                    <th style="min-width:100px">联系人</th>
+                                    <th style="min-width:60px">信息验证</th>
                                </tr>
                             </thead>
                             <tbody>`
@@ -251,7 +276,14 @@
                         demand_str = '';
                         i.demands.forEach(function (demand,index) {
                             console.log()
-                            demand_str += demand.name + ' : ' + demand.amount + ' 已收:' + demand.receive_amount;
+                            var demand_amount;
+                            if (demand.amount == -1){
+                                demand_amount = '大量'
+                            }
+                            else{
+                                demand_amount = demand.amount
+                            }
+                            demand_str += demand.name + ' : ' + demand_amount + ' 已收:' + demand.receive_amount;
                             if(index < i.demands.length-1){
                                 demand_str += '<br>';
                             }
