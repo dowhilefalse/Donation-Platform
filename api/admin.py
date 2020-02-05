@@ -39,7 +39,7 @@ class TeamContactInlineAdmin(admin.StackedInline):
     can_delete = True
 
 class TeamAdmin(admin.ModelAdmin):
-    """docstring for OrganizationAdmin"""
+    """docstring for TeamAdmin"""
     list_display = ['name', 'address', 'verified', 'add_time',]
     readonly_fields = ['add_time',]
     inlines = (TeamContactInlineAdmin,)
