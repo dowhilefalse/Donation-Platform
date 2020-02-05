@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from model_utils import Choices
+from filer.fields.image import FilerImageField
 
 from registration.models import User
 
@@ -80,6 +81,7 @@ class Team(models.Model):
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now=True)
     main_text = models.TextField(verbose_name='正文', default=None, blank=True, null=True)    
     inspector = models.ForeignKey(User, verbose_name='添加人', on_delete=models.CASCADE)
+    wechat_qrcode = FilerImageField(verbose_name='微信二维码', default=None, null=True, blank=True, related_name='wechat_qrcode_team', on_delete=models.SET_NULL)
 
     def __str__(self):
         """A string representation of the model."""

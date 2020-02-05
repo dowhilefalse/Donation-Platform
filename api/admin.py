@@ -19,7 +19,7 @@ class OrganizationDemandInlineAdmin(admin.StackedInline):
 
 class OrganizationAdmin(admin.ModelAdmin):
     """docstring for OrganizationAdmin"""
-    list_display = ['province', 'city', 'name', 'address', 'source', 'verified', 'add_time',]
+    list_display = ['name', 'province', 'city', 'address', 'source', 'verified', 'add_time',]
     readonly_fields = ['add_time',]
     inlines = (OrganizationContactInlineAdmin, OrganizationDemandInlineAdmin,)
 
