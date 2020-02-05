@@ -189,7 +189,7 @@
                         </li>
                         <li>
                             <a style="color:black">地址：${i.address}</a>
-                        </li><li><font style="color:black">需求：</font></br>`
+                        </li>`
                     if (i.demands.length) {
                         for (var demand of i.demands) {
                             var demand_amount;
@@ -200,16 +200,16 @@
                             else{
                                 demand_amount = demand.amount
                             }
-                            html += `
+                            html += `<li><font style="color:black">需求：</font></br>
                             <a style="color: red;">${demand.name}
                             <a style="color:black">(共需 ${demand_amount}、已收 ${demand.receive_amount})</a>
-                            <a style="color:black">${demand.remark?'('+demand.remark+')':''}</a></br>
-                        `
+                            <a style="color:black">${demand.remark?'('+demand.remark+')':''}</a>
+                        </li>`
                         }
                     }
 
                     for (var contact of i.contacts) {
-                        html += `</li><li>
+                        html += `<li>
                             <a style="color:black">联系人：${contact.name}</a>
                             <a style="color:black">电话：${contact.phone}</a>
                         </li>`
