@@ -81,7 +81,6 @@
 	{% csrf_token %}
 
 	<div class="fh5co-loader"></div>
-	<div id="page">
 		<nav class="fh5co-nav" role="navigation">
 			<div class="container-wrap">
 				<div class="top-menu">
@@ -89,25 +88,25 @@
 						<div class="col-md-12 col-md-offset-0 text-center">
 							<ul id="nav_bar">
 								{% if user.is_authenticated  %}
-								<li><a href="{% url 'registration:page_index' %}">首页</a></li>
-								<li class="break"><a href="{% url 'registration:page_about' %}">
+								<li><a href="{% url 'registration:page_index' %}"><font>首页</font></a></li>
+								<li ><a href="{% url 'registration:page_about' %}">
 										<font>关于我们</font>
 									</a></li>
+									<li class="break"><a href="{% url 'registration:page_logout' %}">
+											<font style="color: #5d726c">注销</font>
+										</a></li>
 								<li><a href="{% url 'registration:page_contact' %}">
 										<font style="color:#009688">发布医院信息</font>
 									</a></li>
-								<li><a href="{% url 'registration:page_contact2' %}">
+								<li class="break"><a href="{% url 'registration:page_contact2' %}">
 										<font style="color:#009688">发布团体信息</font>
 									</a></li>
-								<li class="break"><a href="{% url 'registration:page_logout' %}">
-										<font style="color: #5d726c">注销</font>
-									</a></li>
-								<li><a href="{% url 'registration:page_group11' %}">武汉医院</a></li>
-								<li><a href="{% url 'registration:page_group12' %}">周边医院</a></li>
-								<li><a href="{% url 'registration:page_group2' %}">全国医院</a></li>
-								<li><a href="{% url 'registration:page_group3' %}">爱心团体</a></li>
+								<li><a href="{% url 'registration:page_group11' %}"><font>武汉医院</font></a></li>
+								<li><a href="{% url 'registration:page_group12' %}"><font>周边医院</font></a></li>
+								<li><a href="{% url 'registration:page_group2' %}"><font>全国医院</font></a></li>
+								<li><a href="{% url 'registration:page_group3' %}"><font>爱心团体</font></a></li>
 								{% else %}
-								<li><a href="{% url 'registration:page_index' %}">首页</a></li>
+								<li><a href="{% url 'registration:page_index' %}"><font>首页</font></a></li>
 								{# <li><a href="{% url 'registration:page_register' %}"><font style="color:#009688">注册/登陆</font></a></li> #}
 								<li><a href="{% url 'registration:page_quick_register_login' %}">
 										<font style="color:#009688">注册/登陆</font>
@@ -115,10 +114,10 @@
 								<li class="break"><a href="{% url 'registration:page_about' %}">
 										<font>关于我们</font>
 									</a></li>
-								<li><a href="{% url 'registration:page_group11' %}">武汉医院</a></li>
-								<li><a href="{% url 'registration:page_group12' %}">周边医院</a></li>
-								<li><a href="{% url 'registration:page_group2' %}">全国医院</a></li>
-								<li><a href="{% url 'registration:page_group3' %}">爱心团体</a></li>
+								<li><a href="{% url 'registration:page_group11' %}"><font>武汉医院</font></a></li>
+								<li><a href="{% url 'registration:page_group12' %}"><font>周边医院</font></a></li>
+								<li><a href="{% url 'registration:page_group2' %}"><font>全国医院</font></a></li>
+								<li><a href="{% url 'registration:page_group3' %}"><font>爱心团体</font></a></li>
 								{% endif %}
 							</ul>
 						</div>
@@ -128,7 +127,6 @@
 			</div>
 		</nav>
 		{% block page_main %}{% endblock %}
-	</div>
 
 	<div class="container-wrap">
 		<footer id="fh5co-footer" role="contentinfo">
@@ -196,6 +194,7 @@
 			return ((/^(GET|HEAD|OPTIONS|TRACE)$/).test(method));
 		}
 		$(document).ready(function () {
+
 			$.ajaxSetup({
 				beforeSend: function (xhr, settings) {
 					if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

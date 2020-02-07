@@ -34,7 +34,7 @@
     </div>
 
     <div class="after_title">
-        <nav class="fh5co-nav" role="navigation">
+        <nav id="display_options" class="fh5co-nav" role="navigation">
             <ul style="white-space: nowrap; margin-left:10.0px ">
                 <li onclick="change_show_type2(); myFunction()"><a >以模块方式展示</a></li>
                 <li onclick="change_show_type1(); myFunction()"><a >以表格方式展示</a></li>
@@ -83,12 +83,12 @@
     .row_show{
           margin-left:18px;
          }
-                
+
     @media screen and (max-width: 768px) {
     .row_show{
           margin-left:40px;
          }
-        
+
         }
     </style>
 
@@ -177,7 +177,7 @@
                 html += `
                 <style>
                   th, td {
-                    padding: 6px;                            
+                    padding: 6px;
                     max-width: 300px;
                   }
                 </style>
