@@ -3,7 +3,7 @@ tornado
 zope.interface
 pyOpenSSL
 twisted
-django==2.2
+django==2.2.24
 sqlparse
 chardet
 # PyMySQL
